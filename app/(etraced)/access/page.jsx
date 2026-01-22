@@ -1,31 +1,32 @@
 import { redirect } from "next/navigation";
-import { getClasses, getSchoolYear } from "./actions";
+import { getSchoolYear, getClassesEnrollment } from "./actions";
 import ClassClient from "./ClassClient";
 import { checkRole } from "../../../utils/lib/checkRole.js";
 import SchoolYearSelect from "./SchoolYearSelect.jsx";
 
-// export const dynamic = "force-dynamic";
-import { Suspense } from "react";
 export default async function Page({ searchParams }) {
   const profile = await checkRole();
 
-  const year_label = searchParams?.year;
+  // ✅ AWAIT searchParams
+  const params = await searchParams;
 
+  const year_label =
+    typeof params.year === "string" ? params.year : "2025-2026";
   // Default school year
   if (!year_label) {
-    redirect("/class?year=2025-2026");
+    redirect("/access?year=2025-2026");
   }
 
   const year_data = await getSchoolYear(year_label);
 
   if (!year_data) {
-    redirect("/class");
+    redirect("/access");
   }
 
-  const classes = await getClasses(year_data.id, profile);
+  const classes = await getClassesEnrollment(year_data.id, profile);
 
   return (
-    <div className="p-6 space-y-6 h-screen">
+    <div className="p-6 space-y-6   mb-10">
       <div className="flex  items-center gap-2">
         <h1 className="text-xl font-semibold">Classes for School Year</h1>
         <div className="">

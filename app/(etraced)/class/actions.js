@@ -15,7 +15,6 @@ export async function getSchoolYear(year_label) {
 }
 
 export async function getClasses(school_year_id, profile) {
-  console.log("profile in getClasses:", profile);
   const supabase = await createClient();
   if (profile.role === "admin") {
     const { data, error } = await supabase

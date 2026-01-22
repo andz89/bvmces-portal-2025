@@ -5,6 +5,7 @@ import { useState, useMemo } from "react";
 import AddMPSDataModal from "./AddMPSDataModal";
 import { deleteMPSData } from "./actions";
 import QuarterTable from "./QuarterTable";
+import FullPageLoader from "../../../../../../components/loader/FullPageLoader";
 export default function MPSClientTable({
   section,
   grade,
@@ -15,22 +16,24 @@ export default function MPSClientTable({
 }) {
   const [editingRow, setEditingRow] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
-
+  const [loading, setLoading] = useState(null);
   const admin = profile.role === "admin" || profile.role === "editor";
 
   async function handleDelete(row) {
+    console.log(row);
     const confirmed = confirm(
-      `Delete Grade ${row.grade_level} - Section ${row.section}?`
+      `Delete Grade ${row.class.grade} - Section ${row.class.section}?`
     );
     if (!confirmed) return;
-
+    setLoading(true);
+    setDeletingId(row.id);
     try {
-      setDeletingId(row.id);
       await deleteMPSData(row.id, classID);
     } catch (err) {
       alert(err.message);
     } finally {
       setDeletingId(null);
+      setLoading(false);
     }
   }
   const SUBJECT_KEYS = [
@@ -120,13 +123,14 @@ export default function MPSClientTable({
                   : ""
               }`}
             >
-              {deletingId === row.original.id ? "Deleting..." : "Delete"}
+              {deletingId === row.original.id ? "Deleting" : "Delete"}
+              {loading && <FullPageLoader />}
             </button>
           </div>
         ),
       },
     ],
-    [deletingId]
+    [deletingId, loading]
   );
 
   const dataByQuarter = useMemo(() => {

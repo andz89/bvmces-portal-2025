@@ -17,9 +17,10 @@ export default function GPAClientTable({
   const baseColumns = useMPSColumns();
   const [editingRow, setEditingRow] = useState(null);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(null);
 
   const admin = profile.role === "admin" || profile.role === "editor";
-  console.log(admin);
+
   const columns = [
     ...baseColumns,
     {

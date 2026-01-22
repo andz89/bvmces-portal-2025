@@ -5,6 +5,7 @@ import { useState, useMemo } from "react";
 import AddEnrollmentModal from "./AddEnrollmentModal";
 import { deleteEnrollment } from "./actions";
 import QuarterTable from "./QuarterTable";
+import FullPageLoader from "../../../../../../components/loader/FullPageLoader";
 
 export default function EnrollmentClientTable({
   section,
@@ -40,10 +41,11 @@ export default function EnrollmentClientTable({
 
   const [editingRow, setEditingRow] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
-
+  const [loading, setLoading] = useState(false);
   const admin = profile.role === "admin" || profile.role === "editor";
 
   async function handleDelete(row) {
+    setLoading(true);
     const confirmed = confirm("Delete this enrollment record?");
     if (!confirmed) return;
 
@@ -54,6 +56,7 @@ export default function EnrollmentClientTable({
       alert(err.message);
     } finally {
       setDeletingId(null);
+      setLoading(false);
     }
   }
 
@@ -99,13 +102,13 @@ export default function EnrollmentClientTable({
           <button
             disabled={profile.role !== "admin"}
             onClick={() => handleDelete(row.original)}
-            className={`px-2 py-1 text-xs rounded bg-red-100 text-red-700 hover:bg-red-200 ${
+            className={` w-[70px] px-2 py-1 text-xs rounded bg-red-100 text-red-700 hover:bg-red-200 ${
               profile.role !== "admin"
                 ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                 : ""
             }`}
           >
-            {deletingId === row.original.id ? "Deleting..." : "Delete"}
+            {deletingId === row.original.id ? "Deleting " : "Delete"}
           </button>
         </div>
       ),
@@ -114,6 +117,7 @@ export default function EnrollmentClientTable({
 
   return (
     <>
+      {loading && <FullPageLoader />}
       <AddEnrollmentModal
         section={section}
         grade={grade}

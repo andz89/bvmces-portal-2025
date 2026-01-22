@@ -40,7 +40,7 @@ export default function QuarterTable({ title, data, columns }) {
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
-                    className="border border-slate-600 px-4 py-2 text-xs"
+                    className="border border-slate-600 px-4 py-2 text-xs "
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>

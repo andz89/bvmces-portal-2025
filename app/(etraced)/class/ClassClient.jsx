@@ -1,6 +1,7 @@
 "use client";
 import { deleteClass } from "./actions";
 import { FaTrash } from "react-icons/fa";
+import FullPageLoader from "../../components/loader/FullPageLoader";
 
 import { useState } from "react";
 import { createClass, getClasses } from "./actions";
@@ -83,6 +84,7 @@ export default function ClassClient({
   };
   return (
     <div className="space-y-6">
+      {loading && <FullPageLoader />}
       {/* Create */}
       {profile.role === "admin" && (
         <div className="border rounded-lg p-4 bg-gray-50 max-w-xl">

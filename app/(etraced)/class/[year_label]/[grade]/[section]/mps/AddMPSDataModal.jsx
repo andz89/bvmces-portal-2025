@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { createMPSData } from "./actions";
 import { createOrUpdateMPSData } from "./actions";
+import FullPageLoader from "../../../../../../components/loader/FullPageLoader";
 
 export default function AddMPSDataModal({
   section,
@@ -27,8 +28,9 @@ export default function AddMPSDataModal({
       onClose?.();
     } catch (err) {
       alert(err.message);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   const inputClass = "w-full border px-3 py-2 rounded";
@@ -49,7 +51,15 @@ export default function AddMPSDataModal({
           <div className="bg-white p-6 rounded w-[500px] space-y-4 max-h-[90vh] overflow-y-auto">
             <h2 className="text-lg font-semibold">Add Class</h2>
 
-            <form action={handleSubmit} className="space-y-3">
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.currentTarget);
+                await handleSubmit(formData);
+              }}
+              className="space-y-3"
+            >
+              {loading && <FullPageLoader />}
               <input type="hidden" name="classID" value={classID} />
               <input type="hidden" name="year_label" value={year_label} />
 

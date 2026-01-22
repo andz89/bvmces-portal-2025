@@ -39,7 +39,7 @@ export async function createOrUpdateEnrollment(formData, year_label, section) {
     .select("id")
     .eq("class_id", class_id)
     .eq("month", month);
-  console.log("check", duplicateQuery);
+
   // Exclude self when updating
   if (id) {
     duplicateQuery = duplicateQuery.neq("id", id);
@@ -62,7 +62,6 @@ export async function createOrUpdateEnrollment(formData, year_label, section) {
     girls,
     month,
   });
-  console.log(error);
 
   if (error) throw error;
   revalidatePath(`/class/${year_label}/${section}/${class_id}`);
@@ -73,7 +72,7 @@ export async function deleteEnrollment(id, year_label, section, class_id) {
   const supabase = await createClient();
 
   const { error } = await supabase.from("enrollment").delete().eq("id", id);
-  console.log(error);
+
   if (error) {
     throw new Error("Failed to delete enrollment data");
   }

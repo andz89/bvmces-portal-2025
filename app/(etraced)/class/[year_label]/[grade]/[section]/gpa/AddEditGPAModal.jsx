@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createOrUpdateGPA } from "./actions";
+import FullPageLoader from "../../../../../../components/loader/FullPageLoader";
 
 export default function AddEditGPAModal({
   year_label,
@@ -24,14 +25,14 @@ export default function AddEditGPAModal({
       onClose();
     } catch (err) {
       alert(err.message);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
 
   if (!open) return null;
 
-  const input = "w-full border px-2 py-1 rounded bg-white focus:outline-none";
+  const input = "w-full border px-2 py-2 rounded bg-white focus:outline-none";
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -40,18 +41,26 @@ export default function AddEditGPAModal({
           {isEdit ? "Edit GPA" : "Add GPA"}
         </h2>
 
-        <form action={handleSubmit} className="space-y-3">
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+            await handleSubmit(formData);
+          }}
+          className="space-y-3"
+        >
+          {loading && <FullPageLoader />}
           {isEdit && <input type="hidden" name="id" value={editingData.id} />}
 
-          <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium">Subject</label>
+          <div className="flex flex-col gap-1 ">
+            <label className="text-xs font-medium ">Subject</label>
             <select
               name="subject"
               defaultValue={editingData?.subject || ""}
               required
-              className={input}
+              className={`${input}  `}
             >
-              <option value="" disabled>
+              <option className="" value="" disabled>
                 Select subject
               </option>
 

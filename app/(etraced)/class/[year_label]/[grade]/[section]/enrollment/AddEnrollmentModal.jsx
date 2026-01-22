@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { createOrUpdateEnrollment } from "./actions";
+import FullPageLoader from "../../../../../../components/loader/FullPageLoader";
 
 export default function AddEnrollmentModal({
   section,
@@ -66,7 +67,16 @@ export default function AddEnrollmentModal({
               {editingData ? "Edit Enrollment" : "Add Enrollment"}
             </h2>
 
-            <form action={handleSubmit} className="space-y-3">
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+
+                const formData = new FormData(e.currentTarget);
+                await handleSubmit(formData);
+              }}
+              className="space-y-3"
+            >
+              {loading && <FullPageLoader />}
               <input type="hidden" name="class_id" value={class_id} />
               <input type="hidden" name="year_label" value={year_label} />
 
