@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-
+import ConfirmDeleteModal from "../../../../../../components/ConfirmDeleteModal";
 import AddMPSDataModal from "./AddMPSDataModal";
 import { deleteMPSData } from "./actions";
 import QuarterTable from "./QuarterTable";
@@ -19,23 +19,36 @@ export default function MPSClientTable({
   const [loading, setLoading] = useState(null);
   const admin = profile.role === "admin" || profile.role === "editor";
 
-  async function handleDelete(row) {
-    console.log(row);
-    const confirmed = confirm(
-      `Delete Grade ${row.class.grade} - Section ${row.class.section}?`
-    );
-    if (!confirmed) return;
-    setLoading(true);
-    setDeletingId(row.id);
-    try {
-      await deleteMPSData(row.id, classID);
-    } catch (err) {
-      alert(err.message);
-    } finally {
-      setDeletingId(null);
-      setLoading(false);
-    }
+  const [openDelete, setOpenDelete] = useState(false);
+  const [targetRow, setTargetRow] = useState(null);
+  const [deleteError, setDeleteError] = useState("");
+  function handleDeleteClick(row) {
+    setTargetRow(row);
+    setDeleteError("");
+    setOpenDelete(true);
   }
+
+  async function handleConfirmDelete(password) {
+    if (!targetRow) return;
+
+    setLoading(true);
+    setDeletingId(targetRow.id);
+    setDeleteError("");
+
+    const result = await deleteMPSData(targetRow.id, classID, password);
+
+    if (result.message === "true") {
+      setOpenDelete(false);
+    } else if (result.message === "invalid_password") {
+      setDeleteError("Invalid password. Please try again.");
+    } else {
+      setDeleteError("Failed to delete MPS data.");
+    }
+
+    setDeletingId(null);
+    setLoading(false);
+  }
+
   const SUBJECT_KEYS = [
     "gmrc",
     "epp",
@@ -93,37 +106,27 @@ export default function MPSClientTable({
         cell: ({ row }) => (
           <div className={`space-x-2  ${!admin && "hidden"}`}>
             <button
-              disabled={
-                profile.role === "admin"
-                  ? false
-                  : profile.grade === row.original.grade_level
-                  ? false
-                  : true
-              }
+              disabled={profile.role !== "admin" && profile.role !== "editor"}
               onClick={() => setEditingRow(row.original)}
-              className={`px-2 py-1 text-xs rounded bg-blue-100 text-blue-700 hover:bg-blue-200 ${
-                profile.role === "admin"
-                  ? ""
-                  : profile.grade !== row.original.grade_level
-                  ? "bg-gray-100 text-gray-400 hover:bg-gray-100 cursor-not-allowed"
-                  : ""
+              className={`px-2 py-1 text-xs rounded  ${
+                profile.role !== "admin" && profile.role !== "editor"
+                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                  : "bg-blue-100 text-blue-700 hover:bg-blue-200"
               }`}
             >
               Edit
             </button>
             <button
               disabled={profile.role == "admin" ? false : true}
-              onClick={() => handleDelete(row.original)}
+              onClick={() => handleDeleteClick(row.original)}
               // disabled={deletingId === row.original.id}
               className={`px-2 py-1 text-xs rounded bg-red-100 text-red-700 hover:bg-red-200 disabled:opacity-50 ${
-                profile.role == "admin"
-                  ? false
-                  : true
-                  ? "bg-gray-100 text-gray-400 hover:bg-gray-100 cursor-not-allowed"
-                  : ""
+                profile.role !== "admin"
+                  ? "hidden"
+                  : "bg-red-100 text-red-700 hover:bg-red-200 "
               }`}
             >
-              {deletingId === row.original.id ? "Deleting" : "Delete"}
+              "Delete"
               {loading && <FullPageLoader />}
             </button>
           </div>
@@ -158,47 +161,21 @@ export default function MPSClientTable({
     return grouped;
   }, [mpsData]);
 
-  // () => [
-  //   {
-  //     accessorKey: "grade_level",
-  //     header: "Grade",
-  //     cell: ({ getValue }) => getValue().toUpperCase(),
-  //   },
-  //   {
-  //     accessorKey: "section",
-  //     header: "Section",
-  //     // cell: ({ getValue }) => getValue().toUpperCase(),
-  //   },
-
-  //   { accessorKey: "gmrc", header: "GMRC" },
-  //   { accessorKey: "epp", header: "EPP" },
-  //   { accessorKey: "filipino", header: "Fil" },
-  //   { accessorKey: "english", header: "Eng" },
-  //   { accessorKey: "math", header: "Math" },
-  //   { accessorKey: "science", header: "Sci" },
-  //   { accessorKey: "ap", header: "AP" },
-  //   { accessorKey: "mapeh", header: "MAPEH" },
-  //   { accessorKey: "reading_literacy", header: "Reading" },
-
-  //   {
-  //     header: "Total",
-  //     cell: ({ row }) => {
-  //       const values = SUBJECT_KEYS.map((key) =>
-  //         Number(row.original[key])
-  //       ).filter((v) => !isNaN(v));
-
-  //       if (!values.length) return "-";
-
-  //       return (values.reduce((sum, v) => sum + v, 0) / values.length).toFixed(
-  //         2
-  //       );
-  //     },
-  //   },
-  // ],
-  //   [];
-
   return (
     <>
+      <ConfirmDeleteModal
+        open={openDelete}
+        onClose={() => setOpenDelete(false)}
+        onConfirm={handleConfirmDelete}
+        loading={loading}
+        error={deleteError}
+        description={
+          targetRow
+            ? `Delete MPS data for Grade ${targetRow.class.grade} – Section ${targetRow.class.section}?`
+            : ""
+        }
+      />
+
       <AddMPSDataModal
         section={section}
         grade={grade}
@@ -208,7 +185,7 @@ export default function MPSClientTable({
         editingData={editingRow}
         onClose={() => setEditingRow(null)}
       />
-      <div className=" bg-slate-100   p-2 ">
+      <div className="    p-2 ">
         <div>MPS</div>
         {Object.entries(dataByQuarter).map(([quarter, data]) => (
           <QuarterTable

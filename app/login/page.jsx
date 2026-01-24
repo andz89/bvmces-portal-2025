@@ -1,12 +1,19 @@
-import { React } from "react";
 import LoginUserForm from "./LoginUserForm";
+import { redirect } from "next/navigation";
 
-const signin = async () => {
-  return (
-    <>
-      <LoginUserForm />
-    </>
-  );
+import { createClient } from "../../utils/supabase/server";
+
+const SignIn = async () => {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    redirect("/");
+  }
+
+  return <LoginUserForm />;
 };
 
-export default signin;
+export default SignIn;

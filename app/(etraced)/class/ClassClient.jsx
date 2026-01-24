@@ -2,7 +2,7 @@
 import { deleteClass } from "./actions";
 import { FaTrash } from "react-icons/fa";
 import FullPageLoader from "../../components/loader/FullPageLoader";
-
+import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
 import { useState } from "react";
 import { createClass, getClasses } from "./actions";
 
@@ -14,6 +14,11 @@ export default function ClassClient({
   year_label,
   initialData,
 }) {
+  const [openDelete, setOpenDelete] = useState(false);
+  const [targetId, setTargetId] = useState(null);
+  const [deleteError, setDeleteError] = useState("");
+  const [targetClass, setTargetClass] = useState(null);
+
   const [classes, setClasses] = useState(initialData);
   const [grade, setGrade] = useState("");
   const [section, setSection] = useState("");
@@ -24,6 +29,7 @@ export default function ClassClient({
 
     setClasses(data);
   };
+
   const handleCreate = async () => {
     if (!grade || !section) return;
 
@@ -50,24 +56,29 @@ export default function ClassClient({
       setLoading(false);
     }
   };
-  const handleDelete = async (e, classId) => {
-    e.preventDefault(); // stop Link navigation
+  const handleDeleteClick = (e, classItem) => {
+    e.preventDefault();
     e.stopPropagation();
+    setTargetClass(classItem); // 🔑 THIS WAS MISSING
+    setDeleteError("");
+    setOpenDelete(true);
+  };
 
-    const confirmDelete = confirm(
-      "Delete this class? This will remove all related records."
-    );
-
-    if (!confirmDelete) return;
+  const handleConfirmDelete = async (password) => {
+    if (!targetClass) return;
 
     setLoading(true);
+    setDeleteError("");
 
-    const result = await deleteClass(classId);
+    const result = await deleteClass(targetClass.id, password);
 
     if (result.message === "true") {
       await refresh();
+      setOpenDelete(false);
+    } else if (result.message === "invalid_password") {
+      setDeleteError("Invalid password. Please try again.");
     } else {
-      alert("Failed to delete class.");
+      setDeleteError("Failed to delete class. Please try again.");
     }
 
     setLoading(false);
@@ -82,8 +93,22 @@ export default function ClassClient({
     5: 5,
     6: 6,
   };
+
   return (
     <div className="space-y-6">
+      <ConfirmDeleteModal
+        open={openDelete}
+        onClose={() => setOpenDelete(false)}
+        onConfirm={handleConfirmDelete}
+        loading={loading}
+        error={deleteError}
+        description={
+          targetClass
+            ? `Delete ${targetClass.grade.toUpperCase()} – Section ${targetClass.section.toUpperCase()}? This will permanently remove the class and all related records.`
+            : ""
+        }
+      />
+
       {loading && <FullPageLoader />}
       {/* Create */}
       {profile.role === "admin" && (
@@ -153,9 +178,8 @@ export default function ClassClient({
                 {/* Delete (admin only) */}
                 {profile.role === "admin" && (
                   <button
-                    onClick={(e) => handleDelete(e, c.id)}
+                    onClick={(e) => handleDeleteClick(e, c)}
                     className="absolute top-2 right-2 text-gray-600 hover:text-red-700"
-                    title="Delete class"
                   >
                     <FaTrash size={18} />
                   </button>
@@ -166,7 +190,7 @@ export default function ClassClient({
                     {c.grade.toUpperCase()} – {c.section.toUpperCase()}
                   </h3>
                   <p className="text-sm text-gray-500 mt-1">
-                    Boys: 14 Girls: 16
+                    Boys:{c.enrollment[0]?.boys} Girls: {c.enrollment[0]?.girls}
                   </p>
                 </div>
               </div>

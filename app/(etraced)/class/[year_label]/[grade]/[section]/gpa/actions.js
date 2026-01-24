@@ -82,10 +82,65 @@ export async function createOrUpdateGPA(
 /* -----------------------------
    DELETE GPA
 ----------------------------- */
-export async function deleteGPA(id, class_id, year_label, section) {
+export async function deleteGPA(id, class_id, year_label, section, password) {
+  if (password !== process.env.DELETE_PASSWORD) {
+    return { message: "invalid_password" };
+  }
+
   const supabase = await createClient();
 
   const { error } = await supabase.from("gpa").delete().eq("id", id);
+
+  if (error) {
+    console.error("Delete GPA error:", error);
+    return { message: "error" };
+  }
+
+  revalidatePath(`/class/${year_label}/${section}/${class_id}`);
+
+  return { message: "true" };
+}
+
+export async function createBulkGPA({
+  class_id,
+  year_label,
+  section,
+  subjects,
+  quarters,
+  baseValues,
+}) {
+  const supabase = await createClient();
+
+  // Build rows to insert
+  const rows = [];
+
+  for (const subject of subjects) {
+    for (const quarter of quarters) {
+      // Check duplicate per subject + quarter
+      const { data: existing } = await supabase
+        .from("gpa")
+        .select("id")
+        .eq("class_id", class_id)
+        .eq("subject", subject)
+        .eq("quarter", quarter)
+        .maybeSingle();
+
+      if (!existing) {
+        rows.push({
+          class_id,
+          subject,
+          quarter,
+          ...baseValues,
+        });
+      }
+    }
+  }
+
+  if (!rows.length) {
+    throw new Error("All selected subjects and quarters already exist.");
+  }
+
+  const { error } = await supabase.from("gpa").insert(rows);
 
   if (error) {
     throw new Error(error.message);
@@ -93,5 +148,5 @@ export async function deleteGPA(id, class_id, year_label, section) {
 
   revalidatePath(`/class/${year_label}/${section}/${class_id}`);
 
-  return { success: true };
+  return { success: true, inserted: rows.length };
 }

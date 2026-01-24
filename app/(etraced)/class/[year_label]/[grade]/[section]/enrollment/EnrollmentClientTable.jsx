@@ -88,12 +88,12 @@ export default function EnrollmentClientTable({
       cell: ({ row }) => (
         <div className={`space-x-2 ${!admin && "hidden"}`}>
           <button
-            disabled={profile.role !== "admin"}
+            disabled={profile.role !== "admin" && profile.role !== "editor"}
             onClick={() => setEditingRow(row.original)}
             className={`px-2 py-1 text-xs rounded bg-blue-100 text-blue-700 hover:bg-blue-200 ${
-              profile.role !== "admin"
+              profile.role !== "admin" && profile.role !== "editor"
                 ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                : ""
+                : "bg-blue-100 text-blue-700 hover:bg-blue-200"
             }`}
           >
             Edit
@@ -104,8 +104,8 @@ export default function EnrollmentClientTable({
             onClick={() => handleDelete(row.original)}
             className={` w-[70px] px-2 py-1 text-xs rounded bg-red-100 text-red-700 hover:bg-red-200 ${
               profile.role !== "admin"
-                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                : ""
+                ? "hidden"
+                : "bg-red-100 text-red-700 hover:bg-red-200 "
             }`}
           >
             {deletingId === row.original.id ? "Deleting " : "Delete"}
@@ -128,7 +128,7 @@ export default function EnrollmentClientTable({
         onClose={() => setEditingRow(null)}
       />
 
-      <div className="bg-slate-100 p-2">
+      <div className=" p-2">
         <QuarterTable
           title="Enrollment"
           data={sortedEnrollmentData}

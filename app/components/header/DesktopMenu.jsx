@@ -55,13 +55,13 @@ export default async function DesktopMenu() {
               GPA
             </Link>
             <Link
-              href="etraced/diagnostic"
+              href="/ "
               className="block px-4 py-2 text-sm hover:bg-gray-100"
             >
               Diagnostic
             </Link>
             <Link
-              href="etraced/rma"
+              href=" "
               className="block px-4 py-2 text-sm hover:bg-gray-100"
             >
               RMA
@@ -69,17 +69,11 @@ export default async function DesktopMenu() {
           </div>
         </div>
 
-        <Link
-          href="/resilience-well-being"
-          className="text-gray-700 hover:text-blue-700"
-        >
+        <Link href="/" className="text-gray-700 hover:text-blue-700">
           Resiliency & Well-being
         </Link>
 
-        <Link
-          href="/enabling-mechanism"
-          className="text-gray-700 hover:text-blue-700"
-        >
+        <Link href="/ " className="text-gray-700 hover:text-blue-700">
           Enabling Mechanism
         </Link>
         {/* ✅ Admin-only menu item */}

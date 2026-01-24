@@ -99,15 +99,21 @@ export async function createOrUpdateMPSData(
 
   return { success: true };
 }
-export async function deleteMPSData(id, mps_description_id) {
+
+export async function deleteMPSData(id, mps_description_id, password) {
+  if (password !== process.env.DELETE_PASSWORD) {
+    return { message: "invalid_password" };
+  }
+
   const supabase = await createClient();
 
   const { error } = await supabase.from("mps").delete().eq("id", id);
 
   if (error) {
     console.error("Delete MPS error:", error);
-    throw new Error("Failed to delete MPS data");
+    return { message: "error" };
   }
 
   revalidatePath(`/admin/mps/${mps_description_id}`);
+  return { message: "true" };
 }

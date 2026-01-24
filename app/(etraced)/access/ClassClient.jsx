@@ -158,7 +158,7 @@ export default function ClassClient({
             {/* Table */}
             <div className="overflow-x-auto">
               <table className="min-w-full border-collapse text-sm bg-white">
-                <thead className="bg-slate-800 text-white">
+                <thead className="bg-slate-200 text-slate-800">
                   <tr>
                     <th className="border border-slate-600 px-4 py-2 text-left">
                       SECTION

@@ -70,7 +70,7 @@ export default function AddEditGPAModal({
               <option value="english">ENGLISH</option>
               <option value="math">MATH</option>
               <option value="science">SCIENCE</option>
-              <option value="ap">ARALING PANLIPUNA</option>
+              <option value="ap">ARALING PANLIPUNAN</option>
               <option value="mapeh">MAPEH</option>
               <option value="reading">READING</option>
             </select>
