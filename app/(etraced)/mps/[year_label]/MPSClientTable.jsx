@@ -43,6 +43,7 @@ export default function MPSClientTable({ profile, mpsData }) {
 
     {
       header: "Total",
+
       cell: ({ row }) => {
         const values = SUBJECT_KEYS.map((key) =>
           Number(row.original[key])
