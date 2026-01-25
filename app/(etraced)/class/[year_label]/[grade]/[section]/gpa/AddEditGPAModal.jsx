@@ -65,7 +65,7 @@ export default function AddEditGPAModal({
               </option>
 
               <option value="gmrc">GMRC</option>
-              <option value="epp">EPP/MTB</option>
+              <option value="epp/mtb">EPP/MTB</option>
               <option value="filipino">FILIPINO</option>
               <option value="english">ENGLISH</option>
               <option value="math">MATH</option>
