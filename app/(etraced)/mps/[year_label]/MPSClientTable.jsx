@@ -32,7 +32,7 @@ export default function MPSClientTable({ profile, mpsData }) {
     },
 
     { accessorKey: "gmrc", header: "GMRC" },
-    { accessorKey: "epp", header: "EPP" },
+    { accessorKey: "epp", header: "EPP/MTB" },
     { accessorKey: "filipino", header: "Fil" },
     { accessorKey: "english", header: "Eng" },
     { accessorKey: "math", header: "Math" },
@@ -189,7 +189,7 @@ export default function MPSClientTable({ profile, mpsData }) {
     },
 
     { accessorKey: "gmrc", header: "GMRC" },
-    { accessorKey: "epp", header: "EPP" },
+    { accessorKey: "epp", header: "EPP/MTB" },
     { accessorKey: "filipino", header: "Fil" },
     { accessorKey: "english", header: "Eng" },
     { accessorKey: "math", header: "Math" },

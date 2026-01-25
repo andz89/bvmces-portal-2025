@@ -51,7 +51,7 @@ export default function MPSClientTable({
 
   const SUBJECT_KEYS = [
     "gmrc",
-    "epp",
+    "epp ",
     "filipino",
     "english",
     "math",
@@ -64,7 +64,7 @@ export default function MPSClientTable({
   const columns = useMemo(
     () => [
       { accessorKey: "gmrc", header: "GMRC" },
-      { accessorKey: "epp", header: "EPP" },
+      { accessorKey: "epp", header: "EPP/MTB" },
       { accessorKey: "filipino", header: "Fil" },
       { accessorKey: "english", header: "Eng" },
       { accessorKey: "math", header: "Math" },
