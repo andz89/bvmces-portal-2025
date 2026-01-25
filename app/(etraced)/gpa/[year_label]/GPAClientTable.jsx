@@ -4,9 +4,20 @@ import { useMemo } from "react";
 import QuarterTable from "./QuarterTable";
 import { useMPSColumns } from "./useMPSColumns";
 import Link from "next/link";
+import * as XLSX from "xlsx";
 
 export default function PublicGPAClientTable({ data, classPath }) {
   const columns = useMPSColumns();
+  const groupByGrade = (rows) => {
+    return rows.reduce((acc, row) => {
+      const grade = row.class.grade;
+
+      if (!acc[grade]) acc[grade] = [];
+      acc[grade].push(row);
+
+      return acc;
+    }, {});
+  };
 
   // ✅ GROUP DATA BY QUARTER
   const dataByQuarter = useMemo(() => {
@@ -24,11 +35,10 @@ export default function PublicGPAClientTable({ data, classPath }) {
       const quarter = item.quarter;
       if (!quarters[quarter]) return;
 
-      const gradeKey = item.class.grade;
+      const key = `${item.class.grade}-${item.subject}`;
 
-      // Initialize grade bucket if missing
-      if (!quarters[quarter][gradeKey]) {
-        quarters[quarter][gradeKey] = {
+      if (!quarters[quarter][key]) {
+        quarters[quarter][key] = {
           quarter,
           subject: item.subject,
           class: item.class,
@@ -46,9 +56,8 @@ export default function PublicGPAClientTable({ data, classPath }) {
         };
       }
 
-      const target = quarters[quarter][gradeKey];
+      const target = quarters[quarter][key];
 
-      // ✅ SUM ALL VALUES
       target.not_meet_male += item.not_meet_male || 0;
       target.not_meet_female += item.not_meet_female || 0;
 
@@ -95,18 +104,29 @@ export default function PublicGPAClientTable({ data, classPath }) {
           Go to Class
         </Link>
       </div>
+      {QUARTERS.map((q) => {
+        const quarterData = dataByQuarter[q];
+        if (!quarterData || quarterData.length === 0) return null;
 
-      {QUARTERS.map(
-        (q) =>
-          dataByQuarter[q]?.length > 0 && (
-            <QuarterTable
-              key={q}
-              title={q.toUpperCase()}
-              data={dataByQuarter[q]}
-              columns={columns}
-            />
-          )
-      )}
+        const byGrade = groupByGrade(quarterData);
+
+        return (
+          <div key={q} className="space-y-6">
+            <h2 className="text-base font-bold text-gray-800">
+              {q.toUpperCase()}
+            </h2>
+
+            {Object.entries(byGrade).map(([grade, rows]) => (
+              <QuarterTable
+                key={`${q}-${grade}`}
+                title={grade.toLocaleUpperCase().replace("-", " ")}
+                data={rows}
+                columns={columns}
+              />
+            ))}
+          </div>
+        );
+      })}
     </div>
   );
 }

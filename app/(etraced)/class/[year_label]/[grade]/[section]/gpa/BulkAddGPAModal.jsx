@@ -6,7 +6,7 @@ import FullPageLoader from "../../../../../../components/loader/FullPageLoader";
 
 const SUBJECTS = [
   "gmrc",
-  "epp",
+  "epp/MTB",
   "filipino",
   "english",
   "math",

@@ -28,6 +28,7 @@ export default function EnrollmentClientTable({
     "march",
     "april",
   ];
+
   const sortedEnrollmentData = useMemo(() => {
     if (!enrollmentData) return [];
 
@@ -42,6 +43,7 @@ export default function EnrollmentClientTable({
   const [editingRow, setEditingRow] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
   const [loading, setLoading] = useState(false);
+
   const admin = profile.role === "admin" || profile.role === "editor";
 
   async function handleDelete(row) {
@@ -84,7 +86,8 @@ export default function EnrollmentClientTable({
       },
     },
     {
-      header: admin ? "Action" : "",
+      id: "action",
+      header: "Action",
       cell: ({ row }) => (
         <div className={`space-x-2 ${!admin && "hidden"}`}>
           <button
@@ -114,10 +117,11 @@ export default function EnrollmentClientTable({
       ),
     },
   ]);
-
+  console.log(columns);
   return (
     <>
       {loading && <FullPageLoader />}
+
       <AddEnrollmentModal
         section={section}
         grade={grade}

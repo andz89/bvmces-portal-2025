@@ -29,7 +29,7 @@ export default async function Page({ searchParams }) {
     <div className="p-6 space-y-6 h-screen">
       <div className="flex items-center gap-5  ">
         <h1 className="text-xl font-semibold">
-          {profile.role !== "admin"
+          {profile.role === "editor"
             ? `${classes[0].grade.toUpperCase().replace("-", " ")}   CLASSES`
             : "Classes for School Year"}
         </h1>

@@ -4,11 +4,6 @@ export function useMPSColumns() {
   return useMemo(
     () => [
       {
-        accessorKey: "class.grade",
-        header: "GRADE",
-        cell: ({ getValue }) => getValue().toUpperCase(),
-      },
-      {
         accessorKey: "subject",
         header: "SUBJECTS",
         cell: ({ getValue }) => getValue().toUpperCase(),

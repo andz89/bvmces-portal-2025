@@ -16,7 +16,7 @@ export async function getSchoolYear(year_label) {
 
 export async function getClasses(school_year_id, profile) {
   const supabase = await createClient();
-  if (profile.role === "admin") {
+  if (profile.role === "admin" || profile.role === "visitor") {
     const { data, error } = await supabase
       .from("class")
       .select("*,enrollment (*)")

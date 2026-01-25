@@ -170,7 +170,7 @@ export default function ClassClient({
             <Link
               href={{
                 pathname: `/class/${year_label}/${c.grade}/${c.section.trim()}`,
-                query: { id: c.id },
+                query: { id: c.id }, //class id
               }}
               key={c.id}
             >

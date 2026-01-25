@@ -101,8 +101,8 @@ export default function MPSClientTable({ profile, mpsData }) {
       "3rd quarter": [],
       "4th quarter": [],
     };
+
     const getGradeNumber = (grade) => Number(grade.replace(/[^0-9]/g, ""));
-    const getKey = (row) => row.grade; // ✅ ONLY grade
 
     Object.keys(result).forEach((quarter) => {
       const map = {};
@@ -110,46 +110,72 @@ export default function MPSClientTable({ profile, mpsData }) {
       mpsData
         .filter((row) => row.quarter === quarter)
         .forEach((row) => {
-          const key = getKey(row);
+          const gradeKey = row.class.grade; // ✅ FIXED
 
-          if (!map[key]) {
-            map[key] = {
-              grade: row.class.grade,
-              quarter,
+          if (!map[gradeKey]) {
+            map[gradeKey] = {
+              grade: gradeKey,
               counts: {},
             };
 
             SUBJECT_KEYS.forEach((subj) => {
-              map[key][subj] = 0;
-              map[key].counts[subj] = 0;
+              map[gradeKey][subj] = 0;
+              map[gradeKey].counts[subj] = 0;
             });
           }
 
           SUBJECT_KEYS.forEach((subj) => {
             const value = Number(row[subj]);
-
             if (!isNaN(value) && value > 0) {
-              map[key][subj] += value; // sum GMRC, EPP, etc.
-              map[key].counts[subj] += 1;
+              map[gradeKey][subj] += value;
+              map[gradeKey].counts[subj] += 1;
             }
           });
         });
 
-      result[quarter] = Object.values(map).map((item) => {
-        SUBJECT_KEYS.forEach((subj) => {
-          item[subj] =
-            item.counts[subj] > 0
-              ? (item[subj] / item.counts[subj]).toFixed(2) // average
-              : "-";
-        });
-
-        delete item.counts;
-        return item;
+      result[quarter] = Object.values(map)
+        .map((item) => {
+          SUBJECT_KEYS.forEach((subj) => {
+            item[subj] =
+              item.counts[subj] > 0
+                ? (item[subj] / item.counts[subj]).toFixed(2)
+                : "-";
+          });
+          delete item.counts;
+          return item;
+        })
+        .sort(
+          (a, b) => getGradeNumber(a.grade) - getGradeNumber(b.grade) // ✅ FIXED
+        );
+      // 👉 OVERALL AVERAGE ROW
+      const totals = {};
+      SUBJECT_KEYS.forEach((subj) => {
+        totals[subj] = { sum: 0, count: 0 };
       });
 
-      result[quarter].sort(
-        (a, b) => getGradeNumber(a.class.grade) - getGradeNumber(b.class.grade)
-      );
+      result[quarter].forEach((row) => {
+        SUBJECT_KEYS.forEach((subj) => {
+          const val = Number(row[subj]);
+          if (!isNaN(val)) {
+            totals[subj].sum += val;
+            totals[subj].count += 1;
+          }
+        });
+      });
+
+      const overallRow = {
+        grade: "OVERALL AVERAGE",
+      };
+
+      SUBJECT_KEYS.forEach((subj) => {
+        overallRow[subj] =
+          totals[subj].count > 0
+            ? (totals[subj].sum / totals[subj].count).toFixed(2)
+            : "-";
+      });
+
+      // push at bottom
+      result[quarter].push(overallRow);
     });
 
     return result;
