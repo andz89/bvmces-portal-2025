@@ -25,18 +25,18 @@ export default async function DesktopMenu() {
   if (!user) return null;
 
   return (
-    <>
-      <div className="hidden  md:flex    gap-8  justify-left   w-full">
-        <Link href="/access" className="text-gray-700 hover:text-blue-700">
+    <div className="flex item-center gap-2">
+      <div className="hidden  md:flex   gap-8  justify-center   w-full">
+        <Link href="/access" className="text-gray-700 hover:text-blue-700 p-3">
           Access
         </Link>
 
-        <Link href="/equity" className="text-gray-700 hover:text-blue-700">
+        <Link href="/equity" className="text-gray-700 hover:text-blue-700 p-3">
           Equity
         </Link>
 
         {/* Quality Dropdown */}
-        <div className="relative group">
+        <div className="relative group p-3">
           <span className="cursor-pointer text-gray-700 hover:text-blue-700">
             Quality
           </span>
@@ -69,17 +69,17 @@ export default async function DesktopMenu() {
           </div>
         </div>
 
-        <Link href="/" className="text-gray-700 hover:text-blue-700">
+        <Link href="/" className="text-gray-700 hover:text-blue-700 p-3">
           Resiliency & Well-being
         </Link>
 
-        <Link href="/ " className="text-gray-700 hover:text-blue-700">
+        <Link href="/ " className="text-gray-700 hover:text-blue-700 p-3">
           Enabling Mechanism
         </Link>
         {/* ✅ Admin-only menu item */}
       </div>
 
-      <div className="hidden md:flex items-center gap-4">
+      <div className="hidden md:flex items-center gap-2">
         <Link href="/class" className="text-blue-600  p-3  ">
           Class
         </Link>
@@ -99,6 +99,6 @@ export default async function DesktopMenu() {
           </button>
         </form>
       </div>
-    </>
+    </div>
   );
 }

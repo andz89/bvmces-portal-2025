@@ -10,7 +10,7 @@ import Link from "next/link";
 
 export default function ClassClient({
   school_year_id,
-  role,
+  profile,
   year_label,
   initialData,
 }) {
@@ -25,7 +25,7 @@ export default function ClassClient({
 
   const [loading, setLoading] = useState(false);
   const refresh = async () => {
-    const data = await getClasses(school_year_id, role);
+    const data = await getClasses(school_year_id, profile);
 
     setClasses(data);
   };
@@ -111,7 +111,7 @@ export default function ClassClient({
 
       {loading && <FullPageLoader />}
       {/* Create */}
-      {role === "admin" && (
+      {profile.role === "admin" && (
         <div className="border rounded-lg p-4 bg-gray-50 max-w-xl">
           <div className="grid grid-cols-3 gap-4 items-end">
             {/* Grade */}
@@ -176,7 +176,7 @@ export default function ClassClient({
             >
               <div className="relative border border-gray-400 rounded-lg bg-white shadow-sm hover:shadow-md transition">
                 {/* Delete (admin only) */}
-                {role === "admin" && (
+                {profile.role === "admin" && (
                   <button
                     onClick={(e) => handleDeleteClick(e, c)}
                     className="absolute top-2 right-2 text-gray-600 hover:text-red-700"

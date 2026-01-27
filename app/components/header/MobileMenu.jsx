@@ -31,7 +31,7 @@ export default function MobileMenu({ isAdmin }) {
       {open && (
         <div
           className="absolute left-0 right-0 top-full z-50
-                 bg-white border border-neutral-200 shadow-sm"
+                 bg-white border border-neutral-200 shadow-sm "
         >
           <div className="mx-auto   px-4">
             <nav className="flex flex-col divide-y divide-neutral-200 text-sm">
