@@ -16,31 +16,37 @@ export async function getSchoolYear(year_label) {
 
 export async function getClasses(school_year_id, profile) {
   const supabase = await createClient();
+
+  // Admin & visitor → all classes
   if (profile.role === "admin" || profile.role === "visitor") {
     const { data, error } = await supabase
       .from("class")
-      .select("*,enrollment (*)")
+      .select("*, enrollment (*)")
       .eq("school_year_id", school_year_id)
-
       .order("grade", { ascending: true })
       .order("section", { ascending: true });
-    if (error) throw error;
 
+    if (error) throw error;
     return data;
-  } else {
+  }
+
+  // Editor → filtered by grade
+  if (profile.role === "editor") {
     const { data, error } = await supabase
       .from("class")
-      .select("*,enrollment (*)")
+      .select("*, enrollment (*)")
       .eq("school_year_id", school_year_id)
       .eq("grade", profile.grade)
       .order("grade", { ascending: true })
       .order("section", { ascending: true });
-    if (error) throw error;
 
+    if (error) throw error;
     return data;
   }
-}
 
+  // Fallback (important)
+  return [];
+}
 export async function createClass({ school_year_id, grade, section }) {
   const supabase = await createClient();
 
@@ -74,13 +80,13 @@ export async function deleteClass(classId, password) {
 }
 export async function createSchoolYear(yearLabel) {
   const supabase = await createClient();
-  console.log("================", yearLabel);
+
   if (!yearLabel?.trim()) return;
 
   const { error } = await supabase
     .from("school_year")
     .insert({ year_label: yearLabel });
-  console.log(error);
+
   if (error) throw error;
 }
 export async function getAllSchoolYears() {

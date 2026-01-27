@@ -3,8 +3,41 @@
 import { createClient } from "../../../utils/supabase/server";
 import { supabaseAdmin } from "../../../utils/supabase/admin";
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
+
+const baseString = z.string().trim().min(1, "Required");
+
+const optionalString = z.string().trim().optional().or(z.literal(""));
+
+const optionalEmail = optionalString.transform((v) =>
+  typeof v === "string" ? v.toLowerCase() : v
+);
+
+const createUserSchema = z.object({
+  email: baseString.transform((v) => v.toLowerCase()),
+  password: baseString,
+  fullName: baseString,
+  role: baseString,
+  grade: optionalString,
+});
+
+const updateUserSchema = z.object({
+  email: optionalEmail,
+  password: optionalString,
+  fullName: optionalString,
+  role: optionalString,
+  grade: optionalString,
+});
 
 export async function createUser(form) {
+  const parsed = createUserSchema.safeParse(form);
+
+  if (!parsed.success) {
+    return { error: parsed.error.errors[0].message };
+  }
+
+  form = parsed.data;
+
   const supabase = await createClient();
 
   /* -------------------------------------------------
@@ -83,6 +116,14 @@ export async function createUser(form) {
   return { success: true };
 }
 export async function updateUser(id, data) {
+  const parsed = updateUserSchema.safeParse(data);
+
+  if (!parsed.success) {
+    return { error: parsed.error.errors[0].message };
+  }
+
+  data = parsed.data;
+
   const supabase = await createClient();
 
   /* -------------------------------

@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import { createClient } from "../supabase/server";
 
 export async function checkRole() {
@@ -8,15 +7,15 @@ export async function checkRole() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (user) {
-    const { data: profile, error } = await supabase
-      .from("users")
-      .select("*")
-      .eq("id", user.id)
-      .single();
+  if (!user) return null;
 
-    return profile;
-  } else {
-    redirect("/login");
-  }
+  const { data, error } = await supabase
+    .from("users") // 👈 FIX HERE
+    .select("*")
+    .eq("id", user.id)
+    .single();
+
+  if (error || !data) return null;
+
+  return data ?? null;
 }

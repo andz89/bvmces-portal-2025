@@ -1,16 +1,29 @@
-// middleware.js
 import { NextResponse } from "next/server";
 import { updateSession } from "./utils/supabase/middleware";
 
+/**
+ * Run Supabase session logic ONLY on protected routes.
+ * This prevents infinite loops on Cloudflare Pages.
+ */
 export async function middleware(request) {
-  const { response, session } = await updateSession(request);
+  const { response } = await updateSession(request);
 
-  // If updateSession already set cookies on response, return that.
-  // Otherwise return NextResponse.next()
-  return response ?? NextResponse.next();
+  // If Supabase needs to modify the response (set cookies, etc)
+  if (response) {
+    return response;
+  }
+
+  // Otherwise, pass through untouched
+  return NextResponse.next();
 }
 
+/**
+ * IMPORTANT:
+ * Only protect routes that actually require authentication.
+ * Do NOT run globally.
+ */
 export const config = {
-  matcher:
+  matcher: [
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
 };

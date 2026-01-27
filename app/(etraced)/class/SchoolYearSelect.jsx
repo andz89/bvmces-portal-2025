@@ -4,11 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useTransition, useState } from "react";
 import FullPageLoader from "../../components/loader/FullPageLoader";
 import { createSchoolYear } from "./actions";
-export default function SchoolYearSelect({
-  currentYear,
-  profile,
-  schoolYears,
-}) {
+export default function SchoolYearSelect({ currentYear, role, schoolYears }) {
   const [loading, setLoading] = useState(false);
 
   const [yearLabel, setYearLabel] = useState("");
@@ -45,9 +41,9 @@ export default function SchoolYearSelect({
     setLoading(false);
   };
   return (
-    <div className="flex    gap-2">
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-2">
       {isPending && <FullPageLoader />}
-      <div className="flex flex-col gap-1 w-[200px]">
+      <div className="flex flex-col gap-1 w-full sm:w-[200px]">
         <select
           value={currentYear}
           onChange={handleChange}
@@ -60,10 +56,10 @@ export default function SchoolYearSelect({
           ))}
         </select>
       </div>
-      {profile.role === "admin" && (
+      {role === "admin" && (
         <button
           onClick={() => setOpen(true)}
-          className="bg-blue-600 text-white px-4 py-2 rounded w-fit"
+          className="bg-blue-600 text-white px-4 py-2 rounded w-full sm:w-fit"
         >
           Create School Year
         </button>

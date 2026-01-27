@@ -78,10 +78,11 @@ export default async function DesktopMenu() {
         </Link>
         {/* ✅ Admin-only menu item */}
       </div>
-      <Link href="/class" className="text-blue-600   p-3  ">
-        Class
-      </Link>
+
       <div className="hidden md:flex items-center gap-4">
+        <Link href="/class" className="text-blue-600  p-3  ">
+          Class
+        </Link>
         {isAdmin && (
           <div>
             <Link href="/users" className="text-blue-600   p-3  ">

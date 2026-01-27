@@ -126,7 +126,7 @@ export default function MPSClientTable({
                   : "bg-red-100 text-red-700 hover:bg-red-200 "
               }`}
             >
-              "Delete"
+              Delete
               {loading && <FullPageLoader />}
             </button>
           </div>
@@ -160,6 +160,9 @@ export default function MPSClientTable({
 
     return grouped;
   }, [mpsData]);
+  const hasMPSData = Object.values(dataByQuarter).some(
+    (rows) => rows.length > 0
+  );
 
   return (
     <>
@@ -186,7 +189,8 @@ export default function MPSClientTable({
         onClose={() => setEditingRow(null)}
       />
       <div className="    p-2 ">
-        <div>MPS</div>
+        {hasMPSData && <div>MPS</div>}
+
         {Object.entries(dataByQuarter).map(([quarter, data]) => (
           <QuarterTable
             key={quarter}

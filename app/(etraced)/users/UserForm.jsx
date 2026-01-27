@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { createUser, updateUser } from "./actions";
+import FullPageLoader from "../../components/loader/FullPageLoader";
 
 export default function UserForm({ user, onClose }) {
   const isEdit = Boolean(user?.id);
@@ -59,14 +60,27 @@ export default function UserForm({ user, onClose }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 bg-white p-6 border border-neutral-200 rounded-md"
+    >
+      {loading && <FullPageLoader />}
+
+      {message && (
+        <div className="mb-2 border border-neutral-200 bg-neutral-50 px-4 py-2 text-sm text-neutral-800">
+          {message}
+        </div>
+      )}
+
       <input
         name="fullName"
         value={form.fullName}
         onChange={handleChange}
         placeholder="Full name"
         required
-        className="w-full border p-2 text-sm"
+        className="w-full border border-neutral-300 bg-white px-3 py-2 text-sm
+               text-neutral-900 placeholder-neutral-400
+               focus:outline-none focus:ring-1 focus:ring-neutral-900"
       />
 
       <input
@@ -76,7 +90,9 @@ export default function UserForm({ user, onClose }) {
         onChange={handleChange}
         placeholder="Email"
         required
-        className="w-full border p-2 text-sm"
+        className="w-full border border-neutral-300 bg-white px-3 py-2 text-sm
+               text-neutral-900 placeholder-neutral-400
+               focus:outline-none focus:ring-1 focus:ring-neutral-900"
       />
 
       <input
@@ -86,14 +102,17 @@ export default function UserForm({ user, onClose }) {
         onChange={handleChange}
         placeholder={isEdit ? "New password (optional)" : "Temporary password"}
         required={!isEdit}
-        className="w-full border p-2 text-sm"
+        className="w-full border border-neutral-300 bg-white px-3 py-2 text-sm
+               text-neutral-900 placeholder-neutral-400
+               focus:outline-none focus:ring-1 focus:ring-neutral-900"
       />
 
       <select
         name="role"
         value={form.role}
         onChange={handleChange}
-        className="w-full border p-2 text-sm"
+        className="w-full border border-neutral-300 bg-white px-3 py-2 text-sm
+               text-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900"
       >
         <option value="visitor">Visitor</option>
         <option value="editor">Editor</option>
@@ -106,9 +125,11 @@ export default function UserForm({ user, onClose }) {
           value={form.grade}
           onChange={handleChange}
           required
-          className="w-full border p-2 text-sm"
+          className="w-full border border-neutral-300 bg-white px-3 py-2 text-sm
+                 text-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900"
         >
           <option value="">Select grade</option>
+          <option value="kindergarten">Kindergarten</option>
           <option value="grade-1">Grade 1</option>
           <option value="grade-2">Grade 2</option>
           <option value="grade-3">Grade 3</option>
@@ -119,15 +140,16 @@ export default function UserForm({ user, onClose }) {
         </select>
       )}
 
-      <div className="flex justify-between items-center">
+      <div className="pt-2">
         <button
           disabled={loading}
-          className="bg-indigo-600 text-white px-4 py-2 text-sm rounded"
+          className="border border-neutral-900 bg-neutral-900 text-white rounded
+                 px-4 py-2 text-sm font-medium
+                 hover:bg-neutral-800
+                 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isEdit ? "Update User" : "Create User"}
         </button>
-
-        {message && <span className="text-sm text-red-600">{message}</span>}
       </div>
     </form>
   );

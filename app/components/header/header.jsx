@@ -3,29 +3,39 @@ import { createClient } from "../../../utils/supabase/server";
 import DesktopMenu from "./DesktopMenu";
 import MobileMenu from "./MobileMenu";
 
-export default async function Navbar() {
-  // const supabase = await createClient();
-  // const { data } = await supabase.auth.getUser();
+import { checkRole } from "../../../utils/lib/checkRole";
+import Image from "next/image";
 
-  // if (!data.user) return null;
+export default async function Navbar() {
+  const profile = await checkRole();
+  const isAdmin = profile?.role == "admin";
 
   return (
     <nav className=" border-b border-gray-200 w-full">
-      <div className="  mx-auto px-4">
-        <div className="flex h-16 items-center  justify-between  w-full  ">
+      <div className="  mx-auto ">
+        <div className="flex h-18 items-center justify-between relative">
           {/* Logo */}
-          <Link
-            href="/"
-            className="text-xl font-semibold text-blue-700  w-[300px]"
-          >
-            BVMCES Portal
-          </Link>
+          <div className="flex items-center gap-3 px-1">
+            <Image
+              src="/bvmces-logo.png"
+              alt="My photo"
+              className="mx-auto"
+              width={50}
+              height={50}
+            />
+            <div className="flex flex-col">
+              <Link href="/" className="text-xl font-semibold text-neural-800 ">
+                BVMCES
+              </Link>
+              <small className="text-neutral-600">SCHOOL ID: 132289</small>
+            </div>
+          </div>
 
           {/* Desktop */}
           <DesktopMenu />
 
           {/* Mobile */}
-          <MobileMenu />
+          <MobileMenu isAdmin={isAdmin} />
         </div>
       </div>
     </nav>

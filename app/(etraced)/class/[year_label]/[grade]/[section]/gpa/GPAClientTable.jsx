@@ -123,6 +123,9 @@ export default function GPAClientTable({
   }, [data]);
 
   const QUARTERS = ["1st quarter", "2nd quarter", "3rd quarter", "4th quarter"];
+  const hasGPAData = QUARTERS.some(
+    (q) => dataByQuarter[q] && dataByQuarter[q].length > 0
+  );
 
   return (
     <div className="">
@@ -160,7 +163,7 @@ export default function GPAClientTable({
         </div>
       )}
       <div className="   p-2 space-y-4">
-        <h2 className="font-semibold">GPA</h2>
+        <h2 className="font-semibold">{hasGPAData && "GPA"}</h2>
         {QUARTERS.map(
           (q) =>
             dataByQuarter[q]?.length > 0 && (

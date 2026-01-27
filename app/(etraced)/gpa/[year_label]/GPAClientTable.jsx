@@ -90,20 +90,25 @@ export default function PublicGPAClientTable({ data, classPath }) {
 
   return (
     <div className="bg-slate-100 p-2 space-y-4">
-      <div className="flex justify-between items-center">
-        <div className="bg-yellow-400   py-2 px-3 rounded">
-          <h2 className="font-semibold">GPA</h2>
+      <div className="flex items-center justify-between gap-3">
+        <div className="inline-flex items-center border border-neutral-200 bg-neutral-50 px-3 py-1.5 rounded-md">
+          <h2 className="text-sm font-medium text-neutral-900">GPA</h2>
         </div>
 
         <Link
           target="blank"
           href={classPath}
-          className="p-2 bg-blue-300 rounded "
+          className="inline-flex items-center justify-center
+               border border-neutral-900 bg-neutral-900
+               text-white text-sm font-medium
+               px-3 py-1.5 rounded-md
+               hover:bg-neutral-800
+               whitespace-nowrap"
         >
-          {" "}
           Go to Class
         </Link>
       </div>
+
       {QUARTERS.map((q) => {
         const quarterData = dataByQuarter[q];
         if (!quarterData || quarterData.length === 0) return null;
