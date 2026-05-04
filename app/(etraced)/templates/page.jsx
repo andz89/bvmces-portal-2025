@@ -13,7 +13,7 @@ export default async function Page({ searchParams }) {
   const selectedType = searchParams?.type ?? "school";
 
   const { data: files } = await supabase
-    .from("files")
+    .from("templates")
     .select("*")
     .eq("type", selectedType)
     .order("id", { ascending: false });

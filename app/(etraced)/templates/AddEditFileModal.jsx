@@ -15,10 +15,10 @@ export default function AddEditFileModal({ file }) {
     startTransition(async () => {
       if (isEdit) {
         await updateFile(formData);
-        setMessage("File updated successfully.");
+        setMessage("Template updated successfully.");
       } else {
         await addFile(formData);
-        setMessage("File added successfully.");
+        setMessage("Template added successfully.");
       }
 
       setOpen(false);
@@ -45,14 +45,14 @@ export default function AddEditFileModal({ file }) {
             : "bg-neutral-800 text-white hover:bg-neutral-700"
         }`}
       >
-        {isEdit ? "Edit" : "+ Add File"}
+        {isEdit ? "Edit" : "+ Add Template"}
       </button>
 
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
           <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
             <h2 className="mb-4 text-lg font-semibold">
-              {isEdit ? "Edit File" : "Add File"}
+              {isEdit ? "Edit Template" : "Add Template"}
             </h2>
 
             <form action={handleSubmit} className="space-y-4">

@@ -31,7 +31,7 @@ export default function FilesClient({ profile, email, files, selectedType }) {
     <div className="mx-auto max-w-3xl px-4 py-6">
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-gray-800">Files</h1>
+        <h1 className="text-2xl font-semibold text-gray-800">Templates</h1>
         <AddEditFileModal />
       </div>
 
@@ -87,7 +87,7 @@ export default function FilesClient({ profile, email, files, selectedType }) {
                   rel="noreferrer"
                   className="text-sm font-medium text-blue-600 hover:underline"
                 >
-                  View file →
+                  View template →
                 </a>
               </div>
             </div>
@@ -98,7 +98,7 @@ export default function FilesClient({ profile, email, files, selectedType }) {
       {/* Empty state */}
       {!isPending && selectedType && files.length === 0 && (
         <div className="mt-6 rounded-md border border-dashed border-gray-300 bg-gray-50 p-6 text-center text-sm text-gray-500">
-          No files found.
+          No templates found.
         </div>
       )}
     </div>

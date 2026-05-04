@@ -3,7 +3,8 @@
 import { useState, useMemo } from "react";
 
 import QuarterTable from "./QuarterTable";
-export default function MPSClientTable({ profile, mpsData }) {
+import Link from "next/link";
+export default function MPSClientTable({ profile, mpsData, year_label }) {
   const [viewMode, setViewMode] = useState("quarter");
 
   const SUBJECT_KEYS = [
@@ -28,7 +29,19 @@ export default function MPSClientTable({ profile, mpsData }) {
     {
       accessorKey: "class.section",
       header: "Section",
-      cell: ({ getValue }) => getValue().toUpperCase(),
+      cell: ({ row }) => {
+        const { grade, section, id } = row.original.class;
+
+        return (
+          <Link
+            href={`/class/${year_label}/${grade}/${section}?id=${id}`}
+            target="blank"
+            className="uppercase text-blue-600 hover:underline"
+          >
+            {section}
+          </Link>
+        );
+      },
     },
 
     { accessorKey: "gmrc", header: "GMRC" },
@@ -59,7 +72,19 @@ export default function MPSClientTable({ profile, mpsData }) {
 
     {
       accessorKey: "link",
-      header: "Link",
+      header: "MPS Link",
+      cell: ({ getValue }) =>
+        getValue() ? (
+          <a href={getValue()} target="_blank" className="text-blue-600 ">
+            View
+          </a>
+        ) : (
+          "-"
+        ),
+    },
+    {
+      accessorKey: "llc_source",
+      header: "LLC Link",
       cell: ({ getValue }) =>
         getValue() ? (
           <a href={getValue()} target="_blank" className="text-blue-600 ">

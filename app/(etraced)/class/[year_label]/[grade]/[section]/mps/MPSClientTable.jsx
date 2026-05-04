@@ -90,7 +90,7 @@ export default function MPSClientTable({
 
       {
         accessorKey: "link",
-        header: "Link",
+        header: "MPS Link",
         cell: ({ getValue }) =>
           getValue() ? (
             <a href={getValue()} target="_blank" className="text-blue-600 ">
@@ -100,7 +100,18 @@ export default function MPSClientTable({
             "-"
           ),
       },
-
+      {
+        accessorKey: "llc_source",
+        header: "LLC Link",
+        cell: ({ getValue }) =>
+          getValue() ? (
+            <a href={getValue()} target="_blank" className="text-blue-600 ">
+              View
+            </a>
+          ) : (
+            "-"
+          ),
+      },
       {
         header: admin ? "Action" : " ",
         cell: ({ row }) => (

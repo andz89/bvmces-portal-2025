@@ -24,7 +24,7 @@ export default async function Page({ searchParams }) {
   }
 
   const classes = await getClassesEnrollment(year_data.id, profile);
-
+  console.log(classes);
   return (
     <div className="p-4 md:p-6 space-y-4 md:space-y-6 mb-10">
       <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-2">

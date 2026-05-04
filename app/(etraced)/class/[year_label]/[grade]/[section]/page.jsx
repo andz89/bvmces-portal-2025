@@ -29,6 +29,7 @@ export default async function Page({ params, searchParams }) {
       mapeh,
       reading_literacy,
       link,
+      llc_source,
       created_at,
         class:class_id (
       id,

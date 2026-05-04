@@ -81,8 +81,8 @@ export default async function DesktopMenu() {
       </div>
 
       <div className="hidden md:flex items-center gap-4 px-2">
-        <Link href="/files " className="text-blue-600 ">
-          Files
+        <Link href="/templates " className="text-blue-600 ">
+          Templates
         </Link>
         <Link href="/class" className="text-blue-600     ">
           Class

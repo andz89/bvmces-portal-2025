@@ -33,9 +33,11 @@ export async function createOrUpdateMPSData(
 
   const id = formData.get("id");
   const class_id = formData.get("classID");
-  console.log("=========", class_id);
+
   const quarter = formData.get("quarter").toLowerCase();
   const link = formData.get("link");
+  const llc_source = formData.get("llc_source");
+
   const payload = {
     class_id,
     quarter,
@@ -49,6 +51,7 @@ export async function createOrUpdateMPSData(
     mapeh: formData.get("mapeh") || 0,
     reading_literacy: formData.get("reading_literacy") || 0,
     link: link || null,
+    llc_source: llc_source || null,
   };
 
   /* -----------------------------------

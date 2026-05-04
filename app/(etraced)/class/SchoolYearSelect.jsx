@@ -4,7 +4,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useTransition, useState } from "react";
 import FullPageLoader from "../../components/loader/FullPageLoader";
 import { createSchoolYear } from "./actions";
-export default function SchoolYearSelect({ currentYear, role, schoolYears }) {
+export default function SchoolYearSelect({
+  currentYear,
+  profile,
+  schoolYears,
+}) {
   const [loading, setLoading] = useState(false);
 
   const [yearLabel, setYearLabel] = useState("");
@@ -56,7 +60,8 @@ export default function SchoolYearSelect({ currentYear, role, schoolYears }) {
           ))}
         </select>
       </div>
-      {role === "admin" && (
+
+      {profile.role === "admin" && (
         <button
           onClick={() => setOpen(true)}
           className="bg-blue-600 text-white px-4 py-2 rounded w-full sm:w-fit"

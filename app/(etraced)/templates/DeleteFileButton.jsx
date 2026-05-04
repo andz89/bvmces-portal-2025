@@ -7,7 +7,7 @@ export default function DeleteFileButton({ fileId }) {
   const [loading, setLoading] = useState(false);
 
   async function handleDelete() {
-    if (!confirm("Delete this file?")) return;
+    if (!confirm("Delete this template?")) return;
 
     setLoading(true);
 

@@ -117,7 +117,7 @@ export default function EnrollmentClientTable({
       ),
     },
   ]);
-  console.log(columns);
+
   return (
     <>
       {loading && <FullPageLoader />}

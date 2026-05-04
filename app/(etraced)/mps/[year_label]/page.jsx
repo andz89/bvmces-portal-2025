@@ -29,19 +29,20 @@ export default async function Page({ params, searchParams }) {
     mapeh,
     reading_literacy,
     link,
+    llc_source,
     created_at,
     class:class_id!inner (
       id,
       grade,
       section,
       school_year_id
+     
     )
   `
     )
     .eq("class.school_year_id", id)
     .order("created_at", { ascending: false });
 
-  console.log(mpsData);
   if (error) {
     console.error(error);
     notFound();
@@ -54,7 +55,11 @@ export default async function Page({ params, searchParams }) {
   return (
     <div className="p-6 space-y-6">
       <h3 className="text-md font-bold">MPS {year_label}</h3>
-      <MPSClientTable profile={profile} mpsData={mpsData ?? []} />
+      <MPSClientTable
+        profile={profile}
+        mpsData={mpsData ?? []}
+        year_label={year_label}
+      />
     </div>
   );
 }

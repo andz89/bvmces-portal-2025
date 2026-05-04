@@ -246,11 +246,24 @@ export default function AddMPSDataModal({
 
                 <div className="flex flex-col gap-1 col-span-2">
                   <label className="text-xs font-medium text-gray-600">
-                    Link
+                    MPS
                   </label>
                   <input
                     defaultValue={editingData?.link || ""}
                     name="link"
+                    type="url"
+                    placeholder="https://…"
+                    className={inputClass}
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1 col-span-2">
+                  <label className="text-xs font-medium text-gray-600">
+                    LLC
+                  </label>
+                  <input
+                    defaultValue={editingData?.llc_source || ""}
+                    name="llc_source"
                     type="url"
                     placeholder="https://…"
                     className={inputClass}

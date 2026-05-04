@@ -3,7 +3,7 @@ import Link from "next/link";
 import { checkRole } from "../utils/lib/checkRole";
 import DashboardHomePage from "./components/DashboardHomePage";
 import Image from "next/image";
-
+import CanvaEmbed from "./components/CanvaEmbed";
 export default async function Page() {
   const role = await checkRole();
   console.log(role);

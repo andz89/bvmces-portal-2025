@@ -16,7 +16,7 @@ export async function addFile(formData) {
 
   const type = formData.get("type").toLowerCase();
 
-  const { error } = await supabase.from("files").insert({
+  const { error } = await supabase.from("templates").insert({
     title: formData.get("title"),
     description: formData.get("description"),
     link: formData.get("link"),
@@ -27,7 +27,7 @@ export async function addFile(formData) {
   if (error) throw new Error(error.message);
 
   // ✅ Optimized: refresh server data only
-  revalidatePath("/files");
+  revalidatePath("/templates");
 }
 
 export async function updateFile(formData) {
@@ -42,7 +42,7 @@ export async function updateFile(formData) {
   const id = formData.get("id");
 
   const { error } = await supabase
-    .from("files")
+    .from("templates")
     .update({
       title: formData.get("title"),
       description: formData.get("description"),
@@ -53,7 +53,7 @@ export async function updateFile(formData) {
 
   if (error) throw new Error(error.message);
 
-  revalidatePath("/files");
+  revalidatePath("/templates");
 }
 export async function deleteFile(formData) {
   const supabase = await createClient();
@@ -66,10 +66,10 @@ export async function deleteFile(formData) {
 
   const id = formData.get("id");
 
-  const { error } = await supabase.from("files").delete().eq("id", id);
+  const { error } = await supabase.from("templates").delete().eq("id", id);
   // .eq("created_by", user.id);
   console.log(error);
   if (error) throw new Error(error.message);
 
-  revalidatePath("/files");
+  revalidatePath("/templates");
 }

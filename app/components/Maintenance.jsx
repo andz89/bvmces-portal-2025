@@ -6,6 +6,7 @@ const Maintenance = () => {
     { label: "GPA", href: "/gpa" },
     { label: "MPS", href: "/mps" },
     { label: "Class", href: "/class" },
+    { label: "SELG", href: "/selg" },
   ];
 
   return (
