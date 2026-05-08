@@ -80,7 +80,7 @@ export async function deleteClass(classId, password) {
 }
 export async function createSchoolYear(yearLabel) {
   const supabase = await createClient();
-
+  console.log("--", yearLabel);
   if (!yearLabel?.trim()) return;
 
   const { error } = await supabase

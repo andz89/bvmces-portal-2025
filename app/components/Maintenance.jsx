@@ -7,6 +7,9 @@ const Maintenance = () => {
     { label: "MPS", href: "/mps" },
     { label: "Class", href: "/class" },
     { label: "SELG", href: "/selg" },
+    { label: "CRLA", href: "/crla" },
+    { label: "RMA", href: "/rma" },
+    { label: "Phil-IRI", href: "/phil-iri" },
   ];
 
   return (

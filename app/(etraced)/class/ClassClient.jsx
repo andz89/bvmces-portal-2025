@@ -59,7 +59,7 @@ export default function ClassClient({
   const handleDeleteClick = (e, classItem) => {
     e.preventDefault();
     e.stopPropagation();
-    setTargetClass(classItem); // 🔑 THIS WAS MISSING
+    setTargetClass(classItem);
     setDeleteError("");
     setOpenDelete(true);
   };

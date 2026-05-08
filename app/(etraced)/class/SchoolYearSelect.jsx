@@ -37,7 +37,7 @@ export default function SchoolYearSelect({
       router.refresh();
     });
   }
-  const handleCreate = async () => {
+  const handleCreate = async (yearLabel) => {
     setLoading(true);
     await createSchoolYear(yearLabel);
     setYearLabel("");

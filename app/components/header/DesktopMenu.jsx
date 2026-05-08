@@ -25,7 +25,7 @@ export default async function DesktopMenu() {
   if (!user) return null;
 
   return (
-    <div className="flex item-center gap-2">
+    <div className="flex item-center gap-2 ">
       <div className="hidden  md:flex   gap-8  justify-center  items-center w-full">
         <Link href="/access" className="text-gray-700 hover:text-blue-700 ">
           Access
@@ -41,7 +41,7 @@ export default async function DesktopMenu() {
             Quality
           </span>
 
-          <div className="absolute left-0 top-full z-50 hidden w-48 border bg-white shadow-md group-hover:block">
+          <div className="absolute left-0 top-full z-50 hidden w-48 border border-gray-200 bg-white shadow-md group-hover:block">
             <Link
               href="/mps"
               className="block px-4 py-2 text-sm hover:bg-gray-100"
@@ -54,17 +54,24 @@ export default async function DesktopMenu() {
             >
               GPA
             </Link>
+
             <Link
-              href="/ "
-              className="block px-4 py-2 text-sm hover:bg-gray-100"
-            >
-              Diagnostic
-            </Link>
-            <Link
-              href=" "
+              href="/rma"
               className="block px-4 py-2 text-sm hover:bg-gray-100"
             >
               RMA
+            </Link>
+            <Link
+              href="/phil-iri"
+              className="block px-4 py-2 text-sm hover:bg-gray-100"
+            >
+              PHIL-IRI
+            </Link>
+            <Link
+              href="/crla"
+              className="block px-4 py-2 text-sm hover:bg-gray-100"
+            >
+              CRLA
             </Link>
           </div>
         </div>

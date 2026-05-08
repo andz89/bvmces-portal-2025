@@ -70,16 +70,22 @@ export default function MobileMenu({ isAdmin }) {
                     GPA
                   </Link>
                   <Link
-                    href="/"
-                    className="block px-6 py-3 hover:bg-neutral-100"
-                  >
-                    Diagnostic
-                  </Link>
-                  <Link
-                    href="/"
+                    href="/rma"
                     className="block px-6 py-3 hover:bg-neutral-100"
                   >
                     RMA
+                  </Link>
+                  <Link
+                    href="/phil-iri"
+                    className="block px-6 py-3 hover:bg-neutral-100"
+                  >
+                    PHIL-IRI
+                  </Link>
+                  <Link
+                    href="/crla"
+                    className="block px-6 py-3 hover:bg-neutral-100"
+                  >
+                    CRLA
                   </Link>
                 </div>
               )}

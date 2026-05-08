@@ -11,7 +11,7 @@ export default async function Navbar() {
   const isAdmin = profile?.role == "admin";
 
   return (
-    <nav className="border-b border-gray-200 w-full">
+    <nav className="border-b border-gray-200 w-full ">
       <div className="mx-auto">
         <div className="flex items-center justify-between gap-2 px-1 relative">
           {/* Logo */}

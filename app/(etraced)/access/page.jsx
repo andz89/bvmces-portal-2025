@@ -11,10 +11,10 @@ export default async function Page({ searchParams }) {
   const params = await searchParams;
 
   const year_label =
-    typeof params.year === "string" ? params.year : "2025-2026";
+    typeof params.year === "string" ? params.year : "2026-2027";
   // Default school year
   if (!year_label) {
-    redirect("/access?year=2025-2026");
+    redirect("/access?year=2026-2027");
   }
 
   const year_data = await getSchoolYear(year_label);
@@ -23,10 +23,10 @@ export default async function Page({ searchParams }) {
     redirect("/access");
   }
 
-  const classes = await getClassesEnrollment(year_data.id, profile);
-  console.log(classes);
+  const classes = await getClassesEnrollment(year_data.id, year_label);
+
   return (
-    <div className="p-4 md:p-6 space-y-4 md:space-y-6 mb-10">
+    <div className="p-4 md:p-6 space-y-4 md:space-y-6 mb-10 w-[700px] mx-auto">
       <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-2">
         <h1 className="text-xl font-semibold">Classes for School Year</h1>
         <div className="">
