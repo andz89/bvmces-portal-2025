@@ -1,7 +1,7 @@
 import React from "react";
 import { BiPlus, BiSolidTrash, BiEdit, BiLinkAlt } from "react-icons/bi";
 import DeleteForm from "./DeleteForm.jsx";
-import * as XLSX from "xlsx";
+import { exportToExcel } from "../utils/exportAsExcel.js";
 
 const QuarterTable = ({
   mps,
@@ -12,50 +12,6 @@ const QuarterTable = ({
   setInitialData,
   setOpenForm,
 }) => {
-  function exportToExcel() {
-    const rows = mps.map((item) => {
-      const scores = [
-        item.gmrc,
-        item.epp,
-        item.filipino,
-        item.english,
-        item.math,
-        item.science,
-        item.ap,
-        item.mapeh,
-        item.reading_literacy,
-      ].filter(
-        (score) => score !== null && score !== undefined && score !== "",
-      );
-
-      const total = scores.reduce((sum, score) => sum + Number(score), 0);
-
-      const average = scores.length > 0 ? total / scores.length : 0;
-
-      return {
-        Grade: item.grade,
-        Section: item.section,
-        GMRC: item.gmrc,
-        EPP: item.epp,
-        Filipino: item.filipino,
-        English: item.english,
-        Math: item.math,
-        Science: item.science,
-        AP: item.ap,
-        MAPEH: item.mapeh,
-        Reading: item.reading_literacy,
-        Average: average.toFixed(2),
-      };
-    });
-
-    const worksheet = XLSX.utils.json_to_sheet(rows);
-
-    const workbook = XLSX.utils.book_new();
-
-    XLSX.utils.book_append_sheet(workbook, worksheet, "MPS");
-
-    XLSX.writeFile(workbook, "MPS_Report.xlsx");
-  }
   return (
     <>
       <div className="mb-3 flex items-center justify-between px-8">
@@ -64,7 +20,7 @@ const QuarterTable = ({
         </h2>
 
         <button
-          onClick={exportToExcel}
+          onClick={() => exportToExcel(mps, true)}
           className="px-3 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700"
         >
           Export Excel
@@ -160,7 +116,9 @@ const QuarterTable = ({
                     const average =
                       scores.length > 0 ? total / scores.length : 0;
 
-                    return average.toFixed(2);
+                    return Number.isNaN(average)
+                      ? "-"
+                      : Number(average).toFixed(2);
                   })()}
                 </td>
 

@@ -3,12 +3,13 @@ import { useState, useEffect } from "react";
 import Form from "./Form.jsx";
 import { BiPlus, BiSolidTrash, BiEdit, BiLinkAlt } from "react-icons/bi";
 import QuarterTable from "./QuarterTable.jsx";
-
+import ConsolidatedTable from "./ConsolidatedTable.jsx";
 const MPSClient = ({ profile, mps, school_year }) => {
   const [initialData, setInitialData] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [deleteId, setDeleteId] = useState(null);
   const [openForm, setOpenForm] = useState(false);
+  const [viewMode, setViewMode] = useState(true);
   useEffect(() => {
     if (successMessage) {
       setOpenForm(false);
@@ -73,17 +74,51 @@ const MPSClient = ({ profile, mps, school_year }) => {
       </div>
       {/* ✅ Separate by quarter */}
       <div className="space-y-8 ">
+        <div className="flex items-center gap-3 px-5 mb-6">
+          <button
+            onClick={() => setViewMode(true)}
+            className={`px-4 py-2 rounded text-sm font-medium transition ${
+              viewMode
+                ? "bg-slate-800 text-white"
+                : "bg-slate-200 text-slate-700"
+            }`}
+          >
+            Individual Result
+          </button>
+
+          <button
+            onClick={() => setViewMode(false)}
+            className={`px-4 py-2 rounded text-sm font-medium transition ${
+              !viewMode
+                ? "bg-slate-800 text-white"
+                : "bg-slate-200 text-slate-700"
+            }`}
+          >
+            Consolidated Result
+          </button>
+        </div>
         {Object.entries(groupedByQuarter).map(([quarter, data]) => (
           <div key={quarter}>
-            <QuarterTable
-              title={`Quarter ${quarter}`}
-              mps={[...data].sort((a, b) => Number(a.grade) - Number(b.grade))}
-              profile={profile}
-              deleteId={deleteId}
-              setDeleteId={setDeleteId}
-              setInitialData={setInitialData}
-              setOpenForm={setOpenForm}
-            />
+            {viewMode === true ? (
+              <QuarterTable
+                title={`Quarter ${quarter} - Individual Result`}
+                mps={[...data].sort(
+                  (a, b) => Number(a.grade) - Number(b.grade),
+                )}
+                profile={profile}
+                deleteId={deleteId}
+                setDeleteId={setDeleteId}
+                setInitialData={setInitialData}
+                setOpenForm={setOpenForm}
+              />
+            ) : (
+              <ConsolidatedTable
+                title={`Quarter ${quarter} - Consolidated Result`}
+                mps={[...data].sort(
+                  (a, b) => Number(a.grade) - Number(b.grade),
+                )}
+              />
+            )}
           </div>
         ))}
       </div>
