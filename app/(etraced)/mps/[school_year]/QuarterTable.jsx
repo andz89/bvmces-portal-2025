@@ -63,9 +63,9 @@ const QuarterTable = ({
               >
                 {/* <td className="px-4 py-3">{item.quarter}</td> */}
 
-                <td className="px-4 py-3">{item.grade}</td>
+                <td className="px-4 py-3">{item.class.grade}</td>
 
-                <td className="px-4 py-3">{item.section}</td>
+                <td className="px-4 py-3">{item.class.section}</td>
 
                 {/* <td className="px-4 py-3">{item.school_year}</td> */}
 

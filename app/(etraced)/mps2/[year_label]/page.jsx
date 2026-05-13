@@ -38,7 +38,7 @@ export default async function Page({ params, searchParams }) {
       school_year_id
      
     )
-  `
+  `,
     )
     .eq("class.school_year_id", id)
     .order("created_at", { ascending: false });

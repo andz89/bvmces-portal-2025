@@ -4,7 +4,7 @@ import { exportToExcel } from "../utils/exportAsExcel.js";
 const ConsolidatedTable = ({ title, mps }) => {
   const consolidatedData = Object.values(
     mps.reduce((acc, item) => {
-      const grade = item.grade;
+      const grade = item.class.grade;
 
       if (!acc[grade]) {
         acc[grade] = {

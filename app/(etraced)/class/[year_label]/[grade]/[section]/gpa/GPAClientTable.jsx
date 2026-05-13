@@ -54,7 +54,7 @@ export default function GPAClientTable({
       classID,
       year_label,
       section,
-      password
+      password,
     );
 
     if (result.message === "true") {
@@ -78,7 +78,7 @@ export default function GPAClientTable({
           <button
             disabled={profile.role !== "admin" && profile.role !== "editor"}
             onClick={() => {
-              setEditingRow(row.original), setOpen(true);
+              (setEditingRow(row.original), setOpen(true));
             }}
             className={`px-2 py-1 text-xs rounded  ${
               profile.role !== "admin" && profile.role !== "editor"
@@ -124,7 +124,7 @@ export default function GPAClientTable({
 
   const QUARTERS = ["1st quarter", "2nd quarter", "3rd quarter", "4th quarter"];
   const hasGPAData = QUARTERS.some(
-    (q) => dataByQuarter[q] && dataByQuarter[q].length > 0
+    (q) => dataByQuarter[q] && dataByQuarter[q].length > 0,
   );
 
   return (
@@ -177,7 +177,7 @@ export default function GPAClientTable({
                 })}
                 columns={columns}
               />
-            )
+            ),
         )}
         {open && (
           <AddEditGPAModal

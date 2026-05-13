@@ -3,6 +3,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { exportGPAToExcel } from "./exportGPAToExcel";
 
 export default function QuarterTable({ title, data, columns }) {
   const table = useReactTable({
@@ -18,7 +19,12 @@ export default function QuarterTable({ title, data, columns }) {
       {title && (
         <h2 className="mb-3 text-sm font-semibold text-gray-700">{title}</h2>
       )}
-
+      <button
+        onClick={() => exportGPAToExcel(data, title)}
+        className="bg-green-600 text-white px-3 py-2 rounded"
+      >
+        Export Excel
+      </button>
       <div className="bg-white border rounded-sm overflow-x-auto">
         <table className="min-w-full text-sm border-collapse">
           <thead>
@@ -34,7 +40,7 @@ export default function QuarterTable({ title, data, columns }) {
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                   </th>
                 ))}

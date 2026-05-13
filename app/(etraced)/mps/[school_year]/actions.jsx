@@ -5,11 +5,8 @@ import { revalidatePath } from "next/cache";
 import { reportSchema } from "./reportSchema";
 export async function createMPSReport(prevState, formData) {
   const rawData = {
-    section: formData.get("section"),
-    school_year: formData.get("school_year"),
-
+    class_id: formData.get("class_id"),
     quarter: formData.get("quarter"),
-    grade: formData.get("grade"),
     gmrc: formData.get("gmrc"),
     epp: formData.get("epp"),
     filipino: formData.get("filipino"),
@@ -22,6 +19,7 @@ export async function createMPSReport(prevState, formData) {
     llc_source: formData.get("llc_source"),
     mps_source: formData.get("mps_source"),
   };
+
   const validated = reportSchema.safeParse(rawData);
   if (!validated.success) {
     return {
@@ -30,6 +28,20 @@ export async function createMPSReport(prevState, formData) {
     };
   }
   const supabase = await createClient();
+
+  const { data: existing } = await supabase
+    .from("mps")
+    .select("id")
+    .eq("class_id", rawData.class_id)
+    .eq("quarter", rawData.quarter)
+    .maybeSingle();
+
+  if (existing) {
+    return {
+      error: "This class already has an MPS report for this quarter.",
+      values: rawData,
+    };
+  }
 
   // ✅ get logged-in user
   const {
@@ -41,15 +53,9 @@ export async function createMPSReport(prevState, formData) {
     return { error: "Unauthorized" };
   }
 
-  const normalizedSection = rawData.section.trim().toLowerCase();
-
-  console.log(rawData);
   const data = {
-    section: normalizedSection,
-
+    class_id: rawData.class_id,
     quarter: rawData.quarter,
-    school_year: rawData.school_year,
-    grade: rawData.grade,
 
     gmrc: rawData.gmrc ? Number(rawData.gmrc) : null,
     epp: rawData.epp ? Number(rawData.epp) : null,
@@ -64,38 +70,15 @@ export async function createMPSReport(prevState, formData) {
       : null,
     llc_source: rawData.llc_source,
     mps_source: rawData.mps_source,
-    // owner_email: user.email,
-    // owner_id: user.id,
   };
-  // ✅ check duplicate section per quarter
 
-  const { data: existingSection, error: checkError } = await supabase
-    .from("mps_duplicate")
-    .select("id")
-    .eq("quarter", rawData.quarter)
-    .ilike("section", normalizedSection)
-    .maybeSingle();
-
-  if (checkError) {
-    return {
-      error: checkError.message,
-      values: rawData,
-    };
-  }
-
-  if (existingSection) {
-    return {
-      error: `Section "${rawData.section}" already exists in Quarter ${rawData.quarter}`,
-      values: rawData,
-    };
-  }
-  const { error } = await supabase.from("mps_duplicate").insert([data]);
+  const { error } = await supabase.from("mps").insert([data]);
 
   if (error) {
     return { error: error.message, values: rawData };
   }
 
-  revalidatePath("/mpsa");
+  revalidatePath("/mps");
 
   return { success: true };
 }
@@ -115,9 +98,19 @@ export async function getMPSReports(year_label) {
   }
 
   const { data, error } = await supabase
-    .from("mps_duplicate")
-    .select("*")
-    .eq("school_year", year_label);
+    .from("mps")
+    .select(
+      `
+    *,
+    class:class_id!inner (
+      id,
+      grade,
+      section,
+      school_year
+    )
+  `,
+    )
+    .eq("class.school_year", year_label);
 
   if (error) {
     return {
@@ -128,7 +121,15 @@ export async function getMPSReports(year_label) {
 
   return { data };
 }
+export async function getClass(school_year) {
+  const supabase = await createClient();
+  const { data: classes } = await supabase
+    .from("class")
+    .select("id, section, grade")
+    .eq("school_year", school_year);
 
+  return { classes };
+}
 export async function deleteMPSReport(prevState, formData) {
   const supabase = await createClient();
 
@@ -148,24 +149,22 @@ export async function deleteMPSReport(prevState, formData) {
     return { error: "Wrong password" };
   }
 
-  const { error } = await supabase.from("mps_duplicate").delete().eq("id", id);
+  const { error } = await supabase.from("mps").delete().eq("id", id);
 
   if (error) {
     return { error: error.message };
   }
 
-  revalidatePath("/mpsa");
+  revalidatePath("/mps");
 
   return { success: true };
 }
 
 export async function updateMPSReport(id, prevState, formData) {
   const rawData = {
-    section: formData.get("section"),
-    school_year: formData.get("school_year"),
+    class_id: formData.get("class_id"),
 
     quarter: formData.get("quarter"),
-    grade: formData.get("grade"),
 
     gmrc: formData.get("gmrc"),
     epp: formData.get("epp"),
@@ -204,11 +203,9 @@ export async function updateMPSReport(id, prevState, formData) {
 
   // sanitized update data
   const updatedData = {
-    section: rawData.section,
-    school_year: rawData.school_year,
+    class_id: rawData.class_id,
 
     quarter: rawData.quarter,
-    grade: rawData.grade,
 
     gmrc: rawData.gmrc ? Number(rawData.gmrc) : null,
 
@@ -234,16 +231,13 @@ export async function updateMPSReport(id, prevState, formData) {
     mps_source: rawData.mps_source,
   };
 
-  const { error } = await supabase
-    .from("mps_duplicate")
-    .update(updatedData)
-    .eq("id", id);
+  const { error } = await supabase.from("mps").update(updatedData).eq("id", id);
 
   if (error) {
     return { error: error.message };
   }
 
-  revalidatePath("/mpsa");
+  revalidatePath("/mps");
 
   return { success: true };
 }

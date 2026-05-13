@@ -4,7 +4,7 @@ import Form from "./Form.jsx";
 import { BiPlus, BiSolidTrash, BiEdit, BiLinkAlt } from "react-icons/bi";
 import QuarterTable from "./QuarterTable.jsx";
 import ConsolidatedTable from "./ConsolidatedTable.jsx";
-const MPSClient = ({ profile, mps, school_year }) => {
+const MPSClient = ({ profile, mps, school_year, classData }) => {
   const [initialData, setInitialData] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [deleteId, setDeleteId] = useState(null);
@@ -42,6 +42,7 @@ const MPSClient = ({ profile, mps, school_year }) => {
           setOpenForm={setOpenForm}
           setSuccessMessage={setSuccessMessage}
           school_year={school_year}
+          classData={classData}
         />
       )}
       {successMessage && (
@@ -77,7 +78,7 @@ const MPSClient = ({ profile, mps, school_year }) => {
         <div className="flex items-center gap-3 px-5 mb-6">
           <button
             onClick={() => setViewMode(true)}
-            className={`px-4 py-2 rounded text-sm font-medium transition ${
+            className={`px-4 py-2 rounded text-sm font-medium transition cursor-pointer ${
               viewMode
                 ? "bg-slate-800 text-white"
                 : "bg-slate-200 text-slate-700"
@@ -88,7 +89,7 @@ const MPSClient = ({ profile, mps, school_year }) => {
 
           <button
             onClick={() => setViewMode(false)}
-            className={`px-4 py-2 rounded text-sm font-medium transition ${
+            className={`px-4 py-2 rounded text-sm font-medium transition cursor-pointer ${
               !viewMode
                 ? "bg-slate-800 text-white"
                 : "bg-slate-200 text-slate-700"
@@ -103,7 +104,7 @@ const MPSClient = ({ profile, mps, school_year }) => {
               <QuarterTable
                 title={`Quarter ${quarter} - Individual Result`}
                 mps={[...data].sort(
-                  (a, b) => Number(a.grade) - Number(b.grade),
+                  (a, b) => Number(a.class.grade) - Number(b.class.grade),
                 )}
                 profile={profile}
                 deleteId={deleteId}
@@ -115,7 +116,7 @@ const MPSClient = ({ profile, mps, school_year }) => {
               <ConsolidatedTable
                 title={`Quarter ${quarter} - Consolidated Result`}
                 mps={[...data].sort(
-                  (a, b) => Number(a.grade) - Number(b.grade),
+                  (a, b) => Number(a.class.grade) - Number(b.class.grade),
                 )}
               />
             )}

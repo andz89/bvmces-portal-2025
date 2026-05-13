@@ -47,11 +47,17 @@ export async function getClasses(school_year_id, profile) {
   // Fallback (important)
   return [];
 }
-export async function createClass({ school_year_id, grade, section }) {
+export async function createClass({
+  school_year_id,
+  grade,
+  section,
+  year_label,
+}) {
   const supabase = await createClient();
 
   const { error } = await supabase.from("class").insert({
     school_year_id,
+    school_year: year_label,
     grade,
     section,
   });

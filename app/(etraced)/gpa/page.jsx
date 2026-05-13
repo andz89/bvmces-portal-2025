@@ -1,12 +1,18 @@
 import Link from "next/link";
 import { createClient } from "../../../utils/supabase/server";
+import {
+  FiAward,
+  FiCalendar,
+  FiChevronRight,
+  FiBookOpen,
+} from "react-icons/fi";
 
 export default async function Page() {
   const supabase = await createClient();
 
   const { data: school_year, error } = await supabase
     .from("school_year")
-    .select("id,year_label,  created_at")
+    .select("id, year_label, created_at")
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -14,50 +20,119 @@ export default async function Page() {
   }
 
   return (
-    <div className="p-6 space-y-6 h-screen">
-      <div>
-        <h1 className="text-xl font-semibold">GPA</h1>
-        <p className="text-sm text-gray-500">GPA</p>
+    <div className="min-h-screen bg-slate-50 p-6">
+      {/* Hero */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-500 via-green-500 to-teal-600 p-8 text-white shadow-2xl">
+        <div className="absolute right-0 top-0 h-60 w-60 rounded-full bg-white/10 blur-3xl" />
+        <div className="absolute bottom-0 left-10 h-40 w-40 rounded-full bg-lime-300/20 blur-3xl" />
+
+        <div className="relative z-10 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-sm backdrop-blur">
+              <FiAward />
+              Academic Performance
+            </div>
+
+            <h1 className="mt-4 text-4xl font-bold tracking-tight">
+              GPA Dashboard
+            </h1>
+
+            <p className="mt-3 max-w-xl text-sm text-emerald-100">
+              Manage and organize GPA records efficiently by school year.
+            </p>
+          </div>
+
+          <div className="hidden md:flex">
+            <div className="rounded-3xl border border-white/10 bg-white/10 p-6 backdrop-blur-xl">
+              <p className="text-sm text-emerald-100">Available Records</p>
+
+              <h2 className="mt-2 text-5xl font-bold">{school_year.length}</h2>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* MPS List */}
-      <div className="bg-white rounded  ">
-        <div className=" flex gap-2 w-full flex-wrap  ">
-          {school_year.length === 0 && (
-            <div className="p-4 text-center text-gray-500 border rounded bg-gray-50">
-              No GPA records yet
-            </div>
-          )}
+      {/* Section Header */}
+      <div className="mt-10 mb-6">
+        <h2 className="text-2xl font-bold text-slate-800">School Years</h2>
 
-          {school_year.map((classData) => (
-            <div key={classData.id} className="w-[300px]">
-              <Link
-                href={{
-                  pathname: `/gpa/${classData.year_label}`,
-                  query: { id: classData.id },
-                }}
-              >
-                <div
-                  key={classData.id}
-                  className="flex items-center justify-between border rounded p-4 bg-white hover:bg-gray-50 transition"
-                >
-                  <div>
-                    <div className="text-sm font-semibold text-blue-600  ">
-                      {classData.year_label}
+        <p className="mt-1 text-sm text-slate-500">
+          Select a school year to manage GPA reports
+        </p>
+      </div>
+
+      {/* Empty State */}
+      {school_year.length === 0 && (
+        <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-14 text-center shadow-sm">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
+            <FiBookOpen size={28} />
+          </div>
+
+          <h3 className="mt-5 text-lg font-semibold text-slate-700">
+            No GPA Records Yet
+          </h3>
+
+          <p className="mt-2 text-sm text-slate-500">
+            GPA reports will appear here once created.
+          </p>
+        </div>
+      )}
+
+      {/* Cards */}
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        {[...school_year]
+          .sort((a, b) => {
+            const startA = Number(a.year_label.split("-")[0]);
+            const startB = Number(b.year_label.split("-")[0]);
+
+            return startB - startA;
+          })
+          .map((data) => (
+            <Link
+              key={data.id}
+              href={{
+                pathname: `/gpa/${data.year_label}`,
+              }}
+              className="group"
+            >
+              <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+                {/* Glow Effect */}
+                <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-emerald-100 blur-3xl opacity-50 transition group-hover:opacity-80" />
+
+                <div className="relative z-10">
+                  {/* Top */}
+                  <div className="flex items-start justify-between">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg">
+                      <FiAward size={24} />
                     </div>
 
-                    <p className="text-xs text-gray-500 mt-1">
-                      Created:{" "}
-                      {new Date(classData.created_at).toLocaleDateString()}
-                    </p>
+                    <div className="rounded-full bg-slate-100 p-2 text-slate-500 transition group-hover:bg-emerald-600 group-hover:text-white">
+                      <FiChevronRight size={18} />
+                    </div>
                   </div>
 
-                  <div className="text-xs text-gray-400">→</div>
+                  {/* Content */}
+                  <div className="mt-6">
+                    <p className="text-xs uppercase tracking-wider text-slate-400">
+                      School Year
+                    </p>
+
+                    <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-800">
+                      {data.year_label}
+                    </h2>
+
+                    <div className="mt-5 flex items-center gap-2 text-sm text-slate-500">
+                      <FiCalendar size={16} />
+
+                      <span>
+                        {new Date(data.created_at).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </Link>
-            </div>
+              </div>
+            </Link>
           ))}
-        </div>
       </div>
     </div>
   );

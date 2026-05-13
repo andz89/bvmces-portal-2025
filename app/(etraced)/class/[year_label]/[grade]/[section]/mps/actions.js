@@ -27,7 +27,7 @@ export async function createOrUpdateMPSData(
   formData,
   section,
   year_label,
-  grade
+  grade,
 ) {
   const supabase = await createClient();
 

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { createMPSReport, updateMPSReport } from "./actions";
 export default function MPSForm({
+  classData = [],
   initialData = null,
   school_year,
   setInitialData,
@@ -12,7 +13,6 @@ export default function MPSForm({
   setSuccessMessage,
   setOpenForm,
 }) {
-  console.log(initialData?.id);
   const action = initialData
     ? updateMPSReport.bind(null, initialData.id)
     : createMPSReport;
@@ -40,45 +40,76 @@ export default function MPSForm({
                 <p className="text-red-500 text-sm">{state.error}</p>
               )}
               <div className="grid grid-cols-4 md:grid-cols-1 gap-4  ">
-                <h3 className="font-bold text-[25px]">Add MPS</h3>
-                {/* grade */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">
-                    Grade
-                  </label>
+                <h3 className="font-bold text-[25px]">
+                  {initialData?.id ? "Edit MPS" : "Add MPS"}
+                </h3>
 
-                  <select
-                    key={state?.values?.grade || initialData?.grade || ""}
-                    name="grade"
-                    defaultValue={
-                      state?.values?.grade || initialData?.grade || ""
-                    }
-                    className="w-full border border-gray-300 rounded-lg p-2"
-                  >
-                    <option value="">Select grade</option>
-                    <option value="1">Grade 1</option>
-                    <option value="2">Grade 2</option>
-                    <option value="3">Grade 3</option>
-                    <option value="4">Grade 4</option>
-                    <option value="5">Grade 5</option>
-                    <option value="6">Grade 6</option>
-                  </select>
-                </div>
+                {initialData ? (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-1">
+                      Grade
+                    </label>
+                    <input
+                      readOnly
+                      type="text"
+                      name="grade"
+                      defaultValue={
+                        state?.values?.class.grade ||
+                        initialData?.class.grade ||
+                        ""
+                      }
+                      className="w-full border border-gray-300 rounded-lg p-2"
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-1">
+                      Select Class
+                    </label>
+
+                    <select
+                      key={
+                        state?.values?.class_id || initialData?.class?.id || ""
+                      }
+                      name="class_id"
+                      className="w-full border border-gray-300 rounded-lg p-2"
+                      defaultValue={
+                        state?.values?.class_id || initialData?.class?.id || ""
+                      }
+                    >
+                      <option value="">Select Class</option>
+
+                      {classData.classes?.map((item) => (
+                        <option key={item.id} value={item.id}>
+                          GRADE - {item.grade.toUpperCase()} -{" "}
+                          {item.section.toUpperCase()}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
                 {/* Section */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">
-                    Section
-                  </label>
+                {initialData && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-1">
+                      Section
+                    </label>
 
-                  <input
-                    type="text"
-                    name="section"
-                    defaultValue={
-                      state?.values?.section || initialData?.section || ""
-                    }
-                    className="w-full border border-gray-300 rounded-lg p-2"
-                  />
-                </div>
+                    <input
+                      readOnly
+                      type="text"
+                      name="section"
+                      defaultValue={
+                        state?.values?.class.section ||
+                        initialData?.class.section ||
+                        ""
+                      }
+                      className="w-full border border-gray-300 rounded-lg p-2"
+                    />
+                  </div>
+                )}
+
                 <div>
                   <label className="block text-sm font-medium text-gray-600 mb-1">
                     School Year
@@ -93,26 +124,43 @@ export default function MPSForm({
                 </div>
 
                 {/* Quarter */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">
-                    Quarter
-                  </label>
+                {classData.classes.length && !initialData ? (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-1">
+                      Quarter
+                    </label>
 
-                  <select
-                    key={state?.values?.quarter || initialData?.quarter || ""}
-                    name="quarter"
-                    defaultValue={
-                      state?.values?.quarter || initialData?.quarter || ""
-                    }
-                    className="w-full border border-gray-300 rounded-lg p-2"
-                  >
-                    <option value="">Select quarter</option>
-                    <option value="1">Quarter 1</option>
-                    <option value="2">Quarter 2</option>
-                    <option value="3">Quarter 3</option>
-                    <option value="4">Quarter 4</option>
-                  </select>
-                </div>
+                    <select
+                      key={state?.values?.quarter || initialData?.quarter || ""}
+                      name="quarter"
+                      defaultValue={
+                        state?.values?.quarter || initialData?.quarter || ""
+                      }
+                      className="w-full border border-gray-300 rounded-lg p-2"
+                    >
+                      <option value="">Select quarter</option>
+                      <option value="1">Quarter 1</option>
+                      <option value="2">Quarter 2</option>
+                      <option value="3">Quarter 3</option>
+                      <option value="4">Quarter 4</option>
+                    </select>
+                  </div>
+                ) : (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-1">
+                      Quarter
+                    </label>
+                    <input
+                      readOnly
+                      type="text"
+                      name="quarter"
+                      defaultValue={
+                        state?.values?.quarter || initialData?.quarter || ""
+                      }
+                      className="bg-gray-100 focus:outline-none  w-full border border-gray-300 rounded-lg p-2"
+                    />
+                  </div>
+                )}
 
                 {/* GMRC */}
                 <div>

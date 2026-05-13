@@ -37,7 +37,7 @@ export default function ClassClient({
 
     const result = await createClass({
       school_year_id,
-
+      year_label,
       grade,
       section: section.toLowerCase(),
     });
@@ -127,12 +127,12 @@ export default function ClassClient({
                 </option>
                 <option value="kindergarten">Kindergarten</option>
 
-                <option value="grade-1">Grade 1</option>
-                <option value="grade-2">Grade 2</option>
-                <option value="grade-3">Grade 3</option>
-                <option value="grade-4">Grade 4</option>
-                <option value="grade-5">Grade 5</option>
-                <option value="grade-6">Grade 6</option>
+                <option value="1">Grade 1</option>
+                <option value="2">Grade 2</option>
+                <option value="3">Grade 3</option>
+                <option value="4">Grade 4</option>
+                <option value="5">Grade 5</option>
+                <option value="6">Grade 6</option>
               </select>
             </div>
 
