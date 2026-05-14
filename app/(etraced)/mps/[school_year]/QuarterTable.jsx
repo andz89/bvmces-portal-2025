@@ -1,5 +1,6 @@
 import React from "react";
-import { BiPlus, BiSolidTrash, BiEdit, BiLinkAlt } from "react-icons/bi";
+import { BiSolidTrash, BiEdit, BiLinkExternal, BiExport } from "react-icons/bi";
+
 import DeleteForm from "./DeleteForm.jsx";
 import { exportToExcel } from "../utils/exportAsExcel.js";
 
@@ -13,183 +14,372 @@ const QuarterTable = ({
   setOpenForm,
 }) => {
   return (
-    <>
-      <div className="mb-3 flex items-center justify-between px-8">
-        <h2 className="text-2xl font-semibold text-slate-700 mb-4  ">
-          {title}
-        </h2>
+    <div
+      className="
+        bg-white
+        rounded-[28px]
+        border
+        border-gray-200
+        shadow-[0_10px_35px_rgba(0,0,0,0.05)]
+        overflow-hidden
+        w-full
+      "
+    >
+      {/* Header */}
+      <div
+        className="
+          px-6
+          py-5
+          border-b
+          border-gray-100
+          bg-gradient-to-r
+          from-blue-50
+          via-indigo-50
+          to-white
+        "
+      >
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          {/* Left */}
+          <div>
+            <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
 
-        <button
-          onClick={() => exportToExcel(mps, true)}
-          className="px-3 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700"
-        >
-          Export Excel
-        </button>
-      </div>{" "}
-      <div className="overflow-x-auto bg-white rounded-lg border border-slate-200 shadow-sm mx-5">
-        <table className="min-w-full text-sm">
-          <thead className="bg-slate-100 text-slate-700">
-            <tr>
-              {/* <th className="px-4 py-3 text-left">Quarter</th> */}
-              <th className="px-4 py-3 text-left">Grade</th>
-              <th className="px-4 py-3 text-left">Section</th>
-              {/* <th className="px-4 py-3 text-left">SY</th> */}
+            <p className="text-sm text-gray-500 mt-1">
+              {mps.length} record
+              {mps.length > 1 ? "s" : ""} available
+            </p>
+          </div>
 
-              <th className="px-4 py-3 text-center">GMRC</th>
-              <th className="px-4 py-3 text-center">EPP</th>
-              <th className="px-4 py-3 text-center">Filipino</th>
-              <th className="px-4 py-3 text-center">English</th>
-              <th className="px-4 py-3 text-center">Math</th>
-              <th className="px-4 py-3 text-center">Science</th>
-              <th className="px-4 py-3 text-center">AP</th>
-              <th className="px-4 py-3 text-center">MAPEH</th>
-              <th className="px-4 py-3 text-center">Reading</th>
-              <th className="px-4 py-3 text-center">Average</th>
+          {/* Right */}
+          <div className="flex items-center gap-3">
+            <div
+              className="
+                bg-white
+                border
+                border-gray-200
+                rounded-2xl
+                px-4
+                py-2
+                shadow-sm
+                  text-center
+              "
+            >
+              <p className="text-xs uppercase tracking-wide text-gray-500">
+                Total Records
+              </p>
 
-              <th className="px-4 py-3 text-left">LLC Source</th>
+              <p className="text-lg font-bold text-gray-800">{mps.length}</p>
+            </div>
 
-              <th className="px-4 py-3 text-left">MPS Source</th>
+            <button
+              onClick={() => exportToExcel(mps, true)}
+              className="
+                inline-flex
+                items-center
+                gap-2
+                rounded-2xl
+                bg-gradient-to-r
+                from-emerald-500
+                to-green-600
+                px-5
+                py-3
+                text-white
+                font-semibold
+                shadow-lg
+                transition
+                hover:scale-[1.02]
+              "
+            >
+              <BiExport size={20} />
+
+              <span>Export Excel</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Table */}
+      <div className="overflow-x-auto w-full">
+        <table className="w-full">
+          {/* Head */}
+          <thead className="bg-gray-50">
+            <tr className="text-gray-600 text-sm">
+              <th className="px-5 py-4 text-left font-semibold">Class</th>
+
+              {[
+                "GMRC",
+                "EPP",
+                "Filipino",
+                "English",
+                "Math",
+                "Science",
+                "AP",
+                "MAPEH",
+                "Reading",
+              ].map((subject) => (
+                <th
+                  key={subject}
+                  className="px-4 py-4 text-center font-semibold"
+                >
+                  {subject}
+                </th>
+              ))}
+
+              <th className="px-4 py-4 text-center font-semibold">Average</th>
+
+              <th className="px-4 py-4 text-center font-semibold">Sources</th>
+
               {profile.role !== "visitor" && (
-                <th className="px-4 py-3 text-left">Actions</th>
+                <th className="px-4 py-4 text-center font-semibold">Actions</th>
               )}
             </tr>
           </thead>
 
+          {/* Body */}
           <tbody>
-            {mps?.map((item) => (
-              <tr
-                key={item.id}
-                className="border-t border-slate-200 hover:bg-slate-50"
-              >
-                {/* <td className="px-4 py-3">{item.quarter}</td> */}
+            {mps?.map((item) => {
+              const scores = [
+                item.gmrc,
+                item.epp,
+                item.filipino,
+                item.english,
+                item.math,
+                item.science,
+                item.ap,
+                item.mapeh,
+                item.reading_literacy,
+              ].filter(
+                (score) =>
+                  score !== null &&
+                  score !== undefined &&
+                  score !== "" &&
+                  score !== 0,
+              );
 
-                <td className="px-4 py-3">{item.class.grade}</td>
+              const total = scores.reduce(
+                (sum, score) => sum + Number(score),
+                0,
+              );
 
-                <td className="px-4 py-3">{item.class.section}</td>
+              const average =
+                scores.length > 0 ? (total / scores.length).toFixed(2) : "-";
 
-                {/* <td className="px-4 py-3">{item.school_year}</td> */}
+              return (
+                <tr
+                  key={item.id}
+                  className="
+                    border-t
+                    border-gray-100
+                    hover:bg-blue-50/40
+                    transition
+                    duration-200
+                  "
+                >
+                  {/* Class */}
+                  <td className="px-5 py-4">
+                    <div>
+                      <h3 className="font-semibold text-gray-800">
+                        Grade {item.class.grade}
+                      </h3>
 
-                <td className="px-4 py-3 text-center">{item.gmrc}</td>
+                      <p className="text-sm text-blue-600 font-medium uppercase">
+                        {item.class.section}
+                      </p>
+                    </div>
+                  </td>
 
-                <td className="px-4 py-3 text-center">{item.epp}</td>
-
-                <td className="px-4 py-3 text-center">{item.filipino}</td>
-
-                <td className="px-4 py-3 text-center">{item.english}</td>
-
-                <td className="px-4 py-3 text-center">{item.math}</td>
-
-                <td className="px-4 py-3 text-center">{item.science}</td>
-
-                <td className="px-4 py-3 text-center">{item.ap}</td>
-
-                <td className="px-4 py-3 text-center">{item.mapeh}</td>
-
-                <td className="px-4 py-3 text-center">
-                  {item.reading_literacy}
-                </td>
-                <td className="px-4 py-3 text-center">
-                  {(() => {
-                    const scores = [
-                      item.gmrc,
-                      item.epp,
-                      item.filipino,
-                      item.english,
-                      item.math,
-                      item.science,
-                      item.ap,
-                      item.mapeh,
-                      item.reading_literacy,
-                    ].filter(
-                      (score) =>
-                        score !== null &&
-                        score !== undefined &&
-                        score !== "" &&
-                        score !== 0,
-                    );
-
-                    const total = scores.reduce(
-                      (sum, score) => sum + Number(score),
-                      0,
-                    );
-
-                    const average =
-                      scores.length > 0 ? total / scores.length : 0;
-
-                    return Number.isNaN(average)
-                      ? "-"
-                      : Number(average).toFixed(2);
-                  })()}
-                </td>
-
-                <td className="px-4 py-3">
-                  {item.llc_source ? (
-                    <a
-                      href={item.llc_source}
-                      target="_blank"
-                      className="text-blue-600 hover:underline"
-                    >
-                      Open
-                    </a>
-                  ) : (
-                    "-"
-                  )}
-                </td>
-
-                <td className="px-4 py-3">
-                  {item.mps_source ? (
-                    <a
-                      href={item.mps_source}
-                      target="_blank"
-                      className="text-blue-600 hover:underline"
-                    >
-                      Open
-                    </a>
-                  ) : (
-                    "-"
-                  )}
-                </td>
-                {profile.role !== "visitor" && (
-                  <td className="px-4 py-3  ">
-                    {/* Actions */}
-
-                    <div className="flex items-center justify-start">
-                      <button
-                        onClick={() => {
-                          setInitialData(item);
-                          setOpenForm(true);
-                        }}
-                        className="px-1 py-1 rounded    hover:bg-green-200 text-slate-800 text-sm   cursor-pointer"
+                  {/* Scores */}
+                  {[
+                    item.gmrc,
+                    item.epp,
+                    item.filipino,
+                    item.english,
+                    item.math,
+                    item.science,
+                    item.ap,
+                    item.mapeh,
+                    item.reading_literacy,
+                  ].map((score, idx) => (
+                    <td key={idx} className="px-4 py-4 text-center">
+                      <div
+                        className="
+                          inline-flex
+                          items-center
+                          justify-center
+                          min-w-[52px]
+                          h-10
+                          rounded-xl
+                          bg-gray-100
+                          text-gray-700
+                          font-semibold
+                          text-sm
+                        "
                       >
-                        <BiEdit size={20} />
-                      </button>
+                        {score || "-"}
+                      </div>
+                    </td>
+                  ))}
 
-                      {profile.role === "admin" && (
-                        <>
-                          {deleteId === item.id ? (
-                            <DeleteForm
-                              itemId={item.id}
-                              onCancel={() => setDeleteId(null)}
-                            />
-                          ) : (
-                            <button
-                              onClick={() => setDeleteId(item.id)}
-                              className="px-1 py-1 rounded hover:bg-red-200 text-slate-600"
-                            >
-                              <BiSolidTrash size={20} />
-                            </button>
-                          )}
-                        </>
+                  {/* Average */}
+                  <td className="px-4 py-4 text-center">
+                    <div
+                      className="
+                        inline-flex
+                        items-center
+                        justify-center
+                        min-w-[75px]
+                        h-11
+                        rounded-2xl
+                        bg-gradient-to-r
+                        from-blue-600
+                        to-indigo-600
+                        text-white
+                        font-bold
+                        shadow-md
+                      "
+                    >
+                      {average}
+                    </div>
+                  </td>
+
+                  {/* Sources */}
+                  <td className="px-4 py-4">
+                    <div className="flex items-center justify-center gap-2">
+                      {item.llc_source && (
+                        <a
+                          href={item.llc_source}
+                          target="_blank"
+                          className="
+                            inline-flex
+                            items-center
+                            gap-1
+                            rounded-xl
+                            border
+                            border-gray-200
+                            bg-white
+                            px-3
+                            py-2
+                            text-xs
+                            font-medium
+                            text-gray-700
+                            shadow-sm
+                            hover:bg-gray-50
+                          "
+                        >
+                          LLC
+                          <BiLinkExternal size={14} />
+                        </a>
+                      )}
+
+                      {item.mps_source && (
+                        <a
+                          href={item.mps_source}
+                          target="_blank"
+                          className="
+                            inline-flex
+                            items-center
+                            gap-1
+                            rounded-xl
+                            border
+                            border-gray-200
+                            bg-white
+                            px-3
+                            py-2
+                            text-xs
+                            font-medium
+                            text-gray-700
+                            shadow-sm
+                            hover:bg-gray-50
+                          "
+                        >
+                          MPS
+                          <BiLinkExternal size={14} />
+                        </a>
                       )}
                     </div>
                   </td>
-                )}
+
+                  {/* Actions */}
+                  {profile.role !== "visitor" && (
+                    <td className="px-4 py-4">
+                      <div className="flex items-center justify-center gap-2">
+                        {/* Edit */}
+                        <button
+                          onClick={() => {
+                            setInitialData(item);
+                            setOpenForm(true);
+                          }}
+                          className="
+                            h-11
+                            w-11
+                            rounded-2xl
+                            bg-blue-50
+                            text-blue-600
+                            flex
+                            items-center
+                            justify-center
+                            hover:bg-blue-100
+                            transition
+                          "
+                        >
+                          <BiEdit size={21} />
+                        </button>
+
+                        {/* Delete */}
+                        {profile.role === "admin" && (
+                          <>
+                            {deleteId === item.id ? (
+                              <DeleteForm
+                                itemId={item.id}
+                                onCancel={() => setDeleteId(null)}
+                              />
+                            ) : (
+                              <button
+                                onClick={() => setDeleteId(item.id)}
+                                className="
+                                  h-11
+                                  w-11
+                                  rounded-2xl
+                                  bg-red-50
+                                  text-red-600
+                                  flex
+                                  items-center
+                                  justify-center
+                                  hover:bg-red-100
+                                  transition
+                                "
+                              >
+                                <BiSolidTrash size={21} />
+                              </button>
+                            )}
+                          </>
+                        )}
+                      </div>
+                    </td>
+                  )}
+                </tr>
+              );
+            })}
+
+            {/* Empty */}
+            {mps.length === 0 && (
+              <tr>
+                <td colSpan="100%" className="py-16 text-center">
+                  <div className="space-y-3">
+                    <h3 className="text-2xl font-bold text-gray-700">
+                      No Records Found
+                    </h3>
+
+                    <p className="text-gray-500">
+                      There are currently no MPS records available.
+                    </p>
+                  </div>
+                </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   );
 };
 

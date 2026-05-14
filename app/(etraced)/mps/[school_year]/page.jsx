@@ -10,7 +10,7 @@ const page = async ({ params }) => {
   const classData = await getClass(school_year);
 
   return (
-    <div>
+    <div className="w-full">
       <MPSClient
         profile={profile}
         mps={mps.data}

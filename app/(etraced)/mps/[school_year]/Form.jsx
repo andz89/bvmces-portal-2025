@@ -33,7 +33,7 @@ export default function MPSForm({
     <div>
       <div>
         <form action={formAction}>
-          <div className="bg-gray-100/80  fixed    w-full h-full overflow-auto top-0    ">
+          <div className="bg-gray-100/80  fixed  z-[9999]  w-full h-full overflow-auto top-0    ">
             <div className="bg-white p-6 rounded-xl shadow space-y-6 w-[700px] mx-auto my-5">
               {/* Feedback */}
               {state?.error && (
@@ -344,20 +344,20 @@ export default function MPSForm({
                 </div>
               </div>
             </div>
-          </div>
-          <div className="flex gap-2 justify-end w-full index-9999 fixed  top-5 right-5">
-            <button
-              onClick={() => setOpenForm(false)}
-              className="bg-red-400 px-4 py-2 rounded text-white cursor-pointer"
-            >
-              Cancel
-            </button>
-            <button
-              disabled={pending}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded  disabled:opacity-90  "
-            >
-              {pending ? "Saving..." : "Save"}
-            </button>
+            <div className="flex gap-2 justify-end w-full index-9999 fixed  top-5 right-5">
+              <button
+                onClick={() => setOpenForm(false)}
+                className="bg-red-400 px-4 py-2 rounded text-white cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                disabled={pending}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded  disabled:opacity-90  "
+              >
+                {pending ? "Saving..." : "Save"}
+              </button>
+            </div>
           </div>
         </form>
       </div>

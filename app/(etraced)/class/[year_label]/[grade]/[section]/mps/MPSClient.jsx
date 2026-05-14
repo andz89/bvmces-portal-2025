@@ -2,16 +2,14 @@
 
 import { useState, useEffect } from "react";
 import Form from "./Form.jsx";
-import { BiPlus, BiTable, BiGridAlt } from "react-icons/bi";
+import { BiPlus } from "react-icons/bi";
 import QuarterTable from "./QuarterTable.jsx";
-import ConsolidatedTable from "./ConsolidatedTable.jsx";
 
-const MPSClient = ({ profile, mps, school_year, classData }) => {
+const MPSClient = ({ profile, mps, school_year, class_id, section, grade }) => {
   const [initialData, setInitialData] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [deleteId, setDeleteId] = useState(null);
   const [openForm, setOpenForm] = useState(false);
-  const [viewMode, setViewMode] = useState(true);
 
   useEffect(() => {
     if (successMessage) {
@@ -39,7 +37,7 @@ const MPSClient = ({ profile, mps, school_year, classData }) => {
   }, {});
 
   return (
-    <div className="min-h-screen bg-[#f4f7fb] pb-20 w-full">
+    <div className="min-h-screen bg-[#f3f6fb] pb-16 w-full">
       {/* Form */}
       {openForm && (
         <Form
@@ -49,7 +47,9 @@ const MPSClient = ({ profile, mps, school_year, classData }) => {
           setOpenForm={setOpenForm}
           setSuccessMessage={setSuccessMessage}
           school_year={school_year}
-          classData={classData}
+          class_id={class_id}
+          section={section}
+          grade={grade}
         />
       )}
 
@@ -73,13 +73,13 @@ const MPSClient = ({ profile, mps, school_year, classData }) => {
         </div>
       )}
 
-      {/* Hero */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-700 w-full">
+      {/* Hero Header */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-700">
         {/* Glow */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-cyan-300/10 rounded-full blur-3xl"></div>
 
-        <div className="relative   mx-auto px-4 md:px-10 py-10">
+        <div className="relative max-w-7xl mx-auto px-4 md:px-6 py-10">
           <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-8">
             {/* Left */}
             <div>
@@ -88,11 +88,11 @@ const MPSClient = ({ profile, mps, school_year, classData }) => {
                   inline-flex
                   items-center
                   gap-2
-                  rounded-full
-                  border
-                  border-white/10
                   bg-white/10
                   backdrop-blur-md
+                  border
+                  border-white/10
+                  rounded-full
                   px-4
                   py-1.5
                   text-white
@@ -108,8 +108,8 @@ const MPSClient = ({ profile, mps, school_year, classData }) => {
               </h1>
 
               <p className="text-blue-100 text-base mt-3 max-w-2xl">
-                Monitor academic performance, analyze learner achievement, and
-                manage school reports efficiently.
+                Track learner performance, organize MPS records, and monitor
+                academic progress efficiently.
               </p>
 
               {/* Stats */}
@@ -148,12 +148,16 @@ const MPSClient = ({ profile, mps, school_year, classData }) => {
                   "
                 >
                   <p className="text-xs uppercase tracking-wide text-blue-100">
-                    Total Files
+                    Class
                   </p>
 
-                  <h3 className="text-2xl font-black text-white mt-1">
-                    {mps.length}
+                  <h3 className="text-xl font-bold text-white mt-1">
+                    Grade {grade}
                   </h3>
+
+                  <p className="text-sm text-blue-100 uppercase mt-1">
+                    {section}
+                  </p>
                 </div>
 
                 <div
@@ -169,17 +173,17 @@ const MPSClient = ({ profile, mps, school_year, classData }) => {
                   "
                 >
                   <p className="text-xs uppercase tracking-wide text-blue-100">
-                    View Mode
+                    Total Files
                   </p>
 
-                  <h3 className="text-lg font-bold text-white mt-1">
-                    {viewMode ? "Individual" : "Consolidated"}
+                  <h3 className="text-2xl font-black text-white mt-1">
+                    {mps.length}
                   </h3>
                 </div>
               </div>
             </div>
 
-            {/* Right Card */}
+            {/* Right */}
             {profile.role === "admin" && (
               <div
                 className="
@@ -188,7 +192,7 @@ const MPSClient = ({ profile, mps, school_year, classData }) => {
                   border
                   border-white/10
                   rounded-3xl
-                  p-6
+                  p-5
                   shadow-2xl
                   w-full
                   max-w-sm
@@ -197,7 +201,7 @@ const MPSClient = ({ profile, mps, school_year, classData }) => {
                 <h2 className="text-white text-xl font-bold">Quick Action</h2>
 
                 <p className="text-blue-100 text-sm mt-1">
-                  Upload and manage MPS reports for all classes.
+                  Upload and manage MPS files for this class.
                 </p>
 
                 <button
@@ -219,8 +223,8 @@ const MPSClient = ({ profile, mps, school_year, classData }) => {
                     text-gray-800
                     font-semibold
                     shadow-lg
-                    transition
                     hover:scale-[1.02]
+                    transition
                   "
                 >
                   <BiPlus size={22} />
@@ -233,124 +237,49 @@ const MPSClient = ({ profile, mps, school_year, classData }) => {
         </div>
       </div>
 
-      {/* Content */}
-      <div className="w-full mx-auto px-20 md:px-10 py-8">
-        {/* Toggle */}
-        <div
-          className="
-            flex
-            flex-wrap
-            items-center
-            gap-3
-            mb-8
-          "
-        >
-          <button
-            onClick={() => setViewMode(true)}
-            className={`
-              inline-flex
-              items-center
-              gap-2
-              rounded-2xl
-              px-5
-              py-3
-              text-sm
-              font-semibold
-              transition-all
-              duration-200
+      {/* Quarter Sections */}
+      <div className="w-full mx-auto px-4 md:px-6 py-8 space-y-8">
+        {Object.entries(groupedByQuarter).map(([quarter, data]) => (
+          <QuarterTable
+            key={quarter}
+            title={quarter}
+            mps={[...data]}
+            profile={profile}
+            deleteId={deleteId}
+            setDeleteId={setDeleteId}
+            setInitialData={setInitialData}
+            setOpenForm={setOpenForm}
+            class_id={class_id}
+            school_year={school_year}
+            section={section}
+          />
+        ))}
+
+        {/* Empty */}
+        {mps.length === 0 && (
+          <div
+            className="
+              bg-white
+              border
+              border-gray-200
+              rounded-3xl
+              p-16
+              text-center
               shadow-sm
-              ${
-                viewMode
-                  ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg"
-                  : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
-              }
-            `}
+            "
           >
-            <BiTable size={18} />
+            <div className="space-y-3">
+              <h3 className="text-2xl font-bold text-gray-700">
+                No MPS Files Yet
+              </h3>
 
-            <span>Individual Result</span>
-          </button>
-
-          <button
-            onClick={() => setViewMode(false)}
-            className={`
-              inline-flex
-              items-center
-              gap-2
-              rounded-2xl
-              px-5
-              py-3
-              text-sm
-              font-semibold
-              transition-all
-              duration-200
-              shadow-sm
-              ${
-                !viewMode
-                  ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg"
-                  : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
-              }
-            `}
-          >
-            <BiGridAlt size={18} />
-
-            <span>Consolidated Result</span>
-          </button>
-        </div>
-
-        {/* Quarter Tables */}
-        <div className="space-y-8 w-full">
-          {Object.entries(groupedByQuarter).map(([quarter, data]) => (
-            <div key={quarter}>
-              {viewMode ? (
-                <QuarterTable
-                  title={`Quarter ${quarter}`}
-                  mps={[...data].sort(
-                    (a, b) => Number(a.class.grade) - Number(b.class.grade),
-                  )}
-                  profile={profile}
-                  deleteId={deleteId}
-                  setDeleteId={setDeleteId}
-                  setInitialData={setInitialData}
-                  setOpenForm={setOpenForm}
-                />
-              ) : (
-                <ConsolidatedTable
-                  title={`Quarter ${quarter}`}
-                  mps={[...data].sort(
-                    (a, b) => Number(a.class.grade) - Number(b.class.grade),
-                  )}
-                />
-              )}
+              <p className="text-gray-500 max-w-md mx-auto">
+                Upload your first Monitoring Progress Summary file to begin
+                tracking academic performance.
+              </p>
             </div>
-          ))}
-
-          {/* Empty */}
-          {mps.length === 0 && (
-            <div
-              className="
-                bg-white
-                border
-                border-gray-200
-                rounded-3xl
-                p-16
-                text-center
-                shadow-sm
-              "
-            >
-              <div className="space-y-3">
-                <h3 className="text-2xl font-bold text-gray-700">
-                  No MPS Files Yet
-                </h3>
-
-                <p className="text-gray-500 max-w-md mx-auto">
-                  Upload your first Monitoring Progress Summary report to begin
-                  tracking learner performance.
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -2,6 +2,17 @@ import Link from "next/link";
 import { logout } from "../../auth/actions";
 import { createClient } from "../../../utils/supabase/server";
 
+import {
+  BiChevronDown,
+  BiGridAlt,
+  BiBook,
+  BiAward,
+  BiBarChart,
+  BiUser,
+  BiLogOut,
+  BiFile,
+} from "react-icons/bi";
+
 export default async function DesktopMenu() {
   const supabase = await createClient();
 
@@ -22,93 +33,134 @@ export default async function DesktopMenu() {
     isAdmin = profile?.role === "admin";
     isEditor = profile?.role === "editor";
   }
+
   if (!user) return null;
 
   return (
-    <div className="flex item-center gap-2 ">
-      <div className="hidden  md:flex   gap-8  justify-center  items-center w-full">
-        <Link href="/access" className="text-gray-700 hover:text-blue-700 ">
+    <div className="hidden md:flex items-center justify-end w-full overflow-visible">
+      {/* Left Menu */}
+      <div className="flex items-center gap-2  px-3 py-2  ">
+        {/* Access */}
+        <Link
+          href="/access"
+          className="rounded-xl px-2 py-2 text-sm font-medium text-slate-600 transition hover:bg-blue-50 hover:text-blue-600"
+        >
           Access
         </Link>
 
-        <Link href="/equity" className="text-gray-700 hover:text-blue-700 ">
+        {/* Equity */}
+        <Link
+          href="/equity"
+          className="rounded-xl px-2 py-2 text-sm font-medium text-slate-600 transition hover:bg-blue-50 hover:text-blue-600"
+        >
           Equity
         </Link>
 
         {/* Quality Dropdown */}
-        <div className="relative group  ">
-          <span className="cursor-pointer text-gray-700 hover:text-blue-700">
+        <div className="relative group z-[9999]">
+          <button className="flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-blue-50 hover:text-blue-600 cursor-pointer">
+            <BiBarChart size={18} />
             Quality
-          </span>
+            <BiChevronDown size={18} />
+          </button>
 
-          <div className="absolute left-0 top-full z-50 hidden w-48 border border-gray-200 bg-white shadow-md group-hover:block">
+          <div className="invisible absolute left-0 top-[120%] z-[9999] w-56 translate-y-2 rounded-2xl border border-slate-200 bg-white p-2 opacity-0 shadow-2xl transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
             <Link
               href="/mps"
-              className="block px-4 py-2 text-sm hover:bg-gray-100"
+              className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
             >
+              <BiBarChart size={18} />
               MPS
             </Link>
+
             <Link
               href="/gpa"
-              className="block px-4 py-2 text-sm hover:bg-gray-100"
+              className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
             >
+              <BiAward size={18} />
               GPA
             </Link>
 
             <Link
               href="/rma"
-              className="block px-4 py-2 text-sm hover:bg-gray-100"
+              className="flex items-center gap-3 rounded-xl px-2 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
             >
+              <BiGridAlt size={18} />
               RMA
             </Link>
+
             <Link
               href="/phil-iri"
-              className="block px-4 py-2 text-sm hover:bg-gray-100"
+              className="flex items-center gap-3 rounded-xl px-2 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
             >
+              <BiBook size={18} />
               PHIL-IRI
             </Link>
+
             <Link
               href="/crla"
-              className="block px-4 py-2 text-sm hover:bg-gray-100"
+              className="flex items-center gap-3 rounded-xl px-2 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
             >
+              <BiBook size={18} />
               CRLA
             </Link>
           </div>
         </div>
 
-        <Link href="/" className="text-gray-700 hover:text-blue-700 ">
+        {/* Other Menus */}
+        <Link
+          href="/"
+          className="max-w-[170px] truncate rounded-xl px-2 py-2 text-sm font-medium text-slate-600 transition hover:bg-blue-50 hover:text-blue-600"
+        >
           Resiliency & Well-being
         </Link>
 
-        <Link href="/ " className="text-gray-700 hover:text-blue-700 ">
+        <Link
+          href="/"
+          className="max-w-[170px] truncate rounded-xl px-2 py-2 text-sm font-medium text-slate-600 transition hover:bg-blue-50 hover:text-blue-600"
+        >
           Enabling Mechanism
         </Link>
-
-        {/* ✅ Admin-only menu item */}
       </div>
 
-      <div className="hidden md:flex items-center gap-4 px-2">
-        <Link href="/templates " className="text-blue-600 ">
-          Templates
-        </Link>
-        <Link href="/class" className="text-blue-600     ">
-          Class
-        </Link>
-        {isAdmin && (
-          <div>
-            <Link href="/users" className="text-blue-600     ">
+      {/* Management Dropdown */}
+      <div className="relative group z-[9999] ml-2">
+        <button className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:-translate-y-[1px] hover:shadow-md cursor-pointer">
+          <BiGridAlt size={18} />
+          Management
+          <BiChevronDown size={18} />
+        </button>
+
+        <div className="invisible absolute right-0 top-[120%] z-[9999] w-60 translate-y-2 rounded-2xl border border-slate-200 bg-white p-2 opacity-0 shadow-2xl transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+          {/* Templates */}
+          <Link
+            href="/templates"
+            className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
+          >
+            <BiFile size={18} />
+            Templates
+          </Link>
+
+          {/* Class */}
+          <Link
+            href="/class"
+            className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
+          >
+            <BiGridAlt size={18} />
+            Class
+          </Link>
+
+          {/* Users */}
+          {isAdmin && (
+            <Link
+              href="/users"
+              className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
+            >
+              <BiUser size={18} />
               Users
             </Link>
-          </div>
-        )}
-        <form>
-          <button
-            formAction={logout}
-            className=" bg-blue-500 text-white font-medium rounded shadow-sm p-2 w-full"
-          >
-            Logout
-          </button>
-        </form>
+          )}
+        </div>
       </div>
     </div>
   );

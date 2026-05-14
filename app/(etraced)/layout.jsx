@@ -7,5 +7,5 @@ export default async function layout({ children }) {
     redirect("/");
   }
 
-  return <>{children}</>;
+  return <div className="">{children}</div>;
 }

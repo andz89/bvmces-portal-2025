@@ -32,7 +32,7 @@ export default function RootLayout({
 
       <body
         suppressHydrationWarning
-        className={`${geistSans.variable} ${geistMono.variable} `}
+        className={`${geistSans.variable} ${geistMono.variable} overflow-x-hidden `}
       >
         <Navbar />
         <Toaster

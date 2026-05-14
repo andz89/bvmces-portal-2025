@@ -3,7 +3,7 @@
 import { createClient } from "../../../utils/supabase/server";
 export async function getSchoolYear(year_label) {
   const supabase = await createClient();
-  console.log(year_label);
+
   const { data, error } = await supabase
     .from("school_year")
     .select("*")
@@ -14,23 +14,34 @@ export async function getSchoolYear(year_label) {
   return data;
 }
 
-export async function getClassesEnrollment(school_year_id, year_label) {
+export async function getClassesEnrollment({ school_year_id }) {
   const supabase = await createClient();
-  let targetMonth;
-  const schoolYear = year_label;
 
-  const result = schoolYear.split("-")[1];
+  // ✅ Allowed school months
+  const schoolMonths = [
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+    "January",
+    "February",
+    "March",
+    "April",
+  ];
+
   const currentDate = new Date();
 
-  // April 1, 2025
-  const targetDate = new Date(`${result}-04-01`);
+  let targetMonth = currentDate.toLocaleString("en-US", {
+    month: "long",
+  });
 
-  if (currentDate >= targetDate) {
+  // ✅ If current month is not June-April,
+  // use April instead
+  if (!schoolMonths.includes(targetMonth)) {
     targetMonth = "March";
-  } else {
-    targetMonth = currentDate.toLocaleString("en-US", {
-      month: "long",
-    });
   }
 
   const { data, error } = await supabase
@@ -40,7 +51,9 @@ export async function getClassesEnrollment(school_year_id, year_label) {
       id,
       grade,
       section,
-      enrollment (
+      school_year,
+    
+       enrollment!inner (
         id,
         boys,
         girls,
@@ -49,10 +62,9 @@ export async function getClassesEnrollment(school_year_id, year_label) {
       `,
     )
     .eq("school_year_id", school_year_id)
-    .eq("enrollment.month", targetMonth) // ✅ filter child table
-    .order("grade", { ascending: true })
-    .order("section", { ascending: true });
+    .eq("enrollment.month", targetMonth);
 
   if (error) throw error;
+
   return data;
 }

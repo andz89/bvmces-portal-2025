@@ -111,7 +111,7 @@ export default function EditGPAModal({
       <div>
         {loading && <FullPageLoader />}
         <form onSubmit={handleSubmit}>
-          <div className="bg-gray-100/80  fixed    w-full h-full overflow-auto top-0    ">
+          <div className="bg-gray-100/80  fixed  z-[9999]  w-full h-full overflow-auto top-0    ">
             <div className="bg-white p-6 rounded-xl shadow space-y-6 w-[700px] mx-auto my-5">
               <h2 className="text-2xl font-bold mb-6">Update GPA</h2>
               {/* TOP INFO */}
