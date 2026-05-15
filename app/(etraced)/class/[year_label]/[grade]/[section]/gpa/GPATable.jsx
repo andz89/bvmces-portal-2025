@@ -1,41 +1,57 @@
 "use client";
-import React from "react";
-import { BiSolidTrash, BiEdit, BiBookOpen } from "react-icons/bi";
+
+import React, { useState } from "react";
+
+import {
+  BiSolidTrash,
+  BiEdit,
+  BiBookOpen,
+  BiBarChartAlt2,
+} from "react-icons/bi";
+
 import { deleteGPA } from "./actions";
-import { useState } from "react";
+
 import toast from "react-hot-toast";
-import FullPageLoader from "../../../components/loader/FullPageLoader";
+
+import FullPageLoader from "@/app/components/loader/FullPageLoader";
+
 import ConfirmDeleteModal from "@/app/components/ConfirmDeleteModal";
 
 const GPATable = ({
   section,
-  schoolYear,
+  school_year,
   grade,
   data,
   profile,
-
   quarter,
   setOpenEdit,
   setInitialData,
   class_id,
 }) => {
   const [loading, setLoading] = useState(false);
-  const [targetRow, setTargetRow] = useState(null);
+
   const [openDelete, setOpenDelete] = useState(false);
+
+  const [targetRow, setTargetRow] = useState(null);
+
   const [deleteError, setDeleteError] = useState("");
-  const handleDelete = async (password) => {
+
+  const handleConfirmDelete = async (password) => {
     if (!targetRow) return;
 
     setLoading(true);
 
     setDeleteError("");
+
     try {
-      const result = await deleteGPA({
-        class_id,
+      const result = await deleteGPA(
         quarter,
-        school_year: schoolYear,
+        class_id,
+        school_year,
+        section,
+        grade,
         password,
-      });
+      );
 
       if (result.success) {
         setOpenDelete(false);
@@ -52,22 +68,26 @@ const GPATable = ({
       setLoading(false);
     }
   };
+
   return (
     <div className="mb-10">
       {loading && <FullPageLoader />}
+
       {/* Delete Modal */}
       <ConfirmDeleteModal
         open={openDelete}
         onClose={() => setOpenDelete(false)}
-        onConfirm={handleDelete}
+        onConfirm={handleConfirmDelete}
         loading={loading}
         error={deleteError}
         description={
           targetRow
-            ? `Delete GPA record for Grade ${targetRow.grade} - ${targetRow.section}  Quarter ${targetRow.quarter.toUpperCase()}? This action cannot be undone.`
+            ? `Delete all GPA records for Quarter ${targetRow.quarter.toUpperCase()}? This action cannot be undone.`
             : ""
         }
       />
+
+      {/* Card */}
       <div
         className="
           bg-white
@@ -118,13 +138,14 @@ const GPATable = ({
                 </h2>
 
                 <p className="text-sm text-gray-500 mt-1">
-                  Quarter {quarter} GPA Analysis
+                  Quarter {quarter} GPA analysis and learner performance summary
                 </p>
               </div>
             </div>
 
             {/* Right */}
             <div className="flex items-center gap-3">
+              {/* Subject Count */}
               <div
                 className="
                   bg-white
@@ -140,7 +161,9 @@ const GPATable = ({
                   Subjects
                 </p>
 
-                <p className="text-lg font-bold text-gray-800">{data.length}</p>
+                <p className="text-xl font-black text-gray-800">
+                  {data.length}
+                </p>
               </div>
 
               {/* Delete */}
@@ -151,8 +174,6 @@ const GPATable = ({
 
                     setTargetRow({
                       quarter,
-                      grade,
-                      section,
                     });
                   }}
                   className="
@@ -186,7 +207,7 @@ const GPATable = ({
           <table className="min-w-full">
             {/* Head */}
             <thead>
-              {/* Main Categories */}
+              {/* Categories */}
               <tr className="bg-gradient-to-r from-emerald-600 to-green-600 text-white text-sm">
                 <th rowSpan="2" className="px-5 py-4 text-left font-semibold">
                   SUBJECTS
@@ -208,14 +229,16 @@ const GPATable = ({
                   </th>
                 ))}
 
-                <th rowSpan="2" className="px-5 py-4 text-center font-semibold">
+                <th rowSpan="2" className="px-4 py-4 text-center font-semibold">
                   Actions
                 </th>
               </tr>
 
               {/* M/F/T */}
               <tr className="bg-emerald-500 text-white text-sm">
-                {Array.from({ length: 5 }).map((_, idx) => (
+                {Array.from({
+                  length: 5,
+                }).map((_, idx) => (
                   <React.Fragment key={idx}>
                     <th className="px-3 py-3 text-center font-medium">M</th>
 
@@ -242,10 +265,33 @@ const GPATable = ({
                 >
                   {/* Subject */}
                   <td className="px-5 py-4">
-                    <div>
-                      <p className="font-semibold text-gray-800 uppercase">
-                        {item.subject}
-                      </p>
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="
+                          h-10
+                          w-10
+                          rounded-xl
+                          bg-gradient-to-r
+                          from-emerald-500
+                          to-green-600
+                          text-white
+                          font-bold
+                          flex
+                          items-center
+                          justify-center
+                          shadow-sm
+                        "
+                      >
+                        <BiBarChartAlt2 />
+                      </div>
+
+                      <div>
+                        <p className="font-semibold text-gray-800 uppercase">
+                          {item.subject}
+                        </p>
+
+                        <p className="text-xs text-gray-500">Subject GPA</p>
+                      </div>
                     </div>
                   </td>
 
@@ -267,7 +313,7 @@ const GPATable = ({
                     {Number(item.fs_male) + Number(item.fs_female)}
                   </td>
 
-                  {/* S */}
+                  {/* SATISFACTORY */}
                   <td className="text-center">{item.s_male}</td>
 
                   <td className="text-center">{item.s_female}</td>
@@ -301,6 +347,7 @@ const GPATable = ({
                         <button
                           onClick={() => {
                             setInitialData(item);
+
                             setOpenEdit(true);
                           }}
                           className="

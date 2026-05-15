@@ -1,7 +1,11 @@
 "use client";
 
+import React from "react";
+
+import { BiBarChartAlt2, BiLayer } from "react-icons/bi";
+
 const ConsolidatedGradeTable = ({ grade, schoolYear, data, quarter }) => {
-  // Group items by subject and consolidate across all sections
+  // Consolidate by subject
   const consolidatedBySubject = data.reduce((acc, item) => {
     const subject = item.subject;
 
@@ -22,148 +26,263 @@ const ConsolidatedGradeTable = ({ grade, schoolYear, data, quarter }) => {
     }
 
     acc[subject].not_meet_male += Number(item.not_meet_male);
+
     acc[subject].not_meet_female += Number(item.not_meet_female);
+
     acc[subject].fs_male += Number(item.fs_male);
+
     acc[subject].fs_female += Number(item.fs_female);
+
     acc[subject].s_male += Number(item.s_male);
+
     acc[subject].s_female += Number(item.s_female);
+
     acc[subject].vs_male += Number(item.vs_male);
+
     acc[subject].vs_female += Number(item.vs_female);
+
     acc[subject].e_male += Number(item.e_male);
+
     acc[subject].e_female += Number(item.e_female);
 
     return acc;
   }, {});
 
-  // Convert to array and sort alphabetically
   const sortedData = Object.values(consolidatedBySubject).sort((a, b) =>
     a.subject.localeCompare(b.subject),
   );
 
   return (
     <div className="mb-10">
-      <div className="px-2 mx-4 mb-4">
-        <h2 className="text-lg font-medium text-slate-800">
-          Quarter {quarter.toUpperCase()} / Grade {grade} - CONSOLIDATED
-        </h2>
-      </div>
+      <div
+        className="
+          bg-white
+          rounded-[28px]
+          border
+          border-gray-200
+          shadow-[0_10px_35px_rgba(0,0,0,0.05)]
+          overflow-hidden
+        "
+      >
+        {/* Header */}
+        <div
+          className="
+            px-6
+            py-5
+            border-b
+            border-gray-100
+            bg-gradient-to-r
+            from-emerald-50
+            via-green-50
+            to-white
+          "
+        >
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+            {/* Left */}
+            <div className="flex items-start gap-4">
+              <div
+                className="
+                  h-14
+                  w-14
+                  rounded-2xl
+                  bg-gradient-to-r
+                  from-emerald-500
+                  to-green-600
+                  text-white
+                  flex
+                  items-center
+                  justify-center
+                  shadow-lg
+                "
+              >
+                <BiLayer size={28} />
+              </div>
 
-      <div className="overflow-x-auto mx-5 border border-slate-300 rounded-lg">
-        <table className="min-w-full border-collapse text-sm">
-          <thead>
-            <tr className="bg-slate-900 text-white">
-              <th rowSpan="2" className="border border-slate-500 px-4 py-3">
-                SUBJECTS
-              </th>
+              <div>
+                <h2 className="text-2xl font-bold text-gray-800">
+                  Grade {grade} — Consolidated
+                </h2>
 
-              <th colSpan="3" className="border border-slate-500 px-4 py-3">
-                FAILED
-              </th>
+                <p className="text-sm text-gray-500 mt-1">
+                  Quarter {quarter} consolidated GPA summary
+                </p>
+              </div>
+            </div>
 
-              <th colSpan="3" className="border border-slate-500 px-4 py-3">
-                FAIRLY SATISFACTORY
-              </th>
+            {/* Right */}
+            <div className="flex items-center gap-3">
+              <div
+                className="
+                  bg-white
+                  border
+                  border-gray-200
+                  rounded-2xl
+                  px-4
+                  py-2
+                  shadow-sm
+                "
+              >
+                <p className="text-xs uppercase tracking-wide text-gray-500">
+                  Subjects
+                </p>
 
-              <th colSpan="3" className="border border-slate-500 px-4 py-3">
-                SATISFACTORY
-              </th>
+                <p className="text-lg font-bold text-gray-800">
+                  {sortedData.length}
+                </p>
+              </div>
 
-              <th colSpan="3" className="border border-slate-500 px-4 py-3">
-                VERY SATISFACTORY
-              </th>
+              <div
+                className="
+                  bg-gradient-to-r
+                  from-emerald-500
+                  to-green-600
+                  rounded-2xl
+                  px-5
+                  py-3
+                  text-white
+                  shadow-lg
+                  flex
+                  items-center
+                  gap-2
+                "
+              >
+                <BiBarChartAlt2 size={22} />
 
-              <th colSpan="3" className="border border-slate-500 px-4 py-3">
-                EXCELLENT
-              </th>
-            </tr>
+                <span className="font-semibold">Consolidated</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-            <tr className="bg-slate-900 text-white">
-              {/* FAILED */}
-              <th className="border border-slate-500 px-3 py-2">M</th>
-              <th className="border border-slate-500 px-3 py-2">F</th>
-              <th className="border border-slate-500 px-3 py-2">T</th>
+        {/* Table */}
+        <div className="overflow-x-auto">
+          <table className="min-w-full">
+            {/* Head */}
+            <thead>
+              {/* Main Categories */}
+              <tr className="bg-gradient-to-r from-emerald-600 to-green-600 text-white text-sm">
+                <th rowSpan="2" className="px-5 py-4 text-left font-semibold">
+                  SUBJECTS
+                </th>
 
-              {/* FS */}
-              <th className="border border-slate-500 px-3 py-2">M</th>
-              <th className="border border-slate-500 px-3 py-2">F</th>
-              <th className="border border-slate-500 px-3 py-2">T</th>
-
-              {/* SATISFACTORY */}
-              <th className="border border-slate-500 px-3 py-2">M</th>
-              <th className="border border-slate-500 px-3 py-2">F</th>
-              <th className="border border-slate-500 px-3 py-2">T</th>
-
-              {/* VS */}
-              <th className="border border-slate-500 px-3 py-2">M</th>
-              <th className="border border-slate-500 px-3 py-2">F</th>
-              <th className="border border-slate-500 px-3 py-2">T</th>
-
-              {/* EXCELLENT */}
-              <th className="border border-slate-500 px-3 py-2">M</th>
-              <th className="border border-slate-500 px-3 py-2">F</th>
-              <th className="border border-slate-500 px-3 py-2">T</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {sortedData.map((item) => (
-              <tr key={item.subject} className="text-center hover:bg-slate-50">
-                <td className="border border-slate-400 px-4 py-3 font-medium text-left">
-                  {item.subject.toUpperCase()}
-                </td>
-
-                {/* FAILED */}
-                <td className="border border-slate-400">
-                  {item.not_meet_male}
-                </td>
-
-                <td className="border border-slate-400">
-                  {item.not_meet_female}
-                </td>
-
-                <td className="border border-slate-400 font-semibold">
-                  {item.not_meet_male + item.not_meet_female}
-                </td>
-
-                {/* FS */}
-                <td className="border border-slate-400">{item.fs_male}</td>
-
-                <td className="border border-slate-400">{item.fs_female}</td>
-
-                <td className="border border-slate-400 font-semibold">
-                  {item.fs_male + item.fs_female}
-                </td>
-
-                {/* SATISFACTORY */}
-                <td className="border border-slate-400">{item.s_male}</td>
-
-                <td className="border border-slate-400">{item.s_female}</td>
-
-                <td className="border border-slate-400 font-semibold">
-                  {item.s_male + item.s_female}
-                </td>
-
-                {/* VS */}
-                <td className="border border-slate-400">{item.vs_male}</td>
-
-                <td className="border border-slate-400">{item.vs_female}</td>
-
-                <td className="border border-slate-400 font-semibold">
-                  {item.vs_male + item.vs_female}
-                </td>
-
-                {/* EXCELLENT */}
-                <td className="border border-slate-400">{item.e_male}</td>
-
-                <td className="border border-slate-400">{item.e_female}</td>
-
-                <td className="border border-slate-400 font-semibold">
-                  {item.e_male + item.e_female}
-                </td>
+                {[
+                  "FAILED",
+                  "FAIRLY SATISFACTORY",
+                  "SATISFACTORY",
+                  "VERY SATISFACTORY",
+                  "EXCELLENT",
+                ].map((label) => (
+                  <th
+                    key={label}
+                    colSpan="3"
+                    className="px-4 py-4 text-center font-semibold"
+                  >
+                    {label}
+                  </th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+
+              {/* M/F/T */}
+              <tr className="bg-emerald-500 text-white text-sm">
+                {Array.from({ length: 5 }).map((_, idx) => (
+                  <React.Fragment key={idx}>
+                    <th className="px-3 py-3 text-center font-medium">M</th>
+
+                    <th className="px-3 py-3 text-center font-medium">F</th>
+
+                    <th className="px-3 py-3 text-center font-medium">T</th>
+                  </React.Fragment>
+                ))}
+              </tr>
+            </thead>
+
+            {/* Body */}
+            <tbody>
+              {sortedData.map((item) => (
+                <tr
+                  key={item.subject}
+                  className="
+                    border-t
+                    border-gray-100
+                    hover:bg-emerald-50/40
+                    transition
+                    duration-200
+                  "
+                >
+                  {/* Subject */}
+                  <td className="px-5 py-4">
+                    <p className="font-semibold text-gray-800 uppercase">
+                      {item.subject}
+                    </p>
+                  </td>
+
+                  {/* FAILED */}
+                  <td className="text-center">{item.not_meet_male}</td>
+
+                  <td className="text-center">{item.not_meet_female}</td>
+
+                  <td className="text-center font-bold text-red-600">
+                    {item.not_meet_male + item.not_meet_female}
+                  </td>
+
+                  {/* FS */}
+                  <td className="text-center">{item.fs_male}</td>
+
+                  <td className="text-center">{item.fs_female}</td>
+
+                  <td className="text-center font-bold text-orange-600">
+                    {item.fs_male + item.fs_female}
+                  </td>
+
+                  {/* SATISFACTORY */}
+                  <td className="text-center">{item.s_male}</td>
+
+                  <td className="text-center">{item.s_female}</td>
+
+                  <td className="text-center font-bold text-blue-600">
+                    {item.s_male + item.s_female}
+                  </td>
+
+                  {/* VS */}
+                  <td className="text-center">{item.vs_male}</td>
+
+                  <td className="text-center">{item.vs_female}</td>
+
+                  <td className="text-center font-bold text-emerald-600">
+                    {item.vs_male + item.vs_female}
+                  </td>
+
+                  {/* EXCELLENT */}
+                  <td className="text-center">{item.e_male}</td>
+
+                  <td className="text-center">{item.e_female}</td>
+
+                  <td className="text-center font-bold text-violet-600">
+                    {item.e_male + item.e_female}
+                  </td>
+                </tr>
+              ))}
+
+              {/* Empty */}
+              {sortedData.length === 0 && (
+                <tr>
+                  <td colSpan="100%" className="py-16 text-center">
+                    <div className="space-y-3">
+                      <h3 className="text-2xl font-bold text-gray-700">
+                        No Consolidated Data
+                      </h3>
+
+                      <p className="text-gray-500">
+                        There are currently no GPA records available for
+                        consolidation.
+                      </p>
+                    </div>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

@@ -31,7 +31,7 @@ export const optionalTextFieldURL = (fieldName, max = 300) =>
     .optional()
     .or(z.literal(""));
 export const reportSchema = z.object({
-  class_id: textField("Class", 100, 1),
+  class_id: textField("Class id", 100, 1),
 
   quarter: textField("Quarter year", 20, 1),
 

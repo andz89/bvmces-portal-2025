@@ -1,9 +1,22 @@
 "use client";
+
 import { deleteClass } from "./actions";
-import { FaTrash } from "react-icons/fa";
+
+import { FaTrash, FaUsers } from "react-icons/fa";
+
+import {
+  BiPlus,
+  BiBookOpen,
+  BiSpreadsheet,
+  BiBarChartAlt2,
+} from "react-icons/bi";
+
 import FullPageLoader from "../../components/loader/FullPageLoader";
+
 import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
+
 import { useState } from "react";
+
 import { createClass, getClasses } from "./actions";
 
 import Link from "next/link";
@@ -15,15 +28,19 @@ export default function ClassClient({
   initialData,
 }) {
   const [openDelete, setOpenDelete] = useState(false);
-  const [targetId, setTargetId] = useState(null);
+
   const [deleteError, setDeleteError] = useState("");
+
   const [targetClass, setTargetClass] = useState(null);
 
   const [classes, setClasses] = useState(initialData);
+
   const [grade, setGrade] = useState("");
+
   const [section, setSection] = useState("");
 
   const [loading, setLoading] = useState(false);
+
   const refresh = async () => {
     const data = await getClasses(school_year_id, profile);
 
@@ -45,22 +62,25 @@ export default function ClassClient({
     if (result.message === "true") {
       setGrade("");
       setSection("");
+
       await refresh();
-      setLoading(false);
+    } else if (result.message === "section_exists") {
+      alert("Section already exists in this school year.");
     } else {
-      if (result.message === "23505") {
-        alert("Class already exists.");
-      } else {
-        alert("Error creating class. Please try again.");
-      }
-      setLoading(false);
+      alert("Error creating class. Please try again.");
     }
+
+    setLoading(false);
   };
+
   const handleDeleteClick = (e, classItem) => {
     e.preventDefault();
     e.stopPropagation();
+
     setTargetClass(classItem);
+
     setDeleteError("");
+
     setOpenDelete(true);
   };
 
@@ -68,17 +88,17 @@ export default function ClassClient({
     if (!targetClass) return;
 
     setLoading(true);
-    setDeleteError("");
 
     const result = await deleteClass(targetClass.id, password);
 
     if (result.message === "true") {
       await refresh();
+
       setOpenDelete(false);
     } else if (result.message === "invalid_password") {
       setDeleteError("Invalid password. Please try again.");
     } else {
-      setDeleteError("Failed to delete class. Please try again.");
+      setDeleteError("Failed to delete class.");
     }
 
     setLoading(false);
@@ -94,8 +114,42 @@ export default function ClassClient({
     6: 6,
   };
 
+  const groupedClasses = Object.entries(
+    [...classes]
+      .sort((a, b) => gradeRank[a.grade] - gradeRank[b.grade])
+      .reduce((acc, curr) => {
+        const gradeLabel =
+          curr.grade === "kindergarten" ? "Kinder" : `Grade ${curr.grade}`;
+
+        if (!acc[gradeLabel]) {
+          acc[gradeLabel] = [];
+        }
+
+        acc[gradeLabel].push(curr);
+
+        return acc;
+      }, {}),
+  );
+
+  const inputClass = `
+    w-full
+    rounded-2xl
+    border
+    border-gray-200
+    bg-white
+    px-4
+    py-3
+    text-sm
+    text-gray-700
+    outline-none
+    transition
+    focus:border-emerald-500
+    focus:ring-4
+    focus:ring-emerald-100
+  `;
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <ConfirmDeleteModal
         open={openDelete}
         onClose={() => setOpenDelete(false)}
@@ -104,43 +158,82 @@ export default function ClassClient({
         error={deleteError}
         description={
           targetClass
-            ? `Delete ${targetClass.grade.toUpperCase()} – Section ${targetClass.section.toUpperCase()}? This will permanently remove the class and all related records.`
+            ? `Delete ${targetClass.grade.toUpperCase()} – Section ${targetClass.section.toUpperCase()}?`
             : ""
         }
       />
 
       {loading && <FullPageLoader />}
-      {/* Create */}
+
+      {/* Create Class */}
       {profile.role === "admin" && (
-        <div className="border border-gray-300 rounded bg-white overflow-hidden max-w-3xl">
+        <div
+          className="
+            bg-white
+            rounded-[28px]
+            border
+            border-gray-200
+            shadow-[0_10px_35px_rgba(0,0,0,0.05)]
+            overflow-hidden
+          "
+        >
           {/* Header */}
-          <div className="bg-gray-100 border-b border-gray-300 px-4 py-3">
-            <h2 className="text-base font-semibold text-gray-700">
-              Create New Class
-            </h2>
+          <div
+            className="
+              px-6
+              py-5
+              border-b
+              border-gray-100
+              bg-gradient-to-r
+              from-emerald-50
+              via-green-50
+              to-white
+            "
+          >
+            <div className="flex items-center gap-4">
+              <div
+                className="
+                  h-14
+                  w-14
+                  rounded-2xl
+                  bg-gradient-to-r
+                  from-emerald-500
+                  to-green-600
+                  text-white
+                  flex
+                  items-center
+                  justify-center
+                  shadow-lg
+                "
+              >
+                <BiPlus size={28} />
+              </div>
+
+              <div>
+                <h2 className="text-2xl font-bold text-gray-800">
+                  Create New Class
+                </h2>
+
+                <p className="text-sm text-gray-500 mt-1">
+                  Add and organize class sections efficiently.
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Body */}
-          <div className="p-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+          <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {/* Grade */}
-              <div className="flex flex-col">
-                <label className="text-sm text-gray-700 mb-1">Grade</label>
+              <div>
+                <label className="block text-sm font-medium text-gray-600 mb-2">
+                  Grade
+                </label>
 
                 <select
                   value={grade}
                   onChange={(e) => setGrade(e.target.value)}
-                  className="
-            border
-            border-gray-300
-            rounded
-            px-3
-            h-10
-            bg-white
-            text-sm
-            focus:outline-none
-            focus:border-blue-500
-          "
+                  className={inputClass}
                 >
                   <option value="" disabled>
                     Select Grade
@@ -149,57 +242,61 @@ export default function ClassClient({
                   <option value="kindergarten">Kindergarten</option>
 
                   <option value="1">Grade 1</option>
+
                   <option value="2">Grade 2</option>
+
                   <option value="3">Grade 3</option>
+
                   <option value="4">Grade 4</option>
+
                   <option value="5">Grade 5</option>
+
                   <option value="6">Grade 6</option>
                 </select>
               </div>
 
               {/* Section */}
-              <div className="flex flex-col">
-                <label className="text-sm text-gray-700 mb-1">Section</label>
+              <div>
+                <label className="block text-sm font-medium text-gray-600 mb-2">
+                  Section
+                </label>
 
                 <input
                   value={section}
                   onChange={(e) => setSection(e.target.value)}
-                  placeholder="Enter Section"
-                  className="
-            border
-            border-gray-300
-            rounded
-            px-3
-            h-10
-            text-sm
-            focus:outline-none
-            focus:border-blue-500
-          "
+                  placeholder="Enter section"
+                  className={inputClass}
                 />
               </div>
 
-              {/* Action */}
-              <div>
+              {/* Button */}
+              <div className="flex items-end">
                 <button
                   onClick={handleCreate}
                   disabled={loading || !grade || !section}
                   className="
-            w-full
-            border
-            border-gray-300
-            bg-gradient-to-b
-            from-white
-            to-gray-100
-            text-gray-700
-            px-4
-            py-2
-            rounded
-            text-sm
-            hover:bg-gray-50
-            disabled:opacity-50
-          "
+                    w-full
+                    inline-flex
+                    items-center
+                    justify-center
+                    gap-2
+                    rounded-2xl
+                    bg-gradient-to-r
+                    from-emerald-600
+                    to-green-600
+                    px-5
+                    py-3
+                    text-white
+                    font-semibold
+                    shadow-lg
+                    hover:scale-[1.01]
+                    transition
+                    disabled:opacity-60
+                  "
                 >
-                  Create Class
+                  <BiPlus size={20} />
+
+                  <span>Create Class</span>
                 </button>
               </div>
             </div>
@@ -207,190 +304,328 @@ export default function ClassClient({
         </div>
       )}
 
-      {/* List */}
-      <div className="space-y-8   flex flex-wrap">
-        {Object.entries(
-          [...classes]
-            .sort((a, b) => gradeRank[a.grade] - gradeRank[b.grade])
-            .reduce((acc, curr) => {
-              const gradeLabel =
-                curr.grade === "kindergarten"
-                  ? "Kinder"
-                  : `Grade ${curr.grade}`;
-
-              if (!acc[gradeLabel]) {
-                acc[gradeLabel] = [];
-              }
-
-              acc[gradeLabel].push(curr);
-
-              return acc;
-            }, {}),
-        ).map(([gradeName, gradeClasses]) => (
+      {/* Class Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {groupedClasses.map(([gradeName, gradeClasses]) => (
           <div
             key={gradeName}
             className="
-        border
-        border-gray-300
-        rounded
-        bg-white
-        overflow-hidden
-        mx-2
-        h-full
-    w-full
-    sm:w-full
-    lg:w-[48%]
- 
-      "
+                bg-white
+                rounded-[28px]
+                border
+                border-gray-200
+                shadow-[0_10px_35px_rgba(0,0,0,0.05)]
+                overflow-hidden
+              "
           >
-            {/* Grade Header */}
-            <div className="bg-gray-100 border-b border-gray-300 px-4 py-3">
-              <h2 className="text-lg font-semibold text-gray-700">
-                {gradeName}
-              </h2>
+            {/* Header */}
+            <div
+              className="
+                  px-6
+                  py-5
+                  border-b
+                  border-gray-100
+                  bg-gradient-to-r
+                  from-emerald-50
+                  via-green-50
+                  to-white
+                "
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div
+                    className="
+                        h-14
+                        w-14
+                        rounded-2xl
+                        bg-gradient-to-r
+                        from-emerald-500
+                        to-green-600
+                        text-white
+                        flex
+                        items-center
+                        justify-center
+                        shadow-lg
+                      "
+                  >
+                    <BiBookOpen size={28} />
+                  </div>
+
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-800">
+                      {gradeName}
+                    </h2>
+
+                    <p className="text-sm text-gray-500 mt-1">
+                      {gradeClasses.length} class sections
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  className="
+                      bg-white
+                      border
+                      border-gray-200
+                      rounded-2xl
+                      px-4
+                      py-2
+                      shadow-sm
+                    "
+                >
+                  <p className="text-xs uppercase tracking-wide text-gray-500">
+                    Total
+                  </p>
+
+                  <p className="text-xl font-black text-gray-800">
+                    {gradeClasses.length}
+                  </p>
+                </div>
+              </div>
             </div>
 
-            {/* Class List */}
-            <div className=" divide-gray-200  w-full">
-              {gradeClasses.map((c) => (
-                <div
-                  key={c.id}
-                  className="
-                flex
-                flex-col
-                items-start
-                
-                px-2
-                py-4
-                hover:bg-gray-50
-                transition
-              "
-                >
-                  {/* Left */}
-                  <div className="w-full  ">
-                    <div className="flex items-center justify-between w-full">
-                      <h3 className="text-blue-900 font-bold text-sm uppercase">
-                        {c.section.toUpperCase()}
-                      </h3>
+            {/* Classes */}
+            <div className="p-5 space-y-4">
+              {gradeClasses.map((c) => {
+                const total =
+                  (c.enrollment[0]?.boys || 0) + (c.enrollment[0]?.girls || 0);
 
-                      {/* Total */}
+                return (
+                  <div
+                    key={c.id}
+                    className="
+                        rounded-3xl
+                        border
+                        border-gray-100
+                        bg-gray-50
+                        p-5
+                        hover:bg-emerald-50/40
+                        transition
+                      "
+                  >
+                    {/* Top */}
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <h3 className="text-xl font-bold text-gray-800 uppercase">
+                          {c.section}
+                        </h3>
+
+                        <p className="text-sm text-gray-500 mt-1">
+                          Class Section
+                        </p>
+                      </div>
+
                       <div
                         className="
-                   
-                    h-6
-                    px-2
-                    rounded
-                    bg-gray-500
-                    text-white
-                    text-xs
-                    font-semibold
-                    flex
-                    items-center
-                    justify-center
-                  "
+                            h-12
+                            min-w-[52px]
+                            px-3
+                            rounded-2xl
+                            bg-gradient-to-r
+                            from-emerald-500
+                            to-green-600
+                            text-white
+                            font-bold
+                            flex
+                            items-center
+                            justify-center
+                            shadow-md
+                          "
                       >
-                        {(c.enrollment[0]?.boys || 0) +
-                          (c.enrollment[0]?.girls || 0)}
+                        {total}
                       </div>
                     </div>
 
-                    <div className="my-1">
-                      <p className="text-sm text-gray-500 mt-1">
-                        Boys: {c.enrollment[0]?.boys || 0} | Girls:{" "}
-                        {c.enrollment[0]?.girls || 0}
-                      </p>
-                    </div>
-                  </div>
+                    {/* Stats */}
+                    <div className="flex items-center gap-4 mt-5">
+                      <div
+                        className="
+                            flex
+                            items-center
+                            gap-2
+                            rounded-2xl
+                            bg-white
+                            border
+                            border-gray-200
+                            px-4
+                            py-3
+                            shadow-sm
+                          "
+                      >
+                        <FaUsers className="text-emerald-600" />
 
-                  {/* Right */}
-                  <div className="flex items-center justify-between gap-3 w-full">
-                    <div className="flex gap-1">
-                      <Link
-                        href={{
-                          pathname: `/class/${year_label}/${c.grade}/${c.section.trim()}/enrollment`,
-                          query: { id: c.id },
-                        }}
-                        className="
-                    border
-                    border-gray-300
-                    bg-gradient-to-b
-                    from-white
-                    to-gray-100
-                    text-xs
-                    px-2
-                    py-1 
-                    rounded
-                    hover:bg-gray-50
-                  "
-                      >
-                        Enrollment
-                      </Link>
+                        <div>
+                          <p className="text-xs text-gray-500">Boys</p>
 
-                      <Link
-                        href={{
-                          pathname: `/class/${year_label}/${c.grade}/${c.section.trim()}/mps`,
-                          query: { id: c.id },
-                        }}
+                          <p className="font-bold text-gray-800">
+                            {c.enrollment[0]?.boys || 0}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div
                         className="
-                    border
-                    border-gray-300
-                    bg-gradient-to-b
-                    from-white
-                    to-gray-100
-                    text-xs
-                    px-2
-                    py-1 
-                    rounded
-                    hover:bg-gray-50
-                  "
+                            flex
+                            items-center
+                            gap-2
+                            rounded-2xl
+                            bg-white
+                            border
+                            border-gray-200
+                            px-4
+                            py-3
+                            shadow-sm
+                          "
                       >
-                        MPS
-                      </Link>
-                      <Link
-                        href={{
-                          pathname: `/class/${year_label}/${c.grade}/${c.section.trim()}/gpa`,
-                          query: { id: c.id },
-                        }}
-                        className="
-                    border
-                    border-gray-300
-                    bg-gradient-to-b
-                    from-white
-                    to-gray-100
-                    text-xs
-                    px-2
-                    py-1 
-                    rounded
-                    hover:bg-gray-50
-                  "
-                      >
-                        GPA
-                      </Link>
+                        <FaUsers className="text-pink-500" />
+
+                        <div>
+                          <p className="text-xs text-gray-500">Girls</p>
+
+                          <p className="font-bold text-gray-800">
+                            {c.enrollment[0]?.girls || 0}
+                          </p>
+                        </div>
+                      </div>
                     </div>
 
-                    {/* Delete */}
-                    {profile.role === "admin" && (
-                      <button
-                        onClick={(e) => handleDeleteClick(e, c)}
-                        className="
-                      text-gray-500
-                      hover:text-red-700
-                    "
-                      >
-                        <FaTrash size={15} />
-                      </button>
-                    )}
+                    {/* Actions */}
+                    <div className="flex flex-wrap items-center justify-between gap-3 mt-5">
+                      <div className="flex flex-wrap gap-2">
+                        <Link
+                          href={{
+                            pathname: `/class/${year_label}/${c.grade}/${c.section.trim()}/enrollment`,
+                            query: {
+                              id: c.id,
+                            },
+                          }}
+                          className="
+                              inline-flex
+                              items-center
+                              gap-2
+                              rounded-2xl
+                              bg-white
+                              border
+                              border-gray-200
+                              px-4
+                              py-2.5
+                              text-sm
+                              font-medium
+                              text-gray-700
+                              shadow-sm
+                              hover:bg-gray-50
+                            "
+                        >
+                          <FaUsers />
+                          Enrollment
+                        </Link>
+
+                        <Link
+                          href={{
+                            pathname: `/class/${year_label}/${c.grade}/${c.section.trim()}/mps`,
+                            query: {
+                              id: c.id,
+                            },
+                          }}
+                          className="
+                              inline-flex
+                              items-center
+                              gap-2
+                              rounded-2xl
+                              bg-white
+                              border
+                              border-gray-200
+                              px-4
+                              py-2.5
+                              text-sm
+                              font-medium
+                              text-gray-700
+                              shadow-sm
+                              hover:bg-gray-50
+                            "
+                        >
+                          <BiBarChartAlt2 />
+                          MPS
+                        </Link>
+
+                        <Link
+                          href={{
+                            pathname: `/class/${year_label}/${c.grade}/${c.section.trim()}/gpa`,
+                            query: {
+                              id: c.id,
+                            },
+                          }}
+                          className="
+                              inline-flex
+                              items-center
+                              gap-2
+                              rounded-2xl
+                              bg-white
+                              border
+                              border-gray-200
+                              px-4
+                              py-2.5
+                              text-sm
+                              font-medium
+                              text-gray-700
+                              shadow-sm
+                              hover:bg-gray-50
+                            "
+                        >
+                          <BiSpreadsheet />
+                          GPA
+                        </Link>
+                      </div>
+
+                      {/* Delete */}
+                      {profile.role === "admin" && (
+                        <button
+                          onClick={(e) => handleDeleteClick(e, c)}
+                          className="
+                              h-11
+                              w-11
+                              rounded-2xl
+                              bg-red-50
+                              text-red-600
+                              flex
+                              items-center
+                              justify-center
+                              hover:bg-red-100
+                              transition
+                            "
+                        >
+                          <FaTrash size={15} />
+                        </button>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         ))}
-
-        {classes.length === 0 && (
-          <div className="text-center py-10 text-gray-500">No classes yet</div>
-        )}
       </div>
+
+      {/* Empty */}
+      {classes.length === 0 && (
+        <div
+          className="
+            bg-white
+            rounded-[28px]
+            border
+            border-gray-200
+            shadow-[0_10px_35px_rgba(0,0,0,0.05)]
+            p-16
+            text-center
+          "
+        >
+          <h3 className="text-2xl font-bold text-gray-700">No Classes Yet</h3>
+
+          <p className="text-gray-500 mt-2">
+            Start by creating your first class section.
+          </p>
+        </div>
+      )}
     </div>
   );
 }

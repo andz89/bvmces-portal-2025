@@ -1,52 +1,119 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-import { BiPlus, BiBookOpen, BiCalendar, BiX } from "react-icons/bi";
-
-import { createBulkGPA } from "./actions";
+import { BiSave, BiX, BiEditAlt } from "react-icons/bi";
 
 import FullPageLoader from "@/app/components/loader/FullPageLoader";
 
+import { updateGPA } from "./actions";
+
 import toast from "react-hot-toast";
 
-export default function BulkAddGPAModal({
-  open,
+export default function EditGPAModal({
+  openEdit,
   onClose,
+  initialData,
   school_year,
-  class_id,
-  section,
-  grade,
 }) {
   const [loading, setLoading] = useState(false);
 
-  const [quarter, setQuarter] = useState("");
+  const [formData, setFormData] = useState({
+    subject: "",
 
-  if (!open) return null;
+    not_meet_male: 0,
+    not_meet_female: 0,
 
-  async function handleSubmit() {
-    if (!quarter) {
-      toast.error("Please select a quarter.");
+    fs_male: 0,
+    fs_female: 0,
 
-      return;
+    s_male: 0,
+    s_female: 0,
+
+    vs_male: 0,
+    vs_female: 0,
+
+    e_male: 0,
+    e_female: 0,
+  });
+
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        grade: initialData.class.grade || "",
+
+        quarter: initialData.quarter || "",
+
+        section: initialData.class.section || "",
+
+        subject: initialData.subject || "",
+
+        not_meet_male: initialData.not_meet_male || 0,
+
+        not_meet_female: initialData.not_meet_female || 0,
+
+        fs_male: initialData.fs_male || 0,
+
+        fs_female: initialData.fs_female || 0,
+
+        s_male: initialData.s_male || 0,
+
+        s_female: initialData.s_female || 0,
+
+        vs_male: initialData.vs_male || 0,
+
+        vs_female: initialData.vs_female || 0,
+
+        e_male: initialData.e_male || 0,
+
+        e_female: initialData.e_female || 0,
+      });
     }
+  }, [initialData]);
+
+  if (!openEdit) return null;
+
+  function handleChange(e) {
+    const { name, value, type } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+
+      [name]: type === "number" ? Number(value) : value,
+    }));
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
 
     setLoading(true);
 
-    try {
-      await createBulkGPA({
-        school_year,
-        section,
-        grade,
-        quarter,
-        class_id,
-      });
+    const class_id = initialData.class_id;
 
-      toast.success("GPA created successfully.");
+    const quarter = initialData.quarter;
+
+    const subject = initialData.subject;
+
+    const grade = initialData.class.grade;
+
+    const section = initialData.class.section;
+
+    try {
+      await updateGPA(
+        class_id,
+        quarter,
+        subject,
+        formData,
+        grade,
+        section,
+        school_year,
+      );
+
+      toast.success("GPA updated successfully.");
 
       onClose();
     } catch (err) {
-      toast.error(err.message);
+      toast.error(err.message || "Something went wrong.");
     } finally {
       setLoading(false);
     }
@@ -69,8 +136,59 @@ export default function BulkAddGPAModal({
     focus:ring-emerald-100
   `;
 
+  const categories = [
+    {
+      title: "Failed",
+      color: "from-red-500 to-rose-600",
+
+      male: "not_meet_male",
+
+      female: "not_meet_female",
+    },
+
+    {
+      title: "Fairly Satisfactory",
+
+      color: "from-orange-500 to-amber-600",
+
+      male: "fs_male",
+
+      female: "fs_female",
+    },
+
+    {
+      title: "Satisfactory",
+
+      color: "from-blue-500 to-cyan-600",
+
+      male: "s_male",
+
+      female: "s_female",
+    },
+
+    {
+      title: "Very Satisfactory",
+
+      color: "from-emerald-500 to-green-600",
+
+      male: "vs_male",
+
+      female: "vs_female",
+    },
+
+    {
+      title: "Excellent",
+
+      color: "from-violet-500 to-purple-600",
+
+      male: "e_male",
+
+      female: "e_female",
+    },
+  ];
+
   return (
-    <div className="fixed inset-0 z-51 overflow-y-auto  ">
+    <div className="fixed inset-0 z-[9999] overflow-y-auto">
       {loading && <FullPageLoader />}
 
       {/* Overlay */}
@@ -86,11 +204,12 @@ export default function BulkAddGPAModal({
 
       {/* Modal */}
       <div className="relative min-h-screen flex items-center justify-center p-4">
-        <div
+        <form
+          onSubmit={handleSubmit}
           className="
             relative
             w-full
-            max-w-3xl
+            max-w-6xl
             overflow-hidden
             rounded-[32px]
             bg-white
@@ -131,17 +250,16 @@ export default function BulkAddGPAModal({
                     justify-center
                   "
                 >
-                  <BiPlus size={30} />
+                  <BiEditAlt size={30} />
                 </div>
 
                 <div>
                   <h2 className="text-3xl font-black text-white">
-                    Create GPA Records
+                    Edit GPA Record
                   </h2>
 
                   <p className="text-emerald-100 mt-2">
-                    Generate GPA templates and learner performance records
-                    instantly.
+                    Update learner performance statistics and GPA counts.
                   </p>
                 </div>
               </div>
@@ -157,12 +275,20 @@ export default function BulkAddGPAModal({
                     {school_year}
                   </p>
                 </div>
+
+                <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-2xl px-4 py-3">
+                  <p className="text-xs uppercase text-emerald-100">Quarter</p>
+
+                  <p className="text-lg font-bold text-white mt-1">
+                    {formData.quarter}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Body */}
-          <div className="bg-[#f5f7fb] px-6 md:px-8 py-8">
+          <div className="max-h-[75vh] overflow-y-auto bg-[#f5f7fb] px-6 md:px-8 py-8">
             {/* Summary */}
             <div
               className="
@@ -192,7 +318,7 @@ export default function BulkAddGPAModal({
                   <p className="text-xs uppercase text-gray-500">Grade</p>
 
                   <h3 className="text-lg font-bold text-gray-800 mt-1">
-                    Grade {grade}
+                    Grade {formData.grade}
                   </h3>
                 </div>
 
@@ -211,11 +337,11 @@ export default function BulkAddGPAModal({
                   <p className="text-xs uppercase text-gray-500">Section</p>
 
                   <h3 className="text-lg font-bold text-gray-800 mt-1 uppercase">
-                    {section}
+                    {formData.section}
                   </h3>
                 </div>
 
-                {/* GPA */}
+                {/* Subject */}
                 <div
                   className="
                     rounded-2xl
@@ -227,71 +353,94 @@ export default function BulkAddGPAModal({
                     shadow-sm
                   "
                 >
-                  <p className="text-xs uppercase text-gray-500">Record Type</p>
+                  <p className="text-xs uppercase text-gray-500">Subject</p>
 
-                  <h3 className="text-lg font-bold text-gray-800 mt-1">GPA</h3>
+                  <h3 className="text-lg font-bold text-gray-800 mt-1 uppercase">
+                    {formData.subject}
+                  </h3>
                 </div>
               </div>
             </div>
 
-            {/* Quarter Selection */}
-            <div
-              className="
-                bg-white
-                rounded-3xl
-                border
-                border-gray-100
-                p-6
-                shadow-sm
-              "
-            >
-              <div className="flex items-center gap-3 mb-5">
+            {/* GPA Categories */}
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              {categories.map((category) => (
                 <div
+                  key={category.title}
                   className="
-                    h-12
-                    w-12
-                    rounded-2xl
-                    bg-gradient-to-r
-                    from-emerald-500
-                    to-green-600
-                    text-white
-                    flex
-                    items-center
-                    justify-center
-                    shadow-lg
-                  "
+                      bg-white
+                      rounded-3xl
+                      border
+                      border-gray-100
+                      p-6
+                      shadow-sm
+                    "
                 >
-                  <BiCalendar size={24} />
+                  {/* Card Header */}
+                  <div className="flex items-center gap-3 mb-5">
+                    <div
+                      className={`
+                          h-12
+                          w-12
+                          rounded-2xl
+                          bg-gradient-to-r
+                          ${category.color}
+                          text-white
+                          flex
+                          items-center
+                          justify-center
+                          font-bold
+                          shadow-lg
+                        `}
+                    >
+                      {category.title.charAt(0)}
+                    </div>
+
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-800">
+                        {category.title}
+                      </h3>
+
+                      <p className="text-sm text-gray-500">
+                        Learner count input
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Inputs */}
+                  <div className="grid grid-cols-2 gap-4">
+                    {/* Male */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-600 mb-2">
+                        Male
+                      </label>
+
+                      <input
+                        type="number"
+                        name={category.male}
+                        value={formData[category.male]}
+                        onChange={handleChange}
+                        className={inputClass}
+                      />
+                    </div>
+
+                    {/* Female */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-600 mb-2">
+                        Female
+                      </label>
+
+                      <input
+                        type="number"
+                        name={category.female}
+                        value={formData[category.female]}
+                        onChange={handleChange}
+                        className={inputClass}
+                      />
+                    </div>
+                  </div>
                 </div>
-
-                <div>
-                  <h3 className="text-xl font-bold text-gray-800">
-                    Select Quarter
-                  </h3>
-
-                  <p className="text-sm text-gray-500">
-                    Choose which quarter to generate GPA records for.
-                  </p>
-                </div>
-              </div>
-
-              <input readOnly type="hidden" value={class_id} />
-
-              <select
-                value={quarter}
-                onChange={(e) => setQuarter(e.target.value)}
-                className={inputClass}
-              >
-                <option value="">Select Quarter</option>
-
-                <option value="1">1st Quarter</option>
-
-                <option value="2">2nd Quarter</option>
-
-                <option value="3">3rd Quarter</option>
-
-                <option value="4">4th Quarter</option>
-              </select>
+              ))}
             </div>
           </div>
 
@@ -314,6 +463,7 @@ export default function BulkAddGPAModal({
           >
             {/* Cancel */}
             <button
+              type="button"
               onClick={onClose}
               className="
                 w-full
@@ -339,9 +489,9 @@ export default function BulkAddGPAModal({
               <span>Cancel</span>
             </button>
 
-            {/* Create */}
+            {/* Save */}
             <button
-              onClick={handleSubmit}
+              type="submit"
               disabled={loading}
               className="
                 w-full
@@ -364,12 +514,12 @@ export default function BulkAddGPAModal({
                 disabled:opacity-60
               "
             >
-              <BiBookOpen size={20} />
+              <BiSave size={20} />
 
-              <span>{loading ? "Creating..." : "Create Records"}</span>
+              <span>{loading ? "Saving..." : "Save Changes"}</span>
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

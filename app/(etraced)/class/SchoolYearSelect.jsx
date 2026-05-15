@@ -48,9 +48,9 @@ export default function SchoolYearSelect({
     <>
       {isPending && <FullPageLoader />}
 
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+      <div className="flex flex-col    w-full gap-3 ">
         {/* Select */}
-        <div className="relative w-full sm:w-[250px]">
+        <div className="relative w-full  w-full">
           <select
             value={currentYear}
             onChange={handleChange}
@@ -100,34 +100,39 @@ export default function SchoolYearSelect({
             </svg>
           </div>
         </div>
+        <div className=" w-full">
+          {/* Button */}
+          {profile.role === "admin" && (
+            <button
+              onClick={() => setOpen(true)}
+              className="
 
-        {/* Button */}
-        {profile.role === "admin" && (
-          <button
-            onClick={() => setOpen(true)}
-            className="
-    inline-flex
+    w-full
     items-center
     gap-2
-    rounded
+    rounded-2xl
     border
     border-gray-300
     bg-gradient-to-b
     from-white
     to-gray-100
     px-4
-    py-2
+    py-3
+    cursor-pointer
+    hover:bg-gradient-to-t
+   
+   
     text-sm
     text-gray-700
     shadow-sm
     transition
-    hover:bg-gray-50
-    active:translate-y-[1px]
+  
   "
-          >
-            Create School Year
-          </button>
-        )}
+            >
+              Create School Year
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Modal */}

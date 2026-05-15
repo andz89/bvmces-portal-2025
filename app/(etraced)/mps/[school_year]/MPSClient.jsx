@@ -234,7 +234,7 @@ const MPSClient = ({ profile, mps, school_year, classData }) => {
       </div>
 
       {/* Content */}
-      <div className="w-full mx-auto px-20 md:px-10 py-8">
+      <div className="w-full mx-auto px-4 md:px-10 py-8">
         {/* Toggle */}
         <div
           className="
@@ -313,6 +313,7 @@ const MPSClient = ({ profile, mps, school_year, classData }) => {
                   setDeleteId={setDeleteId}
                   setInitialData={setInitialData}
                   setOpenForm={setOpenForm}
+                  school_year={school_year}
                 />
               ) : (
                 <ConsolidatedTable

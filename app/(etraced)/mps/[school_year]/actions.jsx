@@ -130,40 +130,40 @@ export async function getClass(school_year) {
 
   return { classes };
 }
-export async function deleteMPSReport(prevState, formData) {
+export async function deleteMPSReport({ rowData, password, school_year }) {
+  const { class_id, quarter } = rowData;
+
+  if (password !== process.env.DELETE_PASSWORD) {
+    return { message: "invalid_password" };
+  }
   const supabase = await createClient();
 
-  const id = formData.get("id");
-  const password = formData.get("password");
-  const pathname = formData.get("pathname");
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return { error: "Unauthorized" };
-  }
-
-  if (password !== "132289132289") {
-    return { error: "Wrong password" };
-  }
-
-  const { error } = await supabase.from("mps").delete().eq("id", id);
+  const { error } = await supabase
+    .from("mps")
+    .delete()
+    .eq("id", rowData.id)
+    .eq("class_id", class_id)
+    .eq("quarter", quarter);
 
   if (error) {
-    return { error: error.message };
+    return {
+      success: false,
+      message: error.message,
+    };
   }
+  revalidatePath(`/mps/${school_year}`);
 
-  revalidatePath("/mps");
-
-  return { success: true };
+  return {
+    success: true,
+    message: "GPA deleted successfully",
+  };
 }
 
-export async function updateMPSReport(id, prevState, formData) {
+export async function updateMPSReport(prevState, formData) {
+  const id = formData.get("id");
+
   const rawData = {
     class_id: formData.get("class_id"),
-
     quarter: formData.get("quarter"),
 
     gmrc: formData.get("gmrc"),
@@ -203,8 +203,6 @@ export async function updateMPSReport(id, prevState, formData) {
 
   // sanitized update data
   const updatedData = {
-    class_id: rawData.class_id,
-
     quarter: rawData.quarter,
 
     gmrc: rawData.gmrc ? Number(rawData.gmrc) : null,
@@ -231,7 +229,12 @@ export async function updateMPSReport(id, prevState, formData) {
     mps_source: rawData.mps_source,
   };
 
-  const { error } = await supabase.from("mps").update(updatedData).eq("id", id);
+  const { error } = await supabase
+    .from("mps")
+    .update(updatedData)
+    .eq("id", id)
+    .eq("quarter", rawData.quarter)
+    .eq("class_id", rawData.class_id);
 
   if (error) {
     return { error: error.message };

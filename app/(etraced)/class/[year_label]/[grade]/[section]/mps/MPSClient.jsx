@@ -17,7 +17,7 @@ const MPSClient = ({ profile, mps, school_year, class_id, section, grade }) => {
 
       const timer = setTimeout(() => {
         setSuccessMessage("");
-      }, 3000);
+      }, 5000);
 
       return () => clearTimeout(timer);
     }
@@ -79,7 +79,7 @@ const MPSClient = ({ profile, mps, school_year, class_id, section, grade }) => {
         <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-cyan-300/10 rounded-full blur-3xl"></div>
 
-        <div className="relative max-w-7xl mx-auto px-4 md:px-6 py-10">
+        <div className="relative   mx-auto px-4 md:px-10 py-10">
           <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-8">
             {/* Left */}
             <div>

@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { BiBookOpen, BiCalendar, BiPlus, BiX } from "react-icons/bi";
+
 import { createEnrollment } from "./actions";
 
 import FullPageLoader from "../../../../../../components/loader/FullPageLoader";
@@ -31,85 +33,277 @@ export default function CreateEnrollmentModal({
     }
   }
 
+  const months = [
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+    "January",
+    "February",
+    "March",
+    "April",
+  ];
+
   return (
     <>
       {/* Button */}
       {enrollmentData && enrollmentData.length > 0 ? null : (
         <button
           onClick={() => setOpen(true)}
-          className="bg-slate-800 hover:bg-slate-900 hover:bg-blue-700 text-white px-4 py-2 rounded-xl shadow-sm transition"
+          className="
+            inline-flex
+            items-center
+            gap-2
+            rounded-2xl
+            bg-gradient-to-r
+            from-emerald-600
+            to-green-600
+            px-5
+            py-3
+            text-white
+            font-semibold
+            shadow-lg
+            hover:scale-[1.02]
+            transition
+          "
         >
-          Create Enrollment
+          <BiPlus size={20} />
+
+          <span>Create Enrollment</span>
         </button>
       )}
 
       {/* Modal */}
       {open && (
-        <div>
-          {" "}
-          <div className="bg-gray-100/80  fixed z-[9999]     w-full h-full overflow-auto top-0    ">
-            {loading && <FullPageLoader />}
-            <div className="bg-white p-6 rounded-xl shadow space-y-6 w-[700px] mx-auto my-5">
-              {/* Header */}
-              <div className="border-b border-gray-200 px-6 py-5">
-                <h2 className="text-xl font-semibold text-gray-800">
-                  Create Enrollment
-                </h2>
+        <div className="fixed inset-0 z-[9999] overflow-y-auto">
+          {loading && <FullPageLoader />}
 
-                <p className="text-sm text-gray-500 mt-1">
-                  This will automatically generate all school months.
-                </p>
+          {/* Overlay */}
+          <div
+            className="
+              fixed
+              inset-0
+              bg-black/40
+              backdrop-blur-sm
+            "
+            onClick={() => setOpen(false)}
+          />
+
+          {/* Modal */}
+          <div className="relative min-h-screen flex items-center justify-center p-4">
+            <div
+              className="
+                relative
+                w-full
+                max-w-3xl
+                overflow-hidden
+                rounded-[32px]
+                bg-white
+                shadow-[0_25px_80px_rgba(0,0,0,0.25)]
+              "
+            >
+              {/* Header */}
+              <div
+                className="
+                  relative
+                  overflow-hidden
+                  bg-gradient-to-r
+                  from-emerald-600
+                  via-green-600
+                  to-teal-600
+                  px-8
+                  py-7
+                "
+              >
+                {/* Glow */}
+                <div className="absolute right-0 top-0 h-40 w-40 bg-white/10 rounded-full blur-3xl"></div>
+
+                <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+                  {/* Left */}
+                  <div className="flex items-start gap-4">
+                    <div
+                      className="
+                        h-16
+                        w-16
+                        rounded-2xl
+                        bg-white/10
+                        backdrop-blur-xl
+                        border
+                        border-white/10
+                        text-white
+                        flex
+                        items-center
+                        justify-center
+                      "
+                    >
+                      <BiBookOpen size={30} />
+                    </div>
+
+                    <div>
+                      <h2 className="text-3xl font-black text-white">
+                        Create Enrollment
+                      </h2>
+
+                      <p className="text-emerald-100 mt-2">
+                        Generate monthly enrollment records for the entire
+                        school year.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* School Year */}
+                  <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-2xl px-5 py-4">
+                    <p className="text-xs uppercase text-emerald-100">
+                      School Year
+                    </p>
+
+                    <p className="text-lg font-bold text-white mt-1">
+                      {year_label}
+                    </p>
+                  </div>
+                </div>
               </div>
 
               {/* Body */}
-              <div className="p-6 space-y-5">
-                {/* Grade */}
-                <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
-                  <p className="text-xs uppercase tracking-wide text-gray-500">
-                    Grade
-                  </p>
+              <div className="bg-[#f5f7fb] px-6 md:px-8 py-8">
+                {/* Summary */}
+                <div
+                  className="
+                    rounded-3xl
+                    bg-gradient-to-r
+                    from-emerald-50
+                    to-green-50
+                    border
+                    border-emerald-100
+                    p-6
+                    mb-8
+                  "
+                >
+                  <div className="flex flex-wrap items-center gap-4">
+                    {/* Grade */}
+                    <div
+                      className="
+                        rounded-2xl
+                        bg-white
+                        border
+                        border-emerald-100
+                        px-5
+                        py-4
+                        shadow-sm
+                      "
+                    >
+                      <p className="text-xs uppercase text-gray-500">Grade</p>
 
-                  <p className="text-lg font-semibold text-gray-800 mt-1">
-                    {grade.toUpperCase().replace("-", " ")}
-                  </p>
-                </div>
+                      <h3 className="text-lg font-bold text-gray-800 mt-1">
+                        Grade {grade.toUpperCase().replace("-", " ")}
+                      </h3>
+                    </div>
 
-                {/* Section */}
-                <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
-                  <p className="text-xs uppercase tracking-wide text-gray-500">
-                    Section
-                  </p>
+                    {/* Section */}
+                    <div
+                      className="
+                        rounded-2xl
+                        bg-white
+                        border
+                        border-emerald-100
+                        px-5
+                        py-4
+                        shadow-sm
+                      "
+                    >
+                      <p className="text-xs uppercase text-gray-500">Section</p>
 
-                  <p className="text-lg font-semibold text-gray-800 mt-1">
-                    {section.toUpperCase()}
-                  </p>
+                      <h3 className="text-lg font-bold text-gray-800 mt-1 uppercase">
+                        {section}
+                      </h3>
+                    </div>
+
+                    {/* Records */}
+                    <div
+                      className="
+                        rounded-2xl
+                        bg-white
+                        border
+                        border-emerald-100
+                        px-5
+                        py-4
+                        shadow-sm
+                      "
+                    >
+                      <p className="text-xs uppercase text-gray-500">Months</p>
+
+                      <h3 className="text-lg font-bold text-gray-800 mt-1">
+                        {months.length} Records
+                      </h3>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Months */}
-                <div className="border border-blue-100 bg-blue-50 rounded-xl p-4">
-                  <p className="text-sm font-medium text-blue-700 mb-3">
-                    School Months to Create
-                  </p>
+                <div
+                  className="
+                    bg-white
+                    rounded-3xl
+                    border
+                    border-gray-100
+                    p-6
+                    shadow-sm
+                  "
+                >
+                  <div className="flex items-center gap-3 mb-6">
+                    <div
+                      className="
+                        h-12
+                        w-12
+                        rounded-2xl
+                        bg-gradient-to-r
+                        from-emerald-500
+                        to-green-600
+                        text-white
+                        flex
+                        items-center
+                        justify-center
+                        shadow-lg
+                      "
+                    >
+                      <BiCalendar size={24} />
+                    </div>
 
-                  <div className="grid grid-cols-2 gap-2 text-sm text-blue-900">
-                    {[
-                      "June",
-                      "July",
-                      "August",
-                      "September",
-                      "October",
-                      "November",
-                      "December",
-                      "January",
-                      "February",
-                      "March",
-                      "April",
-                    ].map((month) => (
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-800">
+                        School Months
+                      </h3>
+
+                      <p className="text-sm text-gray-500">
+                        Monthly enrollment records to be generated
+                        automatically.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                    {months.map((month) => (
                       <div
                         key={month}
-                        className="bg-white border border-blue-100 rounded-lg px-3 py-2"
+                        className="
+                          rounded-2xl
+                          border
+                          border-emerald-100
+                          bg-gradient-to-r
+                          from-emerald-50
+                          to-green-50
+                          px-4
+                          py-4
+                          text-center
+                          shadow-sm
+                        "
                       >
-                        {month}
+                        <p className="font-semibold text-emerald-700">
+                          {month}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -117,22 +311,79 @@ export default function CreateEnrollmentModal({
               </div>
 
               {/* Footer */}
-              <div className="border-t border-gray-200 px-6 py-4 flex justify-end gap-3">
+              <div
+                className="
+                  border-t
+                  border-gray-100
+                  bg-white
+                  px-6
+                  md:px-8
+                  py-5
+                  flex
+                  flex-col
+                  sm:flex-row
+                  items-center
+                  justify-end
+                  gap-3
+                "
+              >
+                {/* Cancel */}
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
                   disabled={loading}
-                  className="px-4 py-2 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-50"
+                  className="
+                    w-full
+                    sm:w-auto
+                    inline-flex
+                    items-center
+                    justify-center
+                    gap-2
+                    rounded-2xl
+                    border
+                    border-gray-200
+                    bg-white
+                    px-6
+                    py-3
+                    font-medium
+                    text-gray-700
+                    hover:bg-gray-50
+                    transition
+                  "
                 >
-                  Cancel
+                  <BiX size={20} />
+
+                  <span>Cancel</span>
                 </button>
 
+                {/* Create */}
                 <button
                   onClick={handleCreate}
                   disabled={loading}
-                  className="px-5 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+                  className="
+                    w-full
+                    sm:w-auto
+                    inline-flex
+                    items-center
+                    justify-center
+                    gap-2
+                    rounded-2xl
+                    bg-gradient-to-r
+                    from-emerald-600
+                    to-green-600
+                    px-7
+                    py-3
+                    font-semibold
+                    text-white
+                    shadow-lg
+                    hover:scale-[1.01]
+                    transition
+                    disabled:opacity-60
+                  "
                 >
-                  {loading ? "Creating..." : "Create Enrollment"}
+                  <BiPlus size={20} />
+
+                  <span>{loading ? "Creating..." : "Create Enrollment"}</span>
                 </button>
               </div>
             </div>

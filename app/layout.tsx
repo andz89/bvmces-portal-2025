@@ -36,9 +36,53 @@ export default function RootLayout({
       >
         <Navbar />
         <Toaster
-          position="top-center"
+          position="bottom-right"
           toastOptions={{
             duration: 4000,
+
+            className: `
+        !bg-gradient-to-r
+        !from-emerald-600
+        !to-green-600
+        !text-white
+        !rounded-2xl
+        !px-6
+        !py-5
+        !text-[16px]
+        !font-semibold
+        !shadow-2xl
+        !min-w-[340px]
+        !border
+        !border-white/10
+      `,
+
+            success: {
+              iconTheme: {
+                primary: "#ffffff",
+                secondary: "#16a34a",
+              },
+            },
+
+            error: {
+              className: `
+          !bg-gradient-to-r
+          !from-red-500
+          !to-rose-600
+          !text-white
+          !rounded-2xl
+          !px-6
+          !py-5
+          !text-[16px]
+          !font-semibold
+          !shadow-2xl
+          !min-w-[340px]
+        `,
+
+              iconTheme: {
+                primary: "#ffffff",
+                secondary: "#ef4444",
+              },
+            },
           }}
         />
         {children}

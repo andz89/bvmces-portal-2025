@@ -55,6 +55,23 @@ export async function createClass({
 }) {
   const supabase = await createClient();
 
+  // ✅ Check if section already exists in the same school year
+  const { data: existingClass, error: checkError } = await supabase
+    .from("class")
+    .select("id")
+    .eq("school_year_id", school_year_id)
+    .eq("section", section)
+    .maybeSingle();
+
+  if (checkError) {
+    return { message: checkError.code };
+  }
+
+  if (existingClass) {
+    return { message: "section_exists" };
+  }
+
+  // ✅ Insert new class
   const { error } = await supabase.from("class").insert({
     school_year_id,
     school_year: year_label,
@@ -64,9 +81,9 @@ export async function createClass({
 
   if (error) {
     return { message: error.code };
-  } else {
-    return { message: "true" };
   }
+
+  return { message: "true" };
 }
 
 export async function deleteClass(classId, password) {

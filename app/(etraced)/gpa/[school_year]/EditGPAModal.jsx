@@ -1,20 +1,14 @@
 "use client";
 
 import FullPageLoader from "../../../components/loader/FullPageLoader";
+
 import { useState, useEffect } from "react";
+
+import { BiSave, BiX, BiEditAlt } from "react-icons/bi";
+
 import { updateGPA } from "./actions";
+
 import toast from "react-hot-toast";
-const SUBJECTS = [
-  "gmrc",
-  "epp/MTB",
-  "filipino",
-  "english",
-  "math",
-  "science",
-  "ap",
-  "mapeh",
-  "reading",
-];
 
 export default function EditGPAModal({
   openEdit,
@@ -23,6 +17,25 @@ export default function EditGPAModal({
   school_year,
 }) {
   const [loading, setLoading] = useState(false);
+
+  const [formData, setFormData] = useState({
+    subject: "",
+
+    not_meet_male: 0,
+    not_meet_female: 0,
+
+    fs_male: 0,
+    fs_female: 0,
+
+    s_male: 0,
+    s_female: 0,
+
+    vs_male: 0,
+    vs_female: 0,
+
+    e_male: 0,
+    e_female: 0,
+  });
 
   useEffect(() => {
     if (initialData) {
@@ -57,25 +70,6 @@ export default function EditGPAModal({
     }
   }, [initialData]);
 
-  const [formData, setFormData] = useState({
-    subject: "",
-
-    not_meet_male: 0,
-    not_meet_female: 0,
-
-    fs_male: 0,
-    fs_female: 0,
-
-    s_male: 0,
-    s_female: 0,
-
-    vs_male: 0,
-    vs_female: 0,
-
-    e_male: 0,
-    e_female: 0,
-  });
-
   if (!openEdit) return null;
 
   function handleChange(e) {
@@ -91,13 +85,18 @@ export default function EditGPAModal({
     e.preventDefault();
 
     setLoading(true);
+
     const class_id = initialData.class_id;
+
     const quarter = initialData.quarter;
+
     const subject = initialData.subject;
 
     try {
       await updateGPA(class_id, quarter, subject, formData, school_year);
+
       toast.success("GPA updated successfully.");
+
       onClose();
     } catch (err) {
       toast.error(err.message || "Something went wrong.");
@@ -106,78 +105,388 @@ export default function EditGPAModal({
     }
   }
 
+  const inputClass = `
+    w-full
+    rounded-2xl
+    border
+    border-gray-200
+    bg-white
+    px-4
+    py-3
+    text-sm
+    text-gray-700
+    outline-none
+    transition
+    focus:border-emerald-500
+    focus:ring-4
+    focus:ring-emerald-100
+  `;
+
   return (
-    <div>
-      <div>
-        {loading && <FullPageLoader />}
-        <form onSubmit={handleSubmit}>
-          <div className="bg-gray-100/80  fixed  z-[9999]  w-full h-full overflow-auto top-0    ">
-            <div className="bg-white p-6 rounded-xl shadow space-y-6 w-[700px] mx-auto my-5">
-              <h2 className="text-2xl font-bold mb-6">Update GPA</h2>
-              {/* TOP INFO */}
-              <div className=" gap-4">
-                <div className="rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 p-4 border border-blue-100">
-                  <div className="space-y-1">
-                    <p className="text-md text-gray-900 font-medium ">
-                      Quarter {formData.quarter} / Grade {formData.grade} -{" "}
-                      {formData.section?.toUpperCase()} /{" "}
-                      {formData.subject.toUpperCase()}
-                    </p>
-                  </div>
+    <div className="fixed inset-0 z-[9999] overflow-y-auto">
+      {loading && <FullPageLoader />}
+
+      {/* Overlay */}
+      <div
+        className="
+          fixed
+          inset-0
+          bg-black/40
+          backdrop-blur-sm
+        "
+        onClick={onClose}
+      />
+
+      {/* Modal */}
+      <div className="relative min-h-screen flex items-center justify-center p-4">
+        <form
+          onSubmit={handleSubmit}
+          className="
+            relative
+            w-full
+            max-w-5xl
+            overflow-hidden
+            rounded-[32px]
+            bg-white
+            shadow-[0_25px_80px_rgba(0,0,0,0.25)]
+          "
+        >
+          {/* Header */}
+          <div
+            className="
+              relative
+              overflow-hidden
+              bg-gradient-to-r
+              from-emerald-600
+              via-green-600
+              to-teal-600
+              px-8
+              py-7
+            "
+          >
+            {/* Glow */}
+            <div className="absolute right-0 top-0 h-40 w-40 bg-white/10 rounded-full blur-3xl"></div>
+
+            <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+              {/* Left */}
+              <div className="flex items-start gap-4">
+                <div
+                  className="
+                    h-16
+                    w-16
+                    rounded-2xl
+                    bg-white/10
+                    backdrop-blur-xl
+                    border
+                    border-white/10
+                    text-white
+                    flex
+                    items-center
+                    justify-center
+                  "
+                >
+                  <BiEditAlt size={30} />
+                </div>
+
+                <div>
+                  <h2 className="text-3xl font-black text-white">
+                    Edit GPA Record
+                  </h2>
+
+                  <p className="text-emerald-100 mt-2">
+                    Update learner performance statistics and GPA counts.
+                  </p>
                 </div>
               </div>
 
-              {/* GPA COUNTS */}
-              <div className="flex flex-col gap-4  ">
-                {[
-                  ["not_meet_male", "Failed Male"],
-                  ["not_meet_female", "Failed Female"],
+              {/* Info Cards */}
+              <div className="flex flex-wrap gap-3">
+                <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-2xl px-4 py-3">
+                  <p className="text-xs uppercase text-emerald-100">
+                    School Year
+                  </p>
 
-                  ["fs_male", "FS Male"],
-                  ["fs_female", "FS Female"],
+                  <p className="text-lg font-bold text-white mt-1">
+                    {school_year}
+                  </p>
+                </div>
 
-                  ["s_male", "S Male"],
-                  ["s_female", "S Female"],
+                <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-2xl px-4 py-3">
+                  <p className="text-xs uppercase text-emerald-100">Quarter</p>
 
-                  ["vs_male", "VS Male"],
-                  ["vs_female", "VS Female"],
-
-                  ["e_male", "Excellent Male"],
-                  ["e_female", "Excellent Female"],
-                ].map(([name, label]) => (
-                  <div key={name}>
-                    <label className="block text-sm mb-1">{label}</label>
-
-                    <input
-                      type="number"
-                      name={name}
-                      value={formData[name]}
-                      onChange={handleChange}
-                      className="w-full border rounded p-2"
-                    />
-                  </div>
-                ))}
-              </div>
-
-              {/* ACTIONS */}
-              <div className="flex gap-2 justify-end w-full index-9999 fixed  top-5 right-5">
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="px-4 py-2 border border-red-400 rounded cursor-pointer bg-red-400 hover:bg-red-500 text-white"
-                >
-                  Cancel
-                </button>
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded cursor-pointer"
-                >
-                  Save Changes
-                </button>
+                  <p className="text-lg font-bold text-white mt-1">
+                    {formData.quarter}
+                  </p>
+                </div>
               </div>
             </div>
+          </div>
+
+          {/* Body */}
+          <div className="max-h-[75vh] overflow-y-auto bg-[#f5f7fb] px-6 md:px-8 py-8">
+            {/* Top Summary */}
+            <div
+              className="
+                rounded-3xl
+                bg-gradient-to-r
+                from-emerald-50
+                to-green-50
+                border
+                border-emerald-100
+                p-6
+                mb-8
+              "
+            >
+              <div className="flex flex-wrap items-center gap-4">
+                <div
+                  className="
+                    rounded-2xl
+                    bg-white
+                    border
+                    border-emerald-100
+                    px-5
+                    py-4
+                    shadow-sm
+                  "
+                >
+                  <p className="text-xs uppercase text-gray-500">Grade</p>
+
+                  <h3 className="text-lg font-bold text-gray-800 mt-1">
+                    Grade {formData.grade}
+                  </h3>
+                </div>
+
+                <div
+                  className="
+                    rounded-2xl
+                    bg-white
+                    border
+                    border-emerald-100
+                    px-5
+                    py-4
+                    shadow-sm
+                  "
+                >
+                  <p className="text-xs uppercase text-gray-500">Section</p>
+
+                  <h3 className="text-lg font-bold text-gray-800 mt-1 uppercase">
+                    {formData.section}
+                  </h3>
+                </div>
+
+                <div
+                  className="
+                    rounded-2xl
+                    bg-white
+                    border
+                    border-emerald-100
+                    px-5
+                    py-4
+                    shadow-sm
+                  "
+                >
+                  <p className="text-xs uppercase text-gray-500">Subject</p>
+
+                  <h3 className="text-lg font-bold text-gray-800 mt-1 uppercase">
+                    {formData.subject}
+                  </h3>
+                </div>
+              </div>
+            </div>
+
+            {/* GPA Categories */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                {
+                  title: "Failed",
+                  color: "from-red-500 to-rose-600",
+                  male: "not_meet_male",
+                  female: "not_meet_female",
+                },
+
+                {
+                  title: "Fairly Satisfactory",
+                  color: "from-orange-500 to-amber-600",
+                  male: "fs_male",
+                  female: "fs_female",
+                },
+
+                {
+                  title: "Satisfactory",
+                  color: "from-blue-500 to-cyan-600",
+                  male: "s_male",
+                  female: "s_female",
+                },
+
+                {
+                  title: "Very Satisfactory",
+                  color: "from-emerald-500 to-green-600",
+                  male: "vs_male",
+                  female: "vs_female",
+                },
+
+                {
+                  title: "Excellent",
+                  color: "from-violet-500 to-purple-600",
+                  male: "e_male",
+                  female: "e_female",
+                },
+              ].map((category) => (
+                <div
+                  key={category.title}
+                  className="
+                    bg-white
+                    rounded-3xl
+                    border
+                    border-gray-100
+                    p-6
+                    shadow-sm
+                  "
+                >
+                  {/* Card Header */}
+                  <div className="flex items-center gap-3 mb-5">
+                    <div
+                      className={`
+                        h-12
+                        w-12
+                        rounded-2xl
+                        bg-gradient-to-r
+                        ${category.color}
+                        text-white
+                        flex
+                        items-center
+                        justify-center
+                        font-bold
+                        shadow-lg
+                      `}
+                    >
+                      {category.title.charAt(0)}
+                    </div>
+
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-800">
+                        {category.title}
+                      </h3>
+
+                      <p className="text-sm text-gray-500">
+                        Learner count input
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Inputs */}
+                  <div className="grid grid-cols-2 gap-4">
+                    {/* Male */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-600 mb-2">
+                        Male
+                      </label>
+
+                      <input
+                        autoFocus={false}
+                        type="number"
+                        name={category.male}
+                        value={formData[category.male]}
+                        onChange={handleChange}
+                        className={inputClass}
+                      />
+                    </div>
+
+                    {/* Female */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-600 mb-2">
+                        Female
+                      </label>
+
+                      <input
+                        type="number"
+                        autoFocus={false}
+                        name={category.female}
+                        value={formData[category.female]}
+                        onChange={handleChange}
+                        className={inputClass}
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div
+            className="
+              border-t
+              border-gray-100
+              bg-white
+              px-6
+              md:px-8
+              py-5
+              flex
+              flex-col
+              sm:flex-row
+              items-center
+              justify-end
+              gap-3
+            "
+          >
+            {/* Cancel */}
+            <button
+              type="button"
+              onClick={onClose}
+              className="
+                w-full
+                sm:w-auto
+                inline-flex
+                items-center
+                justify-center
+                gap-2
+                rounded-2xl
+                border
+                border-gray-200
+                bg-white
+                px-6
+                py-3
+                font-medium
+                text-gray-700
+                hover:bg-gray-50
+                transition
+              "
+            >
+              <BiX size={20} />
+
+              <span>Cancel</span>
+            </button>
+
+            {/* Save */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="
+                w-full
+                sm:w-auto
+                inline-flex
+                items-center
+                justify-center
+                gap-2
+                rounded-2xl
+                bg-gradient-to-r
+                from-emerald-600
+                to-green-600
+                px-7
+                py-3
+                font-semibold
+                text-white
+                shadow-lg
+                hover:scale-[1.01]
+                transition
+                disabled:opacity-60
+              "
+            >
+              <BiSave size={20} />
+
+              <span>{loading ? "Saving..." : "Save Changes"}</span>
+            </button>
           </div>
         </form>
       </div>

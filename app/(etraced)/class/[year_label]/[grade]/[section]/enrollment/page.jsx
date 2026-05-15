@@ -32,11 +32,11 @@ export default async function Page({ params, searchParams }) {
     .eq("class_id", id);
 
   return (
-    <div className="m-3 p-3">
+    <div>
       <EnrollmentClientTable
         class_id={id}
         section={section}
-        yearLabel={year_label}
+        year_label={year_label}
         grade={grade}
         profile={profile}
         enrollmentData={enrollmentData}

@@ -98,7 +98,7 @@ export async function getGPA(school_year) {
   if (error) {
     throw new Error(error.message);
   }
-  console.log(data);
+
   return data;
 }
 export async function getClass(school_year) {
@@ -145,7 +145,7 @@ export async function updateGPA(
     .eq("class_id", class_id)
     .eq("quarter", quarter)
     .eq("subject", subject);
-  console.log(subject);
+
   if (error) {
     throw new Error(error.message);
   }
@@ -156,7 +156,10 @@ export async function updateGPA(
     success: true,
   };
 }
-export async function deleteGPA({ quarter, class_id, school_year }) {
+export async function deleteGPA({ quarter, class_id, school_year, password }) {
+  if (password !== process.env.DELETE_PASSWORD) {
+    return { message: "invalid_password" };
+  }
   const supabase = await createClient();
 
   const { error } = await supabase
@@ -171,7 +174,7 @@ export async function deleteGPA({ quarter, class_id, school_year }) {
       message: error.message,
     };
   }
-  revalidatePath(`/gpaa/${school_year}`);
+  revalidatePath(`/gpa/${school_year}`);
 
   return {
     success: true,

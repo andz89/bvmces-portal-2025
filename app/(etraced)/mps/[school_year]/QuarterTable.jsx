@@ -1,18 +1,51 @@
-import React from "react";
+import { React, useState } from "react";
 import { BiSolidTrash, BiEdit, BiLinkExternal, BiExport } from "react-icons/bi";
 
 import DeleteForm from "./DeleteForm.jsx";
 import { exportToExcel } from "../utils/exportAsExcel.js";
-
+import { deleteMPSReport } from "./actions.jsx";
+import { toast } from "react-hot-toast";
+import ConfirmDeleteModal from "@/app/components/ConfirmDeleteModal.jsx";
 const QuarterTable = ({
   mps,
   profile,
-  deleteId,
-  setDeleteId,
+  school_year,
   title,
   setInitialData,
   setOpenForm,
 }) => {
+  const [loading, setLoading] = useState(false);
+  const [targetRow, setTargetRow] = useState(null);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+  const handleDelete = async (password) => {
+    if (!targetRow) return;
+
+    setLoading(true);
+
+    setDeleteError("");
+    try {
+      const result = await deleteMPSReport({
+        rowData: targetRow,
+        password,
+        school_year,
+      });
+
+      if (result.success) {
+        setOpenDelete(false);
+
+        toast.success(result.message);
+      } else if (result.message === "invalid_password") {
+        setDeleteError("Invalid password. Please try again.");
+      } else {
+        setDeleteError(result.message || "Failed to delete GPA record.");
+      }
+    } catch (error) {
+      setDeleteError("Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div
       className="
@@ -38,6 +71,19 @@ const QuarterTable = ({
           to-white
         "
       >
+        {/* Delete Modal */}
+        <ConfirmDeleteModal
+          open={openDelete}
+          onClose={() => setOpenDelete(false)}
+          onConfirm={handleDelete}
+          loading={loading}
+          error={deleteError}
+          description={
+            targetRow
+              ? `Delete GPA record for Grade ${targetRow.class.grade} - ${targetRow.class.section}  Quarter ${targetRow.quarter.toUpperCase()}? This action cannot be undone.`
+              : ""
+          }
+        />
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           {/* Left */}
           <div>
@@ -99,7 +145,7 @@ const QuarterTable = ({
 
       {/* Table */}
       <div className="overflow-x-auto w-full">
-        <table className="w-full">
+        <table className=" w-full">
           {/* Head */}
           <thead className="bg-gray-50">
             <tr className="text-gray-600 text-sm">
@@ -326,16 +372,13 @@ const QuarterTable = ({
 
                         {/* Delete */}
                         {profile.role === "admin" && (
-                          <>
-                            {deleteId === item.id ? (
-                              <DeleteForm
-                                itemId={item.id}
-                                onCancel={() => setDeleteId(null)}
-                              />
-                            ) : (
-                              <button
-                                onClick={() => setDeleteId(item.id)}
-                                className="
+                          <button
+                            onClick={() => {
+                              setOpenDelete(true);
+
+                              setTargetRow(item);
+                            }}
+                            className="
                                   h-11
                                   w-11
                                   rounded-2xl
@@ -347,11 +390,9 @@ const QuarterTable = ({
                                   hover:bg-red-100
                                   transition
                                 "
-                              >
-                                <BiSolidTrash size={21} />
-                              </button>
-                            )}
-                          </>
+                          >
+                            <BiSolidTrash size={21} />
+                          </button>
                         )}
                       </div>
                     </td>
