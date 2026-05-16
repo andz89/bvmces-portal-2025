@@ -105,7 +105,7 @@ export default function ClassClient({
   };
 
   const gradeRank = {
-    Kinder: 0,
+    kindergarten: 0,
     1: 1,
     2: 2,
     3: 3,

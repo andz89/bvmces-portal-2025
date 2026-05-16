@@ -5,6 +5,9 @@ import { createClient } from "../../utils/supabase/server";
 
 const SignIn = async () => {
   const supabase = await createClient();
+
+  await supabase.auth.signOut();
+
   const {
     data: { user },
   } = await supabase.auth.getUser();

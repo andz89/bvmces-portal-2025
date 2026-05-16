@@ -10,38 +10,55 @@ const baseString = z.string().trim().min(1, "Required");
 const optionalString = z.string().trim().optional().or(z.literal(""));
 
 const optionalEmail = optionalString.transform((v) =>
-  typeof v === "string" ? v.toLowerCase() : v
+  typeof v === "string" ? v.toLowerCase() : v,
 );
-
-const createUserSchema = z.object({
-  email: baseString.transform((v) => v.toLowerCase()),
-  password: baseString,
-  fullName: baseString,
-  role: baseString,
-  grade: optionalString,
-});
 
 const updateUserSchema = z.object({
   email: optionalEmail,
-  password: optionalString,
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .optional()
+    .or(z.literal("")),
   fullName: optionalString,
   role: optionalString,
-  grade: optionalString,
+  gradeToEdit: z.array(z.string()).optional().default([]),
+});
+
+const createUserSchema = z.object({
+  email: baseString.transform((v) => v.toLowerCase()),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+
+  fullName: baseString,
+  role: baseString,
+  gradeToEdit: z.array(z.string()).optional().default([]),
 });
 
 export async function createUser(form) {
   const parsed = createUserSchema.safeParse(form);
 
   if (!parsed.success) {
-    return { error: parsed.error.errors[0].message };
+    return {
+      error: parsed.error.issues?.[0]?.message || "Invalid form data",
+    };
   }
-
   form = parsed.data;
 
   const supabase = await createClient();
-
   /* -------------------------------------------------
-     1. Auth check (must be logged in)
+     0. Check if email already exists
+  -------------------------------------------------- */
+  const { data: existingUser } = await supabase
+    .from("users")
+    .select("id")
+    .eq("email", form.email)
+    .maybeSingle();
+
+  if (existingUser) {
+    return { error: "Email is already taken" };
+  }
+  /* -------------------------------------------------
+     1. Auth check
   -------------------------------------------------- */
   const {
     data: { user },
@@ -53,8 +70,7 @@ export async function createUser(form) {
   }
 
   /* -------------------------------------------------
-     2. Role check (admin only)
-     ⚠️ Adjust column/table names if needed
+     2. Admin check
   -------------------------------------------------- */
   const { data: adminProfile } = await supabase
     .from("users")
@@ -67,21 +83,26 @@ export async function createUser(form) {
   }
 
   /* -------------------------------------------------
-     3. Basic validation (server-side)
+     3. Validation
   -------------------------------------------------- */
-  // Always required
   if (!form.email || !form.password || !form.fullName) {
-    return { error: "Email, password, and full name are required" };
+    return {
+      error: "Email, password, and full name are required",
+    };
   }
 
-  // Role is required unless visitor
-  if (!form.role && form.role !== "visitor") {
+  if (!form.role) {
     return { error: "Role is required" };
   }
 
-  // Grade is required for non-admin roles
-  if (!form.role === "editor" && !form.grade) {
-    return { error: "Grade is required" };
+  // editor must have at least one grade
+  if (
+    form.role === "editor" &&
+    (!form.gradeToEdit || form.gradeToEdit.length === 0)
+  ) {
+    return {
+      error: "Please select at least one grade level",
+    };
   }
 
   /* -------------------------------------------------
@@ -98,28 +119,42 @@ export async function createUser(form) {
   }
 
   /* -------------------------------------------------
-     5. Create profile row
+     5. Create profile
   -------------------------------------------------- */
   const { error: profileError } = await supabase.from("users").insert({
     id: data.user.id,
     full_name: form.fullName,
     email: form.email,
     role: form.role,
-    grade: form.grade.trim().toLowerCase().replace(" ", "-"),
+    gradeToEdit: form.role === "editor" ? form.gradeToEdit : [],
   });
 
   if (profileError) {
     return { error: profileError.message };
   }
+
   revalidatePath("/admin-dahsboard");
 
   return { success: true };
 }
 export async function updateUser(id, data) {
+  // editor must have at least one grade
+
+  if (
+    data.role === "editor" &&
+    (!data.gradeToEdit || data.gradeToEdit.length === 0)
+  ) {
+    return {
+      error: "Please select at least one grade level",
+    };
+  }
+
   const parsed = updateUserSchema.safeParse(data);
 
   if (!parsed.success) {
-    return { error: parsed.error.errors[0].message };
+    return {
+      error: parsed.error.issues?.[0]?.message || "Invalid form data",
+    };
   }
 
   data = parsed.data;
@@ -132,7 +167,7 @@ export async function updateUser(id, data) {
   const payload = {
     full_name: data.fullName,
     role: data.role,
-    grade: data.role === "editor" ? data.grade : null,
+    gradeToEdit: data.role === "editor" ? data.gradeToEdit : null,
     email: data.email,
   };
 
@@ -150,7 +185,7 @@ export async function updateUser(id, data) {
       id,
       {
         email: data.email,
-      }
+      },
     );
 
     if (emailError) {
@@ -167,7 +202,7 @@ export async function updateUser(id, data) {
       id,
       {
         password: data.password,
-      }
+      },
     );
 
     if (pwError) {
@@ -226,9 +261,8 @@ export async function deleteUser(userId) {
   /* -------------------------------------------------
      4. Delete auth user (admin client only)
   -------------------------------------------------- */
-  const { error: authDeleteError } = await supabaseAdmin.auth.admin.deleteUser(
-    userId
-  );
+  const { error: authDeleteError } =
+    await supabaseAdmin.auth.admin.deleteUser(userId);
 
   if (authDeleteError) {
     return { error: authDeleteError.message };

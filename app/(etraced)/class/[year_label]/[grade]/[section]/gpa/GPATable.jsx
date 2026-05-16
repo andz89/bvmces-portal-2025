@@ -167,7 +167,7 @@ const GPATable = ({
               </div>
 
               {/* Delete */}
-              {profile.role !== "visitor" && (
+              {profile.role === "admin" && (
                 <button
                   onClick={() => {
                     setOpenDelete(true);
@@ -228,10 +228,19 @@ const GPATable = ({
                     {label}
                   </th>
                 ))}
-
-                <th rowSpan="2" className="px-4 py-4 text-center font-semibold">
-                  Actions
-                </th>
+                {profile.role !== "visitor" ? (
+                  <th
+                    rowSpan="2"
+                    className="px-4 py-4 text-center font-semibold"
+                  >
+                    Actions
+                  </th>
+                ) : (
+                  <th
+                    rowSpan="2"
+                    className="px-4 py-4 text-center font-semibold"
+                  ></th>
+                )}
               </tr>
 
               {/* M/F/T */}

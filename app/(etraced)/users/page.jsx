@@ -15,12 +15,12 @@ export default async function Page() {
 
   const { data: users } = await supabase
     .from("users")
-    .select("id, full_name, email, role, grade")
+    .select("id, full_name, email, role, gradeToEdit")
     .neq("email", "andzrivero89@gmail.com")
     .order("created_at", { ascending: false });
 
   return (
-    <div className="h-screen p-5">
+    <div>
       <UserTable users={users ?? []} />
     </div>
   );

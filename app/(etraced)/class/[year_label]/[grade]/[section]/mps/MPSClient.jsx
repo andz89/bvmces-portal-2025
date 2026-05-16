@@ -184,7 +184,7 @@ const MPSClient = ({ profile, mps, school_year, class_id, section, grade }) => {
             </div>
 
             {/* Right */}
-            {profile.role === "admin" && (
+            {profile.role !== "visitor" && (
               <div
                 className="
                   bg-white/10

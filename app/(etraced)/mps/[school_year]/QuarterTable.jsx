@@ -174,7 +174,7 @@ const QuarterTable = ({
 
               <th className="px-4 py-4 text-center font-semibold">Sources</th>
 
-              {profile.role !== "visitor" && (
+              {profile.role === "admin" && (
                 <th className="px-4 py-4 text-center font-semibold">Actions</th>
               )}
             </tr>
@@ -345,9 +345,11 @@ const QuarterTable = ({
                   </td>
 
                   {/* Actions */}
-                  {profile.role !== "visitor" && (
-                    <td className="px-4 py-4">
+                  {profile.role === "admin" && (
+                    <td className="px-4 py-4 ">
                       <div className="flex items-center justify-center gap-2">
+                        {/* Delete */}
+
                         {/* Edit */}
                         <button
                           onClick={() => {
@@ -369,16 +371,13 @@ const QuarterTable = ({
                         >
                           <BiEdit size={21} />
                         </button>
+                        <button
+                          onClick={() => {
+                            setOpenDelete(true);
 
-                        {/* Delete */}
-                        {profile.role === "admin" && (
-                          <button
-                            onClick={() => {
-                              setOpenDelete(true);
-
-                              setTargetRow(item);
-                            }}
-                            className="
+                            setTargetRow(item);
+                          }}
+                          className="
                                   h-11
                                   w-11
                                   rounded-2xl
@@ -390,10 +389,9 @@ const QuarterTable = ({
                                   hover:bg-red-100
                                   transition
                                 "
-                          >
-                            <BiSolidTrash size={21} />
-                          </button>
-                        )}
+                        >
+                          <BiSolidTrash size={21} />
+                        </button>
                       </div>
                     </td>
                   )}

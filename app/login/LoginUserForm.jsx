@@ -35,7 +35,7 @@ const LoginUserForm = () => {
       </div>
 
       {/* Left Side */}
-      <div className="relative hidden w-1/2 flex-col justify-between overflow-hidden bg-gradient-to-br from-blue-700 via-indigo-700 to-violet-700 p-12 text-white lg:flex">
+      <div className="relative hidden w-1/2 flex-col   overflow-hidden bg-gradient-to-br from-blue-700 via-indigo-700 to-violet-700 p-12 text-white lg:flex">
         {/* Glow */}
         <div className="absolute right-0 top-0 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
 
@@ -59,11 +59,11 @@ const LoginUserForm = () => {
         </div>
 
         {/* Bottom */}
-        <div className="relative z-10">
+        <div className="relative z-10 mt-20">
           <div className="rounded-3xl border border-white/10 bg-white/10 p-6 backdrop-blur-xl">
             <p className="text-sm text-blue-100">Academic Year</p>
 
-            <h2 className="mt-2 text-4xl font-bold">2025–2026</h2>
+            <h2 className="mt-2 text-4xl font-bold">2026–2027</h2>
 
             <p className="mt-3 text-sm text-blue-100">
               Secure • Fast • Modern Portal Experience

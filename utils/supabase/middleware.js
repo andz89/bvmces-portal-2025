@@ -21,7 +21,7 @@ export async function updateSession(request) {
           });
         },
       },
-    }
+    },
   );
 
   // Get current session (use getSession so you get the session object)

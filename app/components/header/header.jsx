@@ -15,9 +15,9 @@ export default async function Navbar() {
   return (
     <nav className="sticky top-0 z-[50] border-b border-white/10 bg-white/80 shadow-sm backdrop-blur-xl">
       <div className="    px-3 md:px-6">
-        <div className="flex h-20 items-center justify-between gap-4">
+        <div className="flex h-15 items-center justify-between gap-1">
           {/* Left */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             {/* Logo */}
             <Link href="/" className="group flex items-center gap-2">
               <div className="  ">
@@ -26,8 +26,8 @@ export default async function Navbar() {
                 <Image
                   src="/bvmces-logo.png"
                   alt="BVMCES school logo"
-                  width={48}
-                  height={48}
+                  width={38}
+                  height={38}
                   className=" relative"
                 />
               </div>
@@ -44,7 +44,7 @@ export default async function Navbar() {
                   </span>
                 </div>
 
-                <p className="mt-1 text-xs text-slate-500">School ID: 132289</p>
+                <p className="  text-xs text-slate-500">School ID: 132289</p>
               </div>
             </Link>
           </div>
@@ -56,14 +56,46 @@ export default async function Navbar() {
 
           {/* Right */}
           <div className="flex items-center gap-3 ">
-            {/* Notification Button */}
-            <button className="hidden min-[951px]:flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm transition hover:bg-slate-100 hover:text-blue-600">
-              <BiBell size={22} />
-            </button>
-
             {/* Mobile */}
             {profile && <MobileMenu isAdmin={isAdmin} />}
           </div>
+        </div>
+      </div>
+      <div>
+        <div className="flex justify-end gap-4  w-full bg-slate-200  px-3 py-1">
+          {profile && (
+            <div
+              className="
+      max-w-290
+   bg-white/80
+   p-1
+   rounded
+    "
+            >
+              {/* Info */}
+              <div className="min-w-0 leading-tight flex gap-2">
+                <div className=" flex items-center gap-2">
+                  <span
+                    className="
+            rounded-full
+            bg-slate-100
+            px-2  
+            text-[10px]
+            font-semibold
+            uppercase
+            tracking-wide
+            text-slate-600
+          "
+                  >
+                    {profile?.role ?? "visitor"}
+                  </span>
+                </div>
+                <p className="max-w-[180px] truncate text-sm font-semibold text-slate-800">
+                  {profile?.email ?? "Unknown User"}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </nav>

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { checkRole } from "../utils/lib/checkRole";
 import DashboardHomePage from "./components/DashboardHomePage";
 import Image from "next/image";
-
+import { createClient } from "@/utils/supabase/server";
 import {
   BiBarChartAlt2,
   BiBookOpen,
@@ -109,7 +109,7 @@ export default async function Page() {
                     <h2 className="mt-6 text-3xl font-bold">Welcome</h2>
 
                     <p className="mt-2 text-sm text-blue-100">
-                      Academic Portal 2025–2026
+                      Academic Portal 2026–2027
                     </p>
                   </div>
                 </div>

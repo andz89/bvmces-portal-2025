@@ -3,7 +3,7 @@
 import FullPageLoader from "../../components/loader/FullPageLoader";
 import { deleteUser } from "./actions";
 import { useState } from "react";
-
+import { toast } from "react-hot-toast";
 export default function DeleteUserButton({ userId }) {
   const [loading, setLoading] = useState(false);
 
@@ -14,6 +14,9 @@ export default function DeleteUserButton({ userId }) {
     try {
       setLoading(true); // ✅ show loader
       await deleteUser(userId);
+      toast.success("User deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete user");
     } finally {
       setLoading(false); // ✅ hide loader (even on error)
     }

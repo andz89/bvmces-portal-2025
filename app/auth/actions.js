@@ -14,7 +14,9 @@ const LoginSchema = z.object({
 });
 export async function login(formData) {
   const supabase = await createClient();
-  const ip = headers()["x-forwarded-for"] ?? "unknown";
+  const headersList = headers();
+
+  const ip = headersList.get("x-forwarded-for") ?? "unknown";
 
   const rawData = {
     email: formData.get("email"),

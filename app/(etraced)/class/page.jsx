@@ -70,14 +70,6 @@ export default async function Page({ searchParams }) {
                 School Class Management
               </div>
 
-              <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">
-                {profile.role === "editor"
-                  ? `${classes[0]?.grade
-                      ?.toUpperCase()
-                      ?.replace("-", " ")} Classes`
-                  : "Classes Dashboard"}
-              </h1>
-
               <p className="text-emerald-100 text-base mt-3 max-w-2xl">
                 Manage sections, organize class records, and monitor school
                 structure efficiently.

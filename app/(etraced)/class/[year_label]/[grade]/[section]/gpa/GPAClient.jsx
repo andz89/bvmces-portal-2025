@@ -237,8 +237,9 @@ const GPAClient = ({ school_year, profile, gpa, class_id, section, grade }) => {
             </div>
 
             {/* Right Action Panel */}
-            <div
-              className="
+            {profile.role !== "visitor" && (
+              <div
+                className="
                 bg-white/10
                 backdrop-blur-xl
                 border
@@ -249,16 +250,16 @@ const GPAClient = ({ school_year, profile, gpa, class_id, section, grade }) => {
                 w-full
                 max-w-sm
               "
-            >
-              <h2 className="text-white text-xl font-bold">Quick Action</h2>
+              >
+                <h2 className="text-white text-xl font-bold">Quick Action</h2>
 
-              <p className="text-emerald-100 text-sm mt-1">
-                Add and manage GPA reports for this class section.
-              </p>
+                <p className="text-emerald-100 text-sm mt-1">
+                  Add and manage GPA reports for this class section.
+                </p>
 
-              <button
-                onClick={() => setOpenBulkAddModal(true)}
-                className="
+                <button
+                  onClick={() => setOpenBulkAddModal(true)}
+                  className="
                   mt-5
                   w-full
                   inline-flex
@@ -275,12 +276,13 @@ const GPAClient = ({ school_year, profile, gpa, class_id, section, grade }) => {
                   hover:scale-[1.02]
                   transition
                 "
-              >
-                <BiPlus size={22} />
+                >
+                  <BiPlus size={22} />
 
-                <span>Add GPA</span>
-              </button>
-            </div>
+                  <span>Add GPA</span>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

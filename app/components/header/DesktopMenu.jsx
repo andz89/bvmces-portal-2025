@@ -39,7 +39,7 @@ export default async function DesktopMenu() {
   return (
     <div className="hidden md:flex items-center justify-end w-full overflow-visible">
       {/* Left Menu */}
-      <div className="flex items-center gap-2  px-3 py-2  ">
+      <div className="flex items-center gap-2  px-3 py-1  ">
         {/* Access */}
         <Link
           href="/access"

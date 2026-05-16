@@ -36,7 +36,7 @@ export async function getClasses(school_year_id, profile) {
       .from("class")
       .select("*, enrollment (*)")
       .eq("school_year_id", school_year_id)
-      .eq("grade", profile.grade)
+      .in("grade", profile.gradeToEdit)
       .order("grade", { ascending: true })
       .order("section", { ascending: true });
 
@@ -103,7 +103,7 @@ export async function deleteClass(classId, password) {
 }
 export async function createSchoolYear(yearLabel) {
   const supabase = await createClient();
-  console.log("--", yearLabel);
+
   if (!yearLabel?.trim()) return;
 
   const { error } = await supabase

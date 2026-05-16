@@ -38,49 +38,61 @@ export default function RootLayout({
         <Toaster
           position="bottom-right"
           toastOptions={{
-            duration: 4000,
+            duration: 3500,
 
             className: `
-        !bg-gradient-to-r
-        !from-emerald-600
-        !to-green-600
-        !text-white
-        !rounded-2xl
-        !px-6
-        !py-5
-        !text-[16px]
-        !font-semibold
-        !shadow-2xl
-        !min-w-[340px]
-        !border
-        !border-white/10
-      `,
+    !bg-white
+    !text-neutral-900
+    !border
+    !border-neutral-200
+    !rounded-xl
+    !px-4
+    !py-3
+    !text-sm
+    !font-medium
+    !shadow-lg
+    
+  `,
 
             success: {
+              className: `
+      !bg-emerald-50
+      !text-emerald-900
+      !border
+      !border-emerald-200
+      !rounded-xl
+      !px-4
+      !py-3
+      !text-sm
+      !font-medium
+      !shadow-lg
+ 
+    `,
+
               iconTheme: {
-                primary: "#ffffff",
-                secondary: "#16a34a",
+                primary: "#059669",
+                secondary: "#ECFDF5",
               },
             },
 
             error: {
               className: `
-          !bg-gradient-to-r
-          !from-red-500
-          !to-rose-600
-          !text-white
-          !rounded-2xl
-          !px-6
-          !py-5
-          !text-[16px]
-          !font-semibold
-          !shadow-2xl
-          !min-w-[340px]
-        `,
+      !bg-red-50
+      !text-red-900
+      !border
+      !border-red-200
+      !rounded-xl
+      !px-4
+      !py-3
+      !text-sm
+      !font-medium
+      !shadow-lg
+      
+    `,
 
               iconTheme: {
-                primary: "#ffffff",
-                secondary: "#ef4444",
+                primary: "#DC2626",
+                secondary: "#FEF2F2",
               },
             },
           }}

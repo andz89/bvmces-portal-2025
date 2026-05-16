@@ -337,10 +337,11 @@ export default function EnrollmentClientTable({
                     <th className="px-6 py-4 text-center text-sm font-semibold">
                       Total
                     </th>
-
-                    <th className="px-6 py-4 text-center text-sm font-semibold">
-                      Action
-                    </th>
+                    {profile.role !== "visitor" && (
+                      <th className="px-6 py-4 text-center text-sm font-semibold">
+                        Action
+                      </th>
+                    )}
                   </tr>
                 </thead>
 
@@ -418,16 +419,15 @@ export default function EnrollmentClientTable({
                           {item.boys + item.girls}
                         </span>
                       </td>
+                      {profile.role !== "visitor" && (
+                        <td className="px-6 py-5 text-center">
+                          <button
+                            onClick={() => {
+                              setOpenUpdateModal(true);
 
-                      {/* Action */}
-                      <td className="px-6 py-5 text-center">
-                        <button
-                          onClick={() => {
-                            setOpenUpdateModal(true);
-
-                            setEditingRow(item);
-                          }}
-                          className="
+                              setEditingRow(item);
+                            }}
+                            className="
                               inline-flex
                               items-center
                               gap-2
@@ -441,11 +441,12 @@ export default function EnrollmentClientTable({
                               hover:bg-emerald-100
                               transition
                             "
-                        >
-                          <BiEdit />
-                          Edit
-                        </button>
-                      </td>
+                          >
+                            <BiEdit />
+                            Edit
+                          </button>
+                        </td>
+                      )}
                     </tr>
                   ))}
 
