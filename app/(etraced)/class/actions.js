@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { createClient } from "../../../utils/supabase/server";
 export async function getSchoolYear(year_label) {
   const supabase = await createClient();
@@ -21,7 +22,17 @@ export async function getClasses(school_year_id, profile) {
   if (profile.role === "admin" || profile.role === "visitor") {
     const { data, error } = await supabase
       .from("class")
-      .select("*, enrollment (*)")
+      .select(
+        `
+  *,
+  enrollment (*),
+   users!adviser_id (
+      id,
+      full_name,
+      email
+    )
+`,
+      )
       .eq("school_year_id", school_year_id)
       .order("grade", { ascending: true })
       .order("section", { ascending: true });
@@ -55,7 +66,7 @@ export async function createClass({
 }) {
   const supabase = await createClient();
 
-  // ✅ Check if section already exists in the same school year
+  //  Check if section already exists in the same school year
   const { data: existingClass, error: checkError } = await supabase
     .from("class")
     .select("id")
@@ -71,7 +82,7 @@ export async function createClass({
     return { message: "section_exists" };
   }
 
-  // ✅ Insert new class
+  //   Insert new class
   const { error } = await supabase.from("class").insert({
     school_year_id,
     school_year: year_label,
@@ -85,7 +96,66 @@ export async function createClass({
 
   return { message: "true" };
 }
+export async function updateSection({ id, section, school_year_id }) {
+  const supabase = await createClient();
 
+  //   Check if section already exists in the same school year
+  const { data: existingClass, error: checkError } = await supabase
+    .from("class")
+    .select("id")
+    .eq("school_year_id", school_year_id)
+    .eq("section", section)
+    .maybeSingle();
+
+  if (checkError) {
+    return { error: checkError.code };
+  }
+
+  if (existingClass) {
+    return { error: "section_exists" };
+  }
+  //  Insert new class
+  const { error } = await supabase
+    .from("class")
+    .update({
+      section,
+    })
+    .eq("id", id);
+
+  if (error) {
+    return { error: error.code };
+  }
+
+  return { message: "true" };
+}
+export async function getUsers(profile) {
+  const supabase = await createClient();
+
+  if (profile.role !== "admin") {
+    return { message: "unauthorized" };
+  }
+
+  const { data, error } = await supabase.from("users").select("*");
+
+  if (error) throw error;
+  return data;
+}
+export async function assignAdviser({ classId, adviserId }) {
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("class")
+    .update({
+      adviser_id: adviserId,
+    })
+    .eq("id", classId);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  return { success: true };
+}
 export async function deleteClass(classId, password) {
   if (password !== process.env.DELETE_PASSWORD) {
     return { message: "invalid_password" };

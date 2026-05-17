@@ -145,11 +145,13 @@ const QuarterTable = ({
 
       {/* Table */}
       <div className="overflow-x-auto w-full">
-        <table className=" w-full">
+        <table className=" w-full ">
           {/* Head */}
           <thead className="bg-gray-50">
             <tr className="text-gray-600 text-sm">
-              <th className="px-5 py-4 text-left font-semibold">Class</th>
+              <th className="px-5 py-4 text-left font-semibold  min-w-[200px] max-w-[200px]">
+                Class
+              </th>
 
               {[
                 "GMRC",
@@ -221,7 +223,7 @@ const QuarterTable = ({
                   "
                 >
                   {/* Class */}
-                  <td className="px-5 py-4">
+                  <td className="px-5 py-4 min-w-[200px] max-w-[200px]w-full">
                     <div>
                       <h3 className="font-semibold text-gray-800">
                         Grade {item.class.grade}
@@ -230,6 +232,15 @@ const QuarterTable = ({
                       <p className="text-sm text-blue-600 font-medium uppercase">
                         {item.class.section}
                       </p>
+                      <span className="text-xs text-slate-400   uppercase">
+                        Adviser:
+                      </span>
+                      <p className="text-xs text-slate-600 font-bold uppercase">
+                        {item.class.adviser?.full_name?.length > 22
+                          ? `${item.class.adviser.full_name.slice(0, 22)}...`
+                          : item.class.adviser?.full_name || "N/A"}
+                      </p>
+                      <p className="text-xs text-slate-600 font-bold uppercase"></p>
                     </div>
                   </td>
 

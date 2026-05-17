@@ -338,6 +338,8 @@ const GPAClient = ({ school_year, profile, gpa, classData }) => {
 
                     const grade = items[0]?.class.grade;
 
+                    const adviser = items[0]?.class?.adviser?.full_name;
+
                     const sortedItems = [...items].sort((a, b) =>
                       a.subject.localeCompare(b.subject),
                     );
@@ -365,6 +367,7 @@ const GPAClient = ({ school_year, profile, gpa, classData }) => {
                             initialData={initialData}
                             setOpenEdit={setOpenEdit}
                             class_id={class_id}
+                            adviser={adviser}
                           />
                         )}
                       </div>

@@ -68,7 +68,7 @@ export async function createBulkGPA({
     throw new Error(error.message);
   }
 
-  revalidatePath(`/gpaa/${school_year}`);
+  revalidatePath(`/gpa/${school_year}`);
 
   return {
     success: true,
@@ -86,7 +86,12 @@ export async function getGPA(school_year) {
       class:class_id!inner (
         id,
         grade,
-        section
+        section,
+        adviser:users!adviser_id (
+        id,
+        full_name,
+        email
+      )
       )
     `,
     )
@@ -150,7 +155,7 @@ export async function updateGPA(
     throw new Error(error.message);
   }
 
-  revalidatePath(`/gpaa/${school_year}`);
+  revalidatePath(`/gpa/${school_year}`);
 
   return {
     success: true,

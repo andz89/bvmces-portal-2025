@@ -6,31 +6,24 @@ import { checkRole } from "../../../utils/lib/checkRole";
 import Image from "next/image";
 
 import { BiShieldQuarter, BiBell } from "react-icons/bi";
-
+import UserInfo from "../UserInfo";
 export default async function Navbar() {
   const profile = await checkRole();
 
-  const isAdmin = profile?.role == "admin";
-
   return (
-    <nav className="sticky top-0 z-[50] border-b border-white/10 bg-white/80 shadow-sm backdrop-blur-xl">
-      <div className="    px-3 md:px-6">
+    <nav className="sticky top-0 z-[50] border-b border-white/10 bg-white/80 shadow-sm backdrop-blur-xl  ">
+      <div className="    px-3 md:px-2">
         <div className="flex h-15 items-center justify-between gap-1">
           {/* Left */}
           <div className="flex items-center gap-2">
             {/* Logo */}
             <Link href="/" className="group flex items-center gap-2">
-              <div className="  ">
-                <div />
-
-                <Image
-                  src="/bvmces-logo.png"
-                  alt="BVMCES school logo"
-                  width={38}
-                  height={38}
-                  className=" relative"
-                />
-              </div>
+              <Image
+                src="/bvmces-logo.png"
+                alt="BVMCES school logo"
+                width={48}
+                height={48}
+              />
 
               {/* Text */}
               <div className="  flex-col leading-tight">
@@ -49,53 +42,19 @@ export default async function Navbar() {
             </Link>
           </div>
 
-          {/* Center Desktop Menu */}
-          <div className="hidden flex-1 justify-center min-[951px]:flex">
-            {profile && <DesktopMenu />}
-          </div>
-
-          {/* Right */}
-          <div className="flex items-center gap-3 ">
-            {/* Mobile */}
-            {profile && <MobileMenu isAdmin={isAdmin} />}
-          </div>
-        </div>
-      </div>
-      <div>
-        <div className="flex justify-end gap-4  w-full bg-slate-200  px-3 py-1">
-          {profile && (
-            <div
-              className="
-      max-w-290
-   bg-white/80
-   p-1
-   rounded
-    "
-            >
-              {/* Info */}
-              <div className="min-w-0 leading-tight flex gap-2">
-                <div className=" flex items-center gap-2">
-                  <span
-                    className="
-            rounded-full
-            bg-slate-100
-            px-2  
-            text-[10px]
-            font-semibold
-            uppercase
-            tracking-wide
-            text-slate-600
-          "
-                  >
-                    {profile?.role ?? "visitor"}
-                  </span>
-                </div>
-                <p className="max-w-[180px] truncate text-sm font-semibold text-slate-800">
-                  {profile?.email ?? "Unknown User"}
-                </p>
-              </div>
+          <div className="flex items-center justify-end w-full gap-2">
+            {/* Center Desktop Menu */}
+            <div className="hidden flex-1 justify-center min-[1050px]:flex">
+              {profile && <DesktopMenu profile={profile} />}
             </div>
-          )}
+            {/* user info */}
+            {profile && <UserInfo profile={profile} />}
+            {/* Right */}
+            <div className="flex items-center gap-3 ">
+              {/* Mobile */}
+              {profile && <MobileMenu profile={profile} />}
+            </div>
+          </div>
         </div>
       </div>
     </nav>

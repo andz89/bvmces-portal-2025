@@ -13,7 +13,7 @@ const GPATable = ({
   grade,
   data,
   profile,
-
+  adviser,
   quarter,
   setOpenEdit,
   setInitialData,
@@ -116,10 +116,10 @@ const GPATable = ({
                 <h2 className="text-2xl font-bold text-gray-800">
                   Grade {grade} — {section.toUpperCase()}
                 </h2>
-
-                <p className="text-sm text-gray-500 mt-1">
-                  Quarter {quarter} GPA Analysis
+                <p className="text-sm font-medium text-slate-500 mt-1">
+                  {adviser && `Adviser: ${adviser}`}
                 </p>
+                <p className="text-sm text-gray-500 ">Quarter {quarter}</p>
               </div>
             </div>
 

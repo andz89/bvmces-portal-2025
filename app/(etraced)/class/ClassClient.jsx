@@ -3,6 +3,7 @@
 import { deleteClass } from "./actions";
 
 import { FaTrash, FaUsers } from "react-icons/fa";
+import { BiEdit } from "react-icons/bi";
 
 import {
   BiPlus,
@@ -17,10 +18,10 @@ import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
 
 import { useState } from "react";
 
-import { createClass, getClasses } from "./actions";
-
+import { createClass, getClasses, getUsers } from "./actions";
+import ClassSectionModal from "./ClassSectionModal";
 import Link from "next/link";
-
+import UsersModal from "./UsersModal.jsx";
 export default function ClassClient({
   school_year_id,
   profile,
@@ -40,6 +41,7 @@ export default function ClassClient({
   const [section, setSection] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const [adviser, setAdviser] = useState([]);
 
   const refresh = async () => {
     const data = await getClasses(school_year_id, profile);
@@ -148,8 +150,35 @@ export default function ClassClient({
     focus:ring-emerald-100
   `;
 
+  const [classId, setClassId] = useState(null);
+  const [currentAdviserClass, setCurrentAdviserClass] = useState(null);
+
+  const handleUsersModal = async (classId) => {
+    setLoading(true);
+    let users = await getUsers(profile);
+
+    setAdviser(users);
+    setClassId(classId);
+    setLoading(false);
+  };
+  const [sectionEditDetails, setSectionEditDetail] = useState({});
+
   return (
     <div className="space-y-8">
+      <ClassSectionModal
+        open={Object.keys(sectionEditDetails || {}).length > 0}
+        onClose={() => setSectionEditDetail({})}
+        sectionEditDetails={sectionEditDetails}
+        refresh={refresh}
+      />
+      <UsersModal
+        open={adviser.length > 0}
+        onClose={() => setAdviser(false)}
+        advisers={adviser}
+        classId={classId}
+        currentAdviserClass={currentAdviserClass}
+        refresh={refresh}
+      />
       <ConfirmDeleteModal
         open={openDelete}
         onClose={() => setOpenDelete(false)}
@@ -385,7 +414,7 @@ export default function ClassClient({
             </div>
 
             {/* Classes */}
-            <div className="p-5 space-y-4">
+            <div className="p-2 space-y-4">
               {gradeClasses.map((c) => {
                 const total =
                   (c.enrollment[0]?.boys || 0) + (c.enrollment[0]?.girls || 0);
@@ -398,46 +427,88 @@ export default function ClassClient({
                         border
                         border-gray-100
                         bg-gray-50
-                        p-5
+                        p-3
                         hover:bg-emerald-50/40
                         transition
                       "
                   >
                     {/* Top */}
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-800 uppercase">
-                          {c.section}
-                        </h3>
+                    <div className="flex  justify-between gap-4">
+                      <div className="w-full">
+                        <div className="flex items-center justify-between w-full">
+                          <div className="flex items-center">
+                            <h3 className="text-md font-bold text-gray-800 uppercase">
+                              Grade {c.grade} - {c.section}
+                            </h3>
 
-                        <p className="text-sm text-gray-500 mt-1">
-                          Class Section
-                        </p>
-                      </div>
+                            <button
+                              onClick={() => setSectionEditDetail(c)}
+                              className="
+      h-7
+      w-7
+      md:h-8
+      md:w-8
+      rounded-2xl
+    
+     text-slate-600
+      flex
+      items-center
+      justify-center
+      hover:bg-slate-100
+      cursor-pointer
+      transition
+    "
+                            >
+                              <BiEdit size={20} />
+                            </button>
+                          </div>
 
-                      <div
-                        className="
-                            h-12
-                            min-w-[52px]
-                            px-3
-                            rounded-2xl
-                            bg-gradient-to-r
-                            from-emerald-500
-                            to-green-600
-                            text-white
-                            font-bold
-                            flex
-                            items-center
-                            justify-center
-                            shadow-md
-                          "
-                      >
-                        {total}
+                          {/* Delete */}
+                          {profile.role === "admin" && (
+                            <button
+                              onClick={(e) => handleDeleteClick(e, c)}
+                              className="
+      h-7
+      w-7
+      md:h-8
+      md:w-8
+      rounded-2xl
+       
+      text-red-600
+      flex
+      items-center
+      justify-center
+      hover:bg-red-100
+      cursor-pointer
+      transition
+    "
+                            >
+                              <FaTrash size={15} />
+                            </button>
+                          )}
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm text-gray-600 shadow-sm py-1 px-2  rounded font-bold  ">
+                            {" "}
+                            {c.users?.full_name.toUpperCase() ||
+                              "No adviser assigned"}{" "}
+                          </span>
+                          <button
+                            className="text-sm text-slate-600 shadow-sm py-1   px-2  rounded font-bold "
+                            onClick={() => {
+                              (handleUsersModal(c.id),
+                                setCurrentAdviserClass(c));
+                            }}
+                          >
+                            <BiEdit size={20} />
+                          </button>
+                        </div>
                       </div>
                     </div>
 
                     {/* Stats */}
-                    <div className="flex items-center gap-4 mt-5">
+                    <div className="flex items-center md:gap-2 gap-1 mt-5 ">
                       <div
                         className="
                             flex
@@ -447,7 +518,7 @@ export default function ClassClient({
                             bg-white
                             border
                             border-gray-200
-                            px-4
+                            px-3
                             py-3
                             shadow-sm
                           "
@@ -485,6 +556,28 @@ export default function ClassClient({
                           <p className="font-bold text-gray-800">
                             {c.enrollment[0]?.girls || 0}
                           </p>
+                        </div>
+                      </div>
+                      <div
+                        className="
+                            flex
+                            items-center
+                            gap-2
+                            rounded-2xl
+                            bg-white
+                            border
+                            border-gray-200
+                            px-4
+                            py-3
+                            shadow-sm
+                          "
+                      >
+                        <FaUsers className="text-purple-500" />
+
+                        <div>
+                          <p className="text-xs text-gray-500">Total</p>
+
+                          <p className="font-bold text-gray-800">{total}</p>
                         </div>
                       </div>
                     </div>
@@ -576,27 +669,6 @@ export default function ClassClient({
                           GPA
                         </Link>
                       </div>
-
-                      {/* Delete */}
-                      {profile.role === "admin" && (
-                        <button
-                          onClick={(e) => handleDeleteClick(e, c)}
-                          className="
-                              h-11
-                              w-11
-                              rounded-2xl
-                              bg-red-50
-                              text-red-600
-                              flex
-                              items-center
-                              justify-center
-                              hover:bg-red-100
-                              transition
-                            "
-                        >
-                          <FaTrash size={15} />
-                        </button>
-                      )}
                     </div>
                   </div>
                 );

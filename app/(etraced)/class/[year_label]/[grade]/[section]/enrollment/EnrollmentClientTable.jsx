@@ -287,27 +287,6 @@ export default function EnrollmentClientTable({
                     Enrollment records and learner statistics by month.
                   </p>
                 </div>
-
-                <div
-                  className="
-                    bg-white
-                    border
-                    border-gray-200
-                    rounded-2xl
-                    px-5
-                    py-3
-                    shadow-sm
-                    min-w-[180px]
-                  "
-                >
-                  <p className="text-xs uppercase tracking-wide text-gray-500">
-                    Total Months
-                  </p>
-
-                  <p className="text-2xl font-black text-gray-800 mt-1">
-                    {sortedEnrollmentData.length}
-                  </p>
-                </div>
               </div>
             </div>
 

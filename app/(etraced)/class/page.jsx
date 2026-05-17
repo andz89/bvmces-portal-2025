@@ -158,47 +158,6 @@ export default async function Page({ searchParams }) {
                     </div>
                   </div>
                 </div>
-
-                {/* Sections */}
-                <div
-                  className="
-                    bg-white/10
-                    backdrop-blur-xl
-                    border
-                    border-white/10
-                    rounded-2xl
-                    px-5
-                    py-4
-                    min-w-[180px]
-                  "
-                >
-                  <div className="flex items-center gap-3">
-                    <div
-                      className="
-                        h-11
-                        w-11
-                        rounded-xl
-                        bg-white/10
-                        flex
-                        items-center
-                        justify-center
-                        text-white
-                      "
-                    >
-                      <BiBuildings size={22} />
-                    </div>
-
-                    <div>
-                      <p className="text-xs uppercase tracking-wide text-emerald-100">
-                        Sections
-                      </p>
-
-                      <h3 className="text-2xl font-black text-white mt-1">
-                        {[...new Set(classes.map((c) => c.section))].length}
-                      </h3>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -266,28 +225,6 @@ export default async function Page({ searchParams }) {
 
                 <p className="text-sm text-gray-500 mt-1">
                   Organized list of all active classes and sections.
-                </p>
-              </div>
-
-              {/* Right */}
-              <div
-                className="
-                  bg-white
-                  border
-                  border-gray-200
-                  rounded-2xl
-                  px-5
-                  py-3
-                  shadow-sm
-                  min-w-[180px]
-                "
-              >
-                <p className="text-xs uppercase tracking-wide text-gray-500">
-                  Active Classes
-                </p>
-
-                <p className="text-2xl font-black text-gray-800 mt-1">
-                  {classes.length}
                 </p>
               </div>
             </div>

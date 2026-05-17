@@ -12,7 +12,15 @@ export default function UserTable({ users }) {
   const [open, setOpen] = useState(false);
 
   const [selectedUser, setSelectedUser] = useState(null);
-
+  const gradeOrder = {
+    kindergarten: 0,
+    1: 1,
+    2: 2,
+    3: 3,
+    4: 4,
+    5: 5,
+    6: 6,
+  };
   return (
     <div
       className="
@@ -277,10 +285,12 @@ export default function UserTable({ users }) {
                   ) : Array.isArray(user.gradeToEdit) &&
                     user.gradeToEdit.length > 0 ? (
                     <div className="flex flex-wrap gap-2">
-                      {user.gradeToEdit.map((grade) => (
-                        <span
-                          key={grade}
-                          className="
+                      {[...user.gradeToEdit]
+                        .sort((a, b) => gradeOrder[a] - gradeOrder[b])
+                        .map((grade) => (
+                          <span
+                            key={grade}
+                            className="
             inline-flex
             items-center
             rounded-full
@@ -291,10 +301,10 @@ export default function UserTable({ users }) {
             font-medium
             text-neutral-700
           "
-                        >
-                          {grade.replace("-", " ").toUpperCase()}
-                        </span>
-                      ))}
+                          >
+                            {grade.replace("-", " ").toUpperCase()}
+                          </span>
+                        ))}
                     </div>
                   ) : (
                     <span className="text-sm text-neutral-400">No Access</span>

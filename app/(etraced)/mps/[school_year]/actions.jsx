@@ -106,7 +106,12 @@ export async function getMPSReports(year_label) {
       id,
       grade,
       section,
-      school_year
+      school_year,
+       adviser:users!adviser_id (
+        id,
+        full_name,
+        email
+      )
     )
   `,
     )

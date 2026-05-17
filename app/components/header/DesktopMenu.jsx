@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { logout } from "../../auth/actions";
-import { createClient } from "../../../utils/supabase/server";
 
 import {
   BiChevronDown,
@@ -13,28 +11,8 @@ import {
   BiFile,
 } from "react-icons/bi";
 
-export default async function DesktopMenu() {
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  let isAdmin = false;
-  let isEditor = false;
-
-  if (user) {
-    const { data: profile } = await supabase
-      .from("users")
-      .select("role")
-      .eq("id", user.id)
-      .single();
-
-    isAdmin = profile?.role === "admin";
-    isEditor = profile?.role === "editor";
-  }
-
-  if (!user) return null;
+export default async function DesktopMenu({ profile }) {
+  if (!profile) return null;
 
   return (
     <div className="hidden md:flex items-center justify-end w-full overflow-visible">
@@ -151,7 +129,7 @@ export default async function DesktopMenu() {
           </Link>
 
           {/* Users */}
-          {isAdmin && (
+          {profile.role === "admin" && (
             <Link
               href="/users"
               className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-100"

@@ -209,7 +209,7 @@ export async function updateUser(id, data) {
       return { error: pwError.message };
     }
   }
-  revalidatePath("/admin-dahsboard");
+  revalidatePath("/users");
 
   return {
     success: true,

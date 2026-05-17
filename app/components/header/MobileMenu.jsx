@@ -20,7 +20,7 @@ import {
   BiHomeAlt,
 } from "react-icons/bi";
 
-export default function MobileMenu({ isAdmin }) {
+export default function MobileMenu({ profile }) {
   const [open, setOpen] = useState(false);
   const [qualityOpen, setQualityOpen] = useState(false);
 
@@ -46,11 +46,11 @@ export default function MobileMenu({ isAdmin }) {
     };
   }, [open]);
   return (
-    <div className="min-[951px]:hidden overflow-x-hidden overflow-y-auto">
+    <div className="min-[1050px]:hidden overflow-x-hidden ">
       {/* Hamburger */}
       <button
         onClick={() => setOpen(!open)}
-        className="flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-100"
+        className="flex h-10 w-10 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-100"
         aria-label="Open menu"
       >
         {open ? <BiX size={24} /> : <BiMenu size={24} />}
@@ -201,7 +201,7 @@ export default function MobileMenu({ isAdmin }) {
               </Link>
 
               {/* Users */}
-              {isAdmin && (
+              {profile.role === "admin" && (
                 <Link
                   href="/users"
                   className="flex items-center gap-3 rounded-2xl px-4 py-3 text-slate-700 transition hover:bg-slate-100"
@@ -210,20 +210,19 @@ export default function MobileMenu({ isAdmin }) {
                   Users
                 </Link>
               )}
-            </nav>
 
-            {/* Footer */}
-            <div className="border-t border-slate-200 p-4">
-              <form>
-                <button
-                  formAction={logout}
-                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-3 font-medium text-white shadow-lg transition hover:scale-[1.01] hover:shadow-xl"
-                >
-                  <BiLogOut size={20} />
-                  Logout
-                </button>
-              </form>
-            </div>
+              <div className="border-t border-slate-200 p-4">
+                <form>
+                  <button
+                    formAction={logout}
+                    className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-3 font-medium text-white shadow-lg transition hover:scale-[1.01] hover:shadow-xl"
+                  >
+                    <BiLogOut size={20} />
+                    Logout
+                  </button>
+                </form>
+              </div>
+            </nav>
           </div>
         </div>
       )}
