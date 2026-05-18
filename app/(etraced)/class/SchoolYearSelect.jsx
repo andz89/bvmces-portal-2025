@@ -41,8 +41,9 @@ export default function SchoolYearSelect({
     setLoading(true);
     await createSchoolYear(yearLabel);
     setYearLabel("");
-    // await refresh();
+
     setLoading(false);
+    router.refresh();
   };
   return (
     <>

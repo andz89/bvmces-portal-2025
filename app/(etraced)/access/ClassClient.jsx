@@ -348,7 +348,7 @@ export default function ClassClient({ year_label, initialData, year_status }) {
                           key={c.id}
                           className="border-t border-slate-100 transition hover:bg-slate-50"
                         >
-                          <td className="px-6 py-4">
+                          <td className="px-6 py-4 flex flex-col">
                             <Link
                               href={{
                                 pathname: `/class/${year_label}/${c.grade}/${c.section.trim()}/enrollment`,
@@ -360,6 +360,9 @@ export default function ClassClient({ year_label, initialData, year_status }) {
 
                               <FiArrowRight />
                             </Link>
+                            <span className="uppercase text-sm font-bold text-slate-800">
+                              Adviser: {c.users?.full_name}{" "}
+                            </span>
                           </td>
 
                           <td className="px-6 py-4 text-center">{boys}</td>

@@ -130,13 +130,23 @@ export default async function DesktopMenu({ profile }) {
 
           {/* Users */}
           {profile.role === "admin" && (
-            <Link
-              href="/users"
-              className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
-            >
-              <BiUser size={18} />
-              Users
-            </Link>
+            <>
+              <Link
+                href="/admin-dashboard"
+                className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
+              >
+                <BiUser size={18} />
+                Admin Dashboard
+              </Link>
+
+              <Link
+                href="/users"
+                className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
+              >
+                <BiUser size={18} />
+                Users
+              </Link>
+            </>
           )}
         </div>
       </div>

@@ -16,34 +16,19 @@ export async function getSchoolYear(year_label) {
 
 export async function getClassesEnrollment({ school_year_id }) {
   const supabase = await createClient();
+  /* Get active month from school_year table */
+  const { data: schoolYearData, error: schoolYearError } = await supabase
+    .from("school_year")
+    .select("active_month")
+    .eq("id", school_year_id)
+    .single();
 
-  // ✅ Allowed school months
-  const schoolMonths = [
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-    "January",
-    "February",
-    "March",
-    "April",
-  ];
-
-  const currentDate = new Date();
-
-  let targetMonth = currentDate.toLocaleString("en-US", {
-    month: "long",
-  });
-
-  // ✅ If current month is not June-April,
-  // use April instead
-  if (!schoolMonths.includes(targetMonth)) {
-    targetMonth = "March";
+  if (schoolYearError) {
+    console.log(schoolYearError);
+    return;
   }
 
+  const targetMonth = schoolYearData.active_month;
   const { data, error } = await supabase
     .from("class")
     .select(
@@ -58,7 +43,12 @@ export async function getClassesEnrollment({ school_year_id }) {
         boys,
         girls,
         month
-      )
+      ),   users!adviser_id (
+      id,
+      full_name,
+      email
+    )
+
       `,
     )
     .eq("school_year_id", school_year_id)

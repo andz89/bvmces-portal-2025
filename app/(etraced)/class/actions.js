@@ -45,7 +45,17 @@ export async function getClasses(school_year_id, profile) {
   if (profile.role === "editor") {
     const { data, error } = await supabase
       .from("class")
-      .select("*, enrollment (*)")
+      .select(
+        `
+  *,
+  enrollment (*),
+   users!adviser_id (
+      id,
+      full_name,
+      email
+    )
+`,
+      )
       .eq("school_year_id", school_year_id)
       .in("grade", profile.gradeToEdit)
       .order("grade", { ascending: true })
@@ -176,11 +186,41 @@ export async function createSchoolYear(yearLabel) {
 
   if (!yearLabel?.trim()) return;
 
-  const { error } = await supabase
+  /* Inactive all school years */
+  const { error: inactiveError } = await supabase
     .from("school_year")
-    .insert({ year_label: yearLabel });
+    .update({
+      status: "inactive",
+    })
+    .not("id", "is", null);
 
-  if (error) throw error;
+  if (inactiveError) {
+    console.log(inactiveError);
+
+    return {
+      error: inactiveError.message,
+    };
+  }
+
+  /* Create new active school year */
+  const { error } = await supabase.from("school_year").insert({
+    year_label: yearLabel,
+    status: "active",
+  });
+
+  if (error) {
+    console.log(error);
+
+    return {
+      error: error.message,
+    };
+  }
+
+  revalidatePath("/admin-dashboard");
+
+  return {
+    success: true,
+  };
 }
 export async function getAllSchoolYears() {
   const supabase = await createClient();
