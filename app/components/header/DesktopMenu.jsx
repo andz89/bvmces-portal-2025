@@ -7,8 +7,8 @@ import {
   BiAward,
   BiBarChart,
   BiUser,
-  BiLogOut,
   BiFile,
+  BiShield,
 } from "react-icons/bi";
 
 export default async function DesktopMenu({ profile }) {
@@ -135,8 +135,8 @@ export default async function DesktopMenu({ profile }) {
                 href="/admin-dashboard"
                 className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
               >
-                <BiUser size={18} />
-                Admin Dashboard
+                <BiShield size={18} />
+                Admin
               </Link>
 
               <Link

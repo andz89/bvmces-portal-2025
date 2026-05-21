@@ -3,7 +3,8 @@ import Link from "next/link";
 import { checkRole } from "../utils/lib/checkRole";
 import DashboardHomePage from "./components/DashboardHomePage";
 import Image from "next/image";
-import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
+
 import {
   BiBarChartAlt2,
   BiBookOpen,
@@ -13,7 +14,9 @@ import {
 
 export default async function Page() {
   const role = await checkRole();
-
+  if (role) {
+    redirect("/access");
+  }
   return (
     <>
       {role !== null ? (

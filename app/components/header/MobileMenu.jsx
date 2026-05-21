@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { logout } from "../../auth/actions";
+import { logout } from "../../login/actions";
 
 import {
   BiMenu,
@@ -15,7 +15,7 @@ import {
   BiAward,
   BiGridAlt,
   BiUser,
-  BiLogOut,
+  BiShield,
   BiFile,
   BiHomeAlt,
 } from "react-icons/bi";
@@ -202,26 +202,23 @@ export default function MobileMenu({ profile }) {
 
               {/* Users */}
               {profile.role === "admin" && (
-                <Link
-                  href="/users"
-                  className="flex items-center gap-3 rounded-2xl px-4 py-3 text-slate-700 transition hover:bg-slate-100"
-                >
-                  <BiUser size={22} />
-                  Users
-                </Link>
-              )}
-
-              <div className="border-t border-slate-200 p-4">
-                <form>
-                  <button
-                    formAction={logout}
-                    className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-3 font-medium text-white shadow-lg transition hover:scale-[1.01] hover:shadow-xl"
+                <>
+                  <Link
+                    href="/admin-dashboard"
+                    className="flex items-center gap-3 rounded-2xl px-4 py-3 text-slate-700 transition hover:bg-slate-100"
                   >
-                    <BiLogOut size={20} />
-                    Logout
-                  </button>
-                </form>
-              </div>
+                    <BiShield size={22} />
+                    Admin
+                  </Link>
+                  <Link
+                    href="/users"
+                    className="flex items-center gap-3 rounded-2xl px-4 py-3 text-slate-700 transition hover:bg-slate-100"
+                  >
+                    <BiUser size={22} />
+                    Users
+                  </Link>
+                </>
+              )}
             </nav>
           </div>
         </div>

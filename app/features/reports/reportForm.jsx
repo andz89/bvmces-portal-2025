@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { createReport, updateReport } from "./actions";
-
+import toast from "react-hot-toast";
 import {
   BiCloudUpload,
   BiLinkAlt,
@@ -28,15 +28,23 @@ export default function ReportForm({
   const [state, formAction, pending] = useActionState(action, null);
 
   useEffect(() => {
+    if (!state) return;
+
     if (state?.success) {
       if (editingReport) {
-        setSuccessMessage("Report updated successfully!");
+        toast.success("Report updated successfully!");
         setEditingReport(null);
       } else {
-        setSuccessMessage("Report submitted successfully!");
+        toast.success("Report submitted successfully!");
       }
+
+      setOpenForm(false);
     }
-  }, [state]);
+
+    if (state?.error) {
+      toast.error(state.error);
+    }
+  }, [state, editingReport, setEditingReport, setOpenForm]);
 
   return (
     <div>
@@ -68,13 +76,6 @@ export default function ReportForm({
 
             {/* Body */}
             <div className="p-8">
-              {/* Error */}
-              {state?.error && (
-                <div className="mb-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-600">
-                  {state.error}
-                </div>
-              )}
-
               {/* Grid */}
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 {/* Filename */}
@@ -183,6 +184,7 @@ export default function ReportForm({
                       <option value="">Select school year</option>
                       <option value="2024-2025">2024–2025</option>
                       <option value="2025-2026">2025–2026</option>
+                      <option value="2026-2027">2026–2027</option>
                     </select>
                   </div>
                 )}

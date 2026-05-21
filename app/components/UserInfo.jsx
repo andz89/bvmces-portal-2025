@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { logout } from "@/app/auth/actions";
+import { logout } from "@/app/login/actions";
 import { BiLogOut } from "react-icons/bi";
 
 const UserInfo = ({ profile }) => {

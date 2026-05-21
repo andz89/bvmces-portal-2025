@@ -22,6 +22,7 @@ export async function createReport(prevState, formData) {
     rawData.school_year = formData.get("school_year");
   }
   const validated = reportSchema.safeParse(rawData);
+
   if (!validated.success) {
     return {
       error: validated.error.issues[0].message,
