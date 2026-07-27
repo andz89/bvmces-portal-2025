@@ -99,6 +99,7 @@ export default function UserModal({ open, onClose, user }) {
         role,
 
         gradeToEdit,
+        grade: formData.get("grade"),
       };
 
       const res = isEdit
@@ -283,9 +284,33 @@ export default function UserModal({ open, onClose, user }) {
                       className={inputClass}
                     />
                   </div>
+                  {/* Grade */}
+                  <div>
+                    <label className="flex items-center gap-2 text-sm font-medium text-neutral-700 mb-2">
+                      Grade
+                    </label>
 
+                    <select
+                      name="grade"
+                      defaultValue={user?.grade ?? ""}
+                      className={inputClass}
+                    >
+                      <option value="" disabled>
+                        Select Grade
+                      </option>
+
+                      <option value="kinder">Kindergarten</option>
+                      <option value="1">Grade 1</option>
+                      <option value="2">Grade 2</option>
+                      <option value="3">Grade 3</option>
+                      <option value="4">Grade 4</option>
+                      <option value="5">Grade 5</option>
+                      <option value="6">Grade 6</option>
+                      <option value="implementation">Implementation</option>
+                    </select>
+                  </div>
                   {/* Password */}
-                  <div className="md:col-span-2">
+                  <div className=" ">
                     <label className="flex items-center gap-2 text-sm font-medium text-neutral-700 mb-2">
                       <BiLockAlt />
                       Password

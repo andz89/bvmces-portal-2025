@@ -1,15 +1,34 @@
 "use client";
 import { usePathname } from "next/navigation";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { deleteReport } from "./actions";
 import FullPageLoader from "../../components/loader/FullPageLoader";
-import { BiSolidTrash } from "react-icons/bi";
 
-export default function DeleteForm({ reportId, onCancel }) {
+import toast from "react-hot-toast";
+
+export default function DeleteForm({ reportId, onCancel, refreshReports }) {
   const [state, formAction, pending] = useActionState(deleteReport, null);
+  useEffect(() => {
+    const handleSuccess = async () => {
+      if (!state) return;
+
+      if (state?.success) {
+        onCancel();
+        await refreshReports();
+
+        toast.success("Deleted successfully!");
+      }
+
+      if (state?.error) {
+        toast.error(state.error);
+      }
+    };
+
+    handleSuccess();
+  }, [state]);
   const pathname = usePathname();
   return (
-    <div className="fixed inset-0 z-[9999] bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+    <div className="fixed inset-0 w-full z-100 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
       <div className="w-full max-w-md rounded-2xl bg-white shadow-2xl border border-slate-200 p-6">
         {/* Header */}
         <div className="mb-5">

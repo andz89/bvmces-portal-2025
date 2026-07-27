@@ -3,7 +3,7 @@ import ReportsClient from "../../features/reports/ReportsClient";
 import { checkRole } from "../../../utils/lib/checkRole";
 const page = async () => {
   const profile = await checkRole();
-  const type = "CRLA";
+  const type = "crla";
   const reports = await getReports(type);
 
   return (

@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { createReport, updateReport } from "./actions";
 import toast from "react-hot-toast";
 import {
@@ -15,9 +15,10 @@ import {
 export default function ReportForm({
   editingReport = null,
   setEditingReport,
-  setSuccessMessage,
+
   setOpenForm,
   type,
+  refreshReports,
 }) {
   const pathname = usePathname();
 
@@ -26,25 +27,41 @@ export default function ReportForm({
     : createReport;
 
   const [state, formAction, pending] = useActionState(action, null);
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    if (!state) return;
+    const handleSuccess = async () => {
+      if (!state) return;
 
-    if (state?.success) {
-      if (editingReport) {
-        toast.success("Report updated successfully!");
-        setEditingReport(null);
-      } else {
-        toast.success("Report submitted successfully!");
+      try {
+        if (state?.success) {
+          setLoading(true);
+
+          if (editingReport) {
+            toast.success("Report updated successfully!");
+            setEditingReport(null);
+          } else {
+            toast.success("Report submitted successfully!");
+          }
+
+          setOpenForm(false);
+
+          await refreshReports();
+        }
+
+        if (state?.error) {
+          toast.error(state.error);
+        }
+      } catch (error) {
+        console.error(error);
+
+        toast.error("Failed to refresh reports.");
+      } finally {
+        setLoading(false);
       }
+    };
 
-      setOpenForm(false);
-    }
-
-    if (state?.error) {
-      toast.error(state.error);
-    }
-  }, [state, editingReport, setEditingReport, setOpenForm]);
+    handleSuccess();
+  }, [state, editingReport, refreshReports, setEditingReport, setOpenForm]);
 
   return (
     <div>
@@ -52,9 +69,9 @@ export default function ReportForm({
         {/* Overlay */}
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-slate-900/60 backdrop-blur-sm p-4">
           {/* Modal */}
-          <div className="relative w-full max-w-3xl overflow-hidden rounded-3xl bg-white shadow-2xl">
+          <div className="relative w-full max-w-3xl overflow-hidden rounded-2xl  bg-white   shadow-2xl">
             {/* Header */}
-            <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 px-8 py-7 text-white">
+            <div className="relative overflow-hidden bg-[#0f172a] px-8 py-7 text-white ">
               <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-white/10 blur-3xl" />
 
               <div className="relative z-10 flex items-center gap-4">
@@ -137,7 +154,7 @@ export default function ReportForm({
                 <input readOnly type="hidden" name="type" defaultValue={type} />
 
                 {/* Stage */}
-                {type !== "Templates" && (
+                {type !== "templates" && (
                   <div>
                     <label className="mb-2 block text-sm font-semibold text-slate-700">
                       Stage
@@ -159,7 +176,7 @@ export default function ReportForm({
                 )}
 
                 {/* School Year */}
-                {type !== "Templates" && (
+                {type !== "templates" && (
                   <div>
                     <label className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-700">
                       <BiCalendar size={18} />
@@ -207,16 +224,33 @@ export default function ReportForm({
                 {/* Submit */}
                 <button
                   type="submit"
-                  disabled={pending}
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-3 font-medium text-white shadow-lg transition hover:scale-[1.02] hover:shadow-xl disabled:opacity-50 cursor-pointer"
+                  disabled={loading || pending}
+                  className="
+    inline-flex
+    items-center
+    justify-center
+    gap-2
+    rounded-2xl
+    bg-[#0f172a]
+    px-5
+    py-3
+    font-medium
+    text-white
+    shadow-lg
+    transition
+    hover:scale-[1.02]
+    hover:shadow-xl
+    disabled:opacity-50
+    cursor-pointer
+  "
                 >
-                  {pending && (
+                  {(loading || pending) && (
                     <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                   )}
 
-                  {!pending && <BiSave size={20} />}
+                  {!(loading || pending) && <BiSave size={20} />}
 
-                  {pending
+                  {loading || pending
                     ? editingReport
                       ? "Updating..."
                       : "Saving..."

@@ -22,6 +22,7 @@ const updateUserSchema = z.object({
     .or(z.literal("")),
   fullName: optionalString,
   role: optionalString,
+  grade: optionalString,
   gradeToEdit: z.array(z.string()).optional().default([]),
 });
 
@@ -31,6 +32,7 @@ const createUserSchema = z.object({
 
   fullName: baseString,
   role: baseString,
+  grade: baseString,
   gradeToEdit: z.array(z.string()).optional().default([]),
 });
 export async function getArchivedUsers() {
@@ -143,6 +145,7 @@ export async function createUser(form) {
     full_name: form.fullName,
     email: form.email,
     role: form.role,
+    grade: form.grade,
     gradeToEdit: form.role === "editor" ? form.gradeToEdit : [],
   });
 
@@ -186,6 +189,7 @@ export async function updateUser(id, data) {
     role: data.role,
     gradeToEdit: data.role === "editor" ? data.gradeToEdit : null,
     email: data.email,
+    grade: data.grade,
   };
 
   const { error } = await supabase.from("users").update(payload).eq("id", id);

@@ -17,9 +17,9 @@ export async function createReport(prevState, formData) {
   };
 
   // only include these fields if NOT template
-  if (type !== "Templates") {
-    rawData.stage = formData.get("stage");
-    rawData.school_year = formData.get("school_year");
+  if (type === "templates") {
+    rawData.stage = "-----";
+    rawData.school_year = "-----";
   }
   const validated = reportSchema.safeParse(rawData);
 
@@ -98,6 +98,7 @@ export async function deleteReport(prevState, formData) {
   const id = formData.get("id");
   const password = formData.get("password");
   const pathname = formData.get("pathname");
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -133,9 +134,9 @@ export async function updateReport(id, prevState, formData) {
   };
 
   // only include these fields if NOT template
-  if (type !== "Templates") {
-    rawData.stage = formData.get("stage");
-    rawData.school_year = formData.get("school_year");
+  if (type === "templates") {
+    rawData.stage = "-----";
+    rawData.school_year = "-----";
   }
   const validated = reportSchema.safeParse(rawData);
 
@@ -175,7 +176,34 @@ export async function updateReport(id, prevState, formData) {
     return { error: error.message };
   }
 
-  revalidatePath(pathname);
-
   return { success: true };
+}
+export async function findReport(keyword, type) {
+  try {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+      .from("files")
+      .select("*")
+      .eq("type", type)
+      .ilike("filename", `%${keyword}%`);
+
+    if (error) {
+      console.error(error);
+
+      return {
+        error: error.message,
+      };
+    }
+    console.log(data);
+    return {
+      data,
+    };
+  } catch (error) {
+    console.error(error);
+
+    return {
+      error: "Server timeout. Please try again.",
+    };
+  }
 }

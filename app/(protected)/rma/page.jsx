@@ -5,7 +5,7 @@ import { checkRole } from "../../../utils/lib/checkRole";
 const page = async () => {
   const profile = await checkRole();
 
-  const type = "Rapid Math Assessment";
+  const type = "rma";
   const reports = await getReports(type);
 
   return (

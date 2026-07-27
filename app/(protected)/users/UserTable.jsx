@@ -250,7 +250,20 @@ export default function UserTable({ users, profile }) {
               >
                 Role
               </th>
-
+              <th
+                className="
+                  px-6
+                  py-4
+                  text-left
+                  text-xs
+                  font-semibold
+                  uppercase
+                  tracking-wide
+                  text-neutral-500
+                "
+              >
+                Grade
+              </th>
               <th
                 className="
                   px-6
@@ -352,7 +365,24 @@ export default function UserTable({ users, profile }) {
                     {user.role}
                   </span>
                 </td>
-
+                <td className="px-6 py-5">
+                  <span
+                    className="
+                      inline-flex
+                      items-center
+                      rounded-full
+                      bg-neutral-100
+                      px-3
+                      py-1
+                      text-xs
+                      font-medium
+                      capitalize
+                      text-neutral-700
+                    "
+                  >
+                    {user.grade}
+                  </span>
+                </td>
                 {/* Grades */}
                 <td className="px-6 py-5">
                   {user.role === "admin" ? (

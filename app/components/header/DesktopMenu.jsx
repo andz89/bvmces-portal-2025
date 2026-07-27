@@ -82,6 +82,14 @@ export default async function DesktopMenu({ profile }) {
               <BiBook size={18} />
               CRLA
             </Link>
+
+            <Link
+              href="/lesson-plan"
+              className="flex items-center gap-3 rounded-xl px-2 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
+            >
+              <BiBook size={18} />
+              Lesson Plan
+            </Link>
           </div>
         </div>
 
