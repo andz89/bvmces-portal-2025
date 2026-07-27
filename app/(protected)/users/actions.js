@@ -8,7 +8,10 @@ import { z } from "zod";
 const baseString = z.string().trim().min(1, "Required");
 
 const optionalString = z.string().trim().optional().or(z.literal(""));
-
+const optionalStringEmpty = z.preprocess(
+  (value) => (value == null || value === "" ? undefined : value),
+  z.string().trim().optional(),
+);
 const optionalEmail = optionalString.transform((v) =>
   typeof v === "string" ? v.toLowerCase() : v,
 );
@@ -22,7 +25,7 @@ const updateUserSchema = z.object({
     .or(z.literal("")),
   fullName: optionalString,
   role: optionalString,
-  grade: optionalString,
+  grade: optionalStringEmpty,
   gradeToEdit: z.array(z.string()).optional().default([]),
 });
 
@@ -32,7 +35,7 @@ const createUserSchema = z.object({
 
   fullName: baseString,
   role: baseString,
-  grade: baseString,
+  grade: optionalStringEmpty,
   gradeToEdit: z.array(z.string()).optional().default([]),
 });
 export async function getArchivedUsers() {
@@ -140,12 +143,18 @@ export async function createUser(form) {
   /* -------------------------------------------------
      5. Create profile
   -------------------------------------------------- */
+  let gradeValue;
+  if (form.role !== "editor") {
+    gradeValue = "";
+  } else {
+    gradeValue = form.grade;
+  }
   const { error: profileError } = await supabase.from("users").insert({
     id: data.user.id,
     full_name: form.fullName,
     email: form.email,
     role: form.role,
-    grade: form.grade,
+    grade: gradeValue,
     gradeToEdit: form.role === "editor" ? form.gradeToEdit : [],
   });
 

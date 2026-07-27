@@ -99,7 +99,7 @@ export default function UserModal({ open, onClose, user }) {
         role,
 
         gradeToEdit,
-        grade: formData.get("grade"),
+        grade: role === "editor" ? formData.get("grade") : "",
       };
 
       const res = isEdit
@@ -291,14 +291,29 @@ export default function UserModal({ open, onClose, user }) {
                     </label>
 
                     <select
+                      type="text"
                       name="grade"
+                      disabled={role !== "editor"}
                       defaultValue={user?.grade ?? ""}
-                      className={inputClass}
+                      className={`  w-full
+    rounded-2xl
+    border
+    border-neutral-200
+    
+    px-4
+    py-3
+    text-sm
+    text-neutral-700
+    outline-none
+    transition
+    focus:border-neutral-900
+    focus:ring-4
+    focus:ring-neutral-100  ${role !== "editor" ? "bg-slate-200" : "bg-white"}`}
                     >
+                      z
                       <option value="" disabled>
                         Select Grade
                       </option>
-
                       <option value="kinder">Kindergarten</option>
                       <option value="1">Grade 1</option>
                       <option value="2">Grade 2</option>

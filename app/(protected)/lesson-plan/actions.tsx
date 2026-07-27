@@ -4,17 +4,6 @@ import { revalidatePath } from "next/cache";
 
 import { createClient } from "@/utils/supabase/server";
 
-// export async function getLessonPlans() {
-//   const res = await fetch(process.env.APPSCRIPT_URL, {
-//     cache: "no-store",
-//   });
-
-//   if (!res.ok) {
-//     throw new Error("Unable to fetch lesson plans.");
-//   }
-
-//   return await res.json();
-// }
 export async function getLessonPlans({ term, week, teacher_id } = {}) {
   const res = await fetch(process.env.APPSCRIPT_URL, {
     method: "POST",
@@ -31,10 +20,17 @@ export async function getLessonPlans({ term, week, teacher_id } = {}) {
   });
 
   if (!res.ok) {
-    throw new Error("Unable to fetch lesson plans.");
+    throw new Error("Unable to connect to the lesson plan service.");
   }
 
-  return await res.json();
+  const result = await res.json();
+
+  // Apps Script returned an error
+  if (result.status === "error") {
+    throw new Error(result.message || "Unable to fetch lesson plans.");
+  }
+
+  return result;
 }
 export async function getAdminLessonPlans({ term, week } = {}) {
   const res = await fetch(process.env.APPSCRIPT_URL, {
@@ -57,7 +53,6 @@ export async function getAdminLessonPlans({ term, week } = {}) {
   return await res.json();
 }
 export async function deleteLessonPlan(file_id: string) {
-  console.log("Deleting lesson plan with file_id:", file_id);
   const res = await fetch(process.env.APPSCRIPT_URL, {
     method: "POST",
     headers: {
@@ -74,8 +69,6 @@ export async function deleteLessonPlan(file_id: string) {
   }
 
   const result = await res.json();
-
-  revalidatePath("/lesson-plan");
 
   return result;
 }
@@ -147,9 +140,42 @@ export async function updateLessonPlanStatus(file_id, status, name) {
     }),
   });
 
+  if (!res.ok) {
+    throw new Error("Unable to connect to the server.");
+  }
+
   const result = await res.json();
 
-  // revalidatePath("/lesson-plan");
+  if (result.status !== "success") {
+    throw new Error(result.message || "Failed to update status.");
+  }
+
+  return result;
+}
+export async function getLessonPlansByTerm({ term, teacher_id } = {}) {
+  const res = await fetch(process.env.APPSCRIPT_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    cache: "no-store",
+    body: JSON.stringify({
+      action: "getLessonPlansByTerm",
+      teacher_id,
+      term: term ? parseInt(term) : 1,
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error("Unable to connect to the lesson plan service.");
+  }
+
+  const result = await res.json();
+
+  // Apps Script returned an error
+  if (result.status === "error") {
+    throw new Error(result.message || "Unable to fetch lesson plans.");
+  }
 
   return result;
 }

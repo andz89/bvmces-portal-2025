@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { getLessonPlans } from "./actions";
-
+import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 const SearchBar = ({ termParams, weekParams }) => {
   const router = useRouter();
-
+  const [isPending, startTransition] = useTransition();
   const [term, setTerm] = useState(termParams ?? 1);
   const [week, setWeek] = useState(weekParams ?? 1);
   useEffect(() => {
@@ -14,10 +14,12 @@ const SearchBar = ({ termParams, weekParams }) => {
   const handleSearch = () => {
     const params = new URLSearchParams();
 
-    if (term) params.set("term", term);
-    if (week) params.set("week", week);
+    params.set("term", String(term));
+    params.set("week", String(week));
 
-    router.push(`/lesson-plan?${params.toString()}`);
+    startTransition(() => {
+      router.push(`/lesson-plan?${params.toString()}`);
+    });
   };
 
   return (
@@ -37,7 +39,6 @@ const SearchBar = ({ termParams, weekParams }) => {
           <option value="1">Term 1</option>
           <option value="2">Term 2</option>
           <option value="3">Term 3</option>
-          <option value="4">Term 4</option>
         </select>
       </div>
 
@@ -53,7 +54,7 @@ const SearchBar = ({ termParams, weekParams }) => {
           name="week"
           className="w-full rounded-xl border border-neutral-300 px-4 py-2.5 focus:border-emerald-500 focus:outline-none"
         >
-          {Array.from({ length: 16 }, (_, i) => (
+          {Array.from({ length: 20 }, (_, i) => (
             <option key={i + 1} value={i + 1}>
               {i + 1}
             </option>
@@ -64,9 +65,10 @@ const SearchBar = ({ termParams, weekParams }) => {
       {/* Button */}
       <button
         onClick={handleSearch}
-        className="rounded-xl bg-slate-600 px-6 py-2.5 font-medium text-white transition hover:bg-emerald-700"
+        disabled={isPending}
+        className="rounded-xl bg-slate-600 px-6 py-2.5 font-medium text-white disabled:opacity-50"
       >
-        Search
+        {isPending ? "Searching..." : "Search"}
       </button>
     </div>
   );

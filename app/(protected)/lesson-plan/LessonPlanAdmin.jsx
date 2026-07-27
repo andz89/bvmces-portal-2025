@@ -1,11 +1,13 @@
 "use client";
 import { getLessonPlans } from "./actions";
-import EntryForm from "./EntryForm";
+import DataEntryForm from "./DataEntryForm";
 import React, { useState, useEffect } from "react";
 import { BiBook, BiCalendar, BiLinkExternal, BiUser } from "react-icons/bi";
 import { deleteLessonPlan, getUsers, updateLessonPlanStatus } from "./actions";
 import SearchBar from "./SearchBar";
 import Status from "./status";
+import Link from "next/link";
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
 export default function LessonPlanAdmin({
   lessonPlans,
   users,
@@ -14,6 +16,10 @@ export default function LessonPlanAdmin({
   termParams,
 }) {
   const [updatedLessonPlan, setUpdateLessonPlan] = useState(lessonPlans);
+  const [showAll, setShowAll] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
   useEffect(() => {
     setUpdateLessonPlan(lessonPlans);
   }, [lessonPlans]);
@@ -27,12 +33,39 @@ export default function LessonPlanAdmin({
     (user) => !lessonPlanUserIds.has(user.id),
   );
 
-  const handleDelete = async (file_id) => {
-    if (!confirm("Delete this lesson plan?")) return;
+  const handleDelete = async () => {
+    if (!deleteId) return;
 
-    await deleteLessonPlan(file_id);
+    try {
+      setDeleting(true);
+      setDeleteError("");
+
+      const result = await deleteLessonPlan(deleteId);
+
+      if (!result?.success && result?.status !== "success") {
+        throw new Error(result?.message || "Unable to delete lesson plan.");
+      }
+
+      setUpdateLessonPlan((prev) =>
+        prev.filter((plan) => plan.file_id !== deleteId),
+      );
+
+      setDeleteId(null);
+    } catch (err) {
+      console.error(err);
+
+      setDeleteError(
+        err instanceof Error
+          ? err.message
+          : "Something went wrong while deleting the lesson plan.",
+      );
+    } finally {
+      setDeleting(false);
+    }
   };
-
+  const displayedUsers = showAll
+    ? usersWithoutLessonPlan
+    : usersWithoutLessonPlan.slice(0, 5);
   const groupedLessonPlans = [...updatedLessonPlan]
     .sort((a, b) => {
       // Sort by term
@@ -81,7 +114,10 @@ export default function LessonPlanAdmin({
             Lesson Plans
           </h2>
         </div>
-        <EntryForm profile={profile} />
+        <DataEntryForm
+          profile={profile}
+          setUpdateLessonPlan={setUpdateLessonPlan}
+        />
       </div>
       <SearchBar weekParams={weekParams} termParams={termParams} />
 
@@ -103,19 +139,37 @@ export default function LessonPlanAdmin({
             </p>
           ) : (
             <div>
-              {usersWithoutLessonPlan.map((user) => (
-                <div
-                  key={user.id}
-                  className="flex  rounded-md px-2   hover:bg-neutral-50 gap-2 cursor-pointer py-1"
-                >
-                  <span className="text-sm font-medium uppercase text-neutral-800">
-                    {user.full_name}
-                  </span>
-                  <span className="text-sm uppercase font-semibold text-neutral-500">
-                    Grade {user.grade}
-                  </span>
-                </div>
-              ))}
+              <div>
+                {displayedUsers.map((user) => (
+                  <div
+                    key={user.id}
+                    className="flex gap-2 rounded-md px-2 py-1 hover:bg-neutral-50"
+                  >
+                    <span className="text-sm font-medium uppercase text-neutral-800">
+                      {user.full_name} -
+                    </span>
+
+                    <span className="text-sm font-semibold uppercase text-neutral-500">
+                      {user.grade === "implementation" ||
+                      user.grade === "kindergarten"
+                        ? ""
+                        : "Grade"}{" "}
+                      {user.grade}
+                    </span>
+                  </div>
+                ))}
+
+                {usersWithoutLessonPlan.length > 5 && (
+                  <button
+                    onClick={() => setShowAll(!showAll)}
+                    className="mt-2 px-2 text-sm font-medium text-emerald-600 hover:text-emerald-700 hover:underline"
+                  >
+                    {showAll
+                      ? "See less"
+                      : `See ${usersWithoutLessonPlan.length - 5} more`}
+                  </button>
+                )}
+              </div>
             </div>
           )}
         </div>
@@ -173,7 +227,7 @@ export default function LessonPlanAdmin({
                       </span>
                     </div>
 
-                    <table className="w-full">
+                    <table className="w-full  overflow-auto">
                       <thead className="border-b">
                         <tr className="text-left text-slate-700">
                           <th className="px-6 py-3 w-40">Teacher</th>
@@ -201,9 +255,19 @@ export default function LessonPlanAdmin({
                                   <BiUser className="text-emerald-600 text-lg" />
                                 </div>
 
-                                <span className="font-medium text-neutral-800 uppercase text-sm w-40">
+                                <Link
+                                  className="font-medium text-neutral-800 uppercase text-sm w-40"
+                                  href={{
+                                    pathname: `/lesson-plan/teacher`,
+                                    query: {
+                                      id: plan.teacher_id,
+                                      term: 1,
+                                    },
+                                  }}
+                                  target="_blank"
+                                >
                                   {plan.teacherName}
-                                </span>
+                                </Link>
                               </div>
                             </td>
 
@@ -246,11 +310,24 @@ export default function LessonPlanAdmin({
                             {profile.id === plan.teacher_id && (
                               <td className="px-6 py-4 text-center">
                                 <button
-                                  onClick={() => handleDelete(plan.file_id)}
+                                  onClick={() => setDeleteId(plan.file_id)}
                                   className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-700 transition hover:bg-red-100"
                                 >
                                   Remove
                                 </button>
+                                <ConfirmDeleteModal
+                                  open={!!deleteId}
+                                  loading={deleting}
+                                  error={deleteError}
+                                  onCancel={() => {
+                                    if (deleting) return;
+
+                                    setDeleteError("");
+                                    setDeleteId(null);
+                                  }}
+                                  onConfirm={handleDelete}
+                                  error={deleteError}
+                                />
                               </td>
                             )}
                           </tr>

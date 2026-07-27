@@ -8,14 +8,14 @@ import {
   BiLockAlt,
   BiCalendar,
 } from "react-icons/bi";
-
-export default function DataEntryForm(profile) {
+import toast from "react-hot-toast";
+export default function DataEntryForm({ profile, setUpdateLessonPlan }) {
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
   const [fileName, setFileName] = useState("");
-
+  const MAX_FILE_SIZE = 943718;
   const fileInputRef = useRef(null);
   const formRef = useRef(null);
   const uploadFile = (file) => {
@@ -40,6 +40,27 @@ export default function DataEntryForm(profile) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setMessage("");
+    setMessageType("");
+
+    const file = fileInputRef.current?.files?.[0];
+
+    if (!file) {
+      // setMessage("Please select a file to upload.");
+      // setMessageType("error");
+
+      toast.error("Please select a file to upload.");
+      return;
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      toast.error("File size must not exceed 1 MB.");
+
+      // setMessage("File size must not exceed 1 MB.");
+      // setMessageType("error");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -48,48 +69,54 @@ export default function DataEntryForm(profile) {
       const result = await addLessonPlan(formData);
 
       if (result.status !== "success") {
-        throw new Error(result.message);
-      }
+        toast.error(result.message || "Upload failed.");
 
-      setMessage(result.message);
-      setMessageType("success");
+        // throw new Error(result.message || "Upload failed.");
+      }
+      toast.success(result.message || "Lesson plan uploaded successfully.");
+
+      // setMessage(result.message || "Lesson plan uploaded successfully.");
+      // setMessageType("success");
 
       formRef.current.reset();
       setFileName("");
+      setShowForm(false);
+      // Close only on success
+      // setTimeout(() => {
+      //   setShowForm(false);
+      //   setMessage("");
+      // }, 1000);
     } catch (err) {
-      setMessage(err.message);
-      setMessageType("error");
+      // setMessage(
+      //   err instanceof Error
+      //     ? err.message
+      //     : "An unexpected error occurred. Please try again.",
+      // );
+      // setMessageType("error");
+
+      toast.error(
+        err instanceof Error
+          ? err.message
+          : "An unexpected error occurred. Please try again.",
+      );
     } finally {
       setLoading(false);
-      setShowForm(false);
     }
   };
   return (
     <div className=" ">
-      <div
-        className="w-45 bg-emerald-600 text-white py-3 px-1 font-semibold text-sm text-center  rounded-2xl cursor-pointer hover:bg-emerald-700 transition"
-        onClick={() => setShowForm(true)}
-      >
-        Submit Lesson Plan
-      </div>
+      {profile.grade && (
+        <div
+          className="w-45 bg-emerald-600 text-white py-3 px-1 font-semibold text-sm text-center  rounded-2xl cursor-pointer hover:bg-emerald-700 transition"
+          onClick={() => setShowForm(true)}
+        >
+          Submit Lesson Plan
+        </div>
+      )}
       <div
         className={`fixed inset-0 size-auto     bg-slate-100/50 z-50 h-screen    flex items-center justify-center   mx-auto w-full ${showForm ? "" : "hidden"}`}
       >
         <div className=" w-3xl mx-auto bg-white rounded-3xl border border-neutral-200 shadow-sm overflow-y-auto max-h-[90vh]">
-          {message && (
-            <div
-              className={`rounded-2xl p-4 text-sm font-medium
-      ${
-        messageType === "success"
-          ? "bg-emerald-100 text-emerald-700"
-          : messageType === "error"
-            ? "bg-red-100 text-red-700"
-            : "bg-yellow-100 text-yellow-700"
-      }`}
-            >
-              {message}
-            </div>
-          )}
           {/* Header */}
           <div className="border-b border-neutral-100 px-8 py-6">
             <h1 className="text-2xl font-bold text-neutral-900">
@@ -128,7 +155,7 @@ export default function DataEntryForm(profile) {
                 <BiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 text-xl" />
 
                 <input
-                  value={profile?.profile.full_name || ""}
+                  value={profile?.full_name || ""}
                   readOnly
                   type="text"
                   name="teacherName"
@@ -144,7 +171,7 @@ export default function DataEntryForm(profile) {
 
               <div className="relative">
                 <input
-                  value={profile?.profile.grade || ""}
+                  value={profile?.grade || ""}
                   readOnly
                   type="text"
                   name="grade"
@@ -154,7 +181,7 @@ export default function DataEntryForm(profile) {
             </div>
             <input
               type="hidden"
-              value={profile?.profile.id || ""}
+              value={profile?.id || ""}
               readOnly
               name="teacher_id"
               placeholder="Enter teacher name"
@@ -262,47 +289,92 @@ export default function DataEntryForm(profile) {
                 </div>
 
                 <input
-                  required
                   ref={fileInputRef}
                   type="file"
                   name="file"
                   accept=".xlsx,.xls"
                   className="hidden"
-                  onChange={(e) => setFileName(e.target.files?.[0]?.name || "")}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+
+                    if (!file) {
+                      setFileName("");
+                      return;
+                    }
+
+                    if (file.size > MAX_FILE_SIZE) {
+                      // setMessage("File size must not exceed 1 MB.");
+                      // setMessageType("error");
+                      toast.error("File size must not exceed 1 MB.");
+
+                      e.target.value = "";
+                      setFileName("");
+                      return;
+                    }
+
+                    // setMessage("");
+                    // setMessageType("");
+                    setFileName(file.name);
+                  }}
                 />
               </label>
             </div>
 
             {/* Footer */}
-            <div className="flex justify-end gap-3 pt-4 border-t border-neutral-100">
-              <button
-                type="button"
-                onClick={() => {
-                  formRef.current.reset();
-                  setFileName("");
-                  setMessage("");
-                  setShowForm(false);
-                }}
-              >
-                Cancel
-              </button>
+            <div className="flex items-center justify-between gap-4 border-t border-neutral-100 pt-4">
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  type="button"
+                  disabled={loading}
+                  onClick={() => {
+                    if (loading) return;
 
-              <button
-                disabled={loading}
-                className="
-    rounded-2xl
-    bg-gradient-to-r
-    from-emerald-600
-    to-green-600
-    px-6
-    py-3
-    text-white
-    font-semibold
-    disabled:opacity-50
-  "
-              >
-                {loading ? "Uploading..." : "Upload Lesson Plan"}
-              </button>
+                    formRef.current.reset();
+                    setFileName("");
+                    // setMessage("");
+                    setShowForm(false);
+                  }}
+                  className="
+        rounded-xl
+        px-5
+        py-3
+        text-sm
+        font-medium
+        text-white
+        transition-colors
+        hover:bg-red-600
+        bg-red-700
+        disabled:opacity-50
+        disabled:cursor-not-allowed
+      "
+                >
+                  Cancel
+                </button>
+
+                <button
+                  disabled={loading}
+                  className="
+        rounded-xl
+        bg-gradient-to-r
+        from-emerald-600
+        to-green-600
+        px-6
+        py-3
+        text-sm
+        font-semibold
+        text-white
+        transition-all
+        duration-200
+        hover:from-emerald-700
+        hover:to-green-700
+        hover:shadow-md
+        disabled:cursor-not-allowed
+        disabled:opacity-50
+      "
+                >
+                  {loading ? "Uploading..." : "Upload Lesson Plan"}
+                </button>
+              </div>
             </div>
           </form>
         </div>
