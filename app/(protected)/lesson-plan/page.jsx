@@ -8,7 +8,7 @@ export default async function Page({ searchParams }) {
   const profile = await checkRole();
   let users;
 
-  if (profile.role === "admin") {
+  if (profile.role === "admin" || profile.role === "visitor") {
     users = await getUsers();
   } else {
     users = [];

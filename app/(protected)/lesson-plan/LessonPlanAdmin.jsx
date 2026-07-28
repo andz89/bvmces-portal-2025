@@ -2,8 +2,14 @@
 import { getLessonPlans } from "./actions";
 import DataEntryForm from "./DataEntryForm";
 import React, { useState, useEffect } from "react";
-import { BiBook, BiCalendar, BiLinkExternal, BiUser } from "react-icons/bi";
-import { deleteLessonPlan, getUsers, updateLessonPlanStatus } from "./actions";
+import {
+  BiBook,
+  BiCalendar,
+  BiLinkExternal,
+  BiUser,
+  BiTrash,
+} from "react-icons/bi";
+import { deleteLessonPlan, updateLessonPlanStatus } from "./actions";
 import SearchBar from "./SearchBar";
 import Status from "./status";
 import Link from "next/link";
@@ -121,7 +127,7 @@ export default function LessonPlanAdmin({
       </div>
       <SearchBar weekParams={weekParams} termParams={termParams} />
 
-      {profile.role === "admin" && (
+      {(profile.role === "admin" || profile.role === "visitor") && (
         <div className="px-6 py-3  ">
           <div className="mb-2 flex items-center gap-2">
             <h3 className="font-semibold text-neutral-800">
@@ -307,29 +313,27 @@ export default function LessonPlanAdmin({
                               />
                             </td>
 
-                            {profile.id === plan.teacher_id && (
-                              <td className="px-6 py-4 text-center">
-                                <button
-                                  onClick={() => setDeleteId(plan.file_id)}
-                                  className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-700 transition hover:bg-red-100"
-                                >
-                                  Remove
-                                </button>
-                                <ConfirmDeleteModal
-                                  open={!!deleteId}
-                                  loading={deleting}
-                                  error={deleteError}
-                                  onCancel={() => {
-                                    if (deleting) return;
+                            <td className="px-6 py-4  ">
+                              <button
+                                disabled={profile.id !== plan.teacher_id}
+                                onClick={() => setDeleteId(plan.file_id)}
+                                className={`inline-flex items-center gap-2 rounded-lg     px-4 py-2 text-sm font-medium  transition  ${profile.id !== plan.teacher_id ? "bg-gray-100 text-gray-500 cursor-not-allowed" : "hover:bg-red-100   bg-red-50 text-red-700"}`}
+                              >
+                                <BiTrash size={18} />
+                              </button>
+                              <ConfirmDeleteModal
+                                open={!!deleteId}
+                                loading={deleting}
+                                error={deleteError}
+                                onCancel={() => {
+                                  if (deleting) return;
 
-                                    setDeleteError("");
-                                    setDeleteId(null);
-                                  }}
-                                  onConfirm={handleDelete}
-                                  error={deleteError}
-                                />
-                              </td>
-                            )}
+                                  setDeleteError("");
+                                  setDeleteId(null);
+                                }}
+                                onConfirm={handleDelete}
+                              />
+                            </td>
                           </tr>
                         ))}
                       </tbody>

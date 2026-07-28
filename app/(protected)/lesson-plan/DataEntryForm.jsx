@@ -1,6 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
 import { addLessonPlan } from "./actions";
+import { canSubmitLessonPlan } from "@/utils/lib/lessonPlanSchedule";
 import {
   BiUpload,
   BiUser,
@@ -103,9 +104,16 @@ export default function DataEntryForm({ profile, setUpdateLessonPlan }) {
       setLoading(false);
     }
   };
+  const canSubmit = canSubmitLessonPlan();
   return (
     <div className=" ">
-      {profile.grade && (
+      {profile.grade && !canSubmit && (
+        <div className="rounded-xl bg-amber-100 px-4 py-3 text-sm text-amber-800">
+          Lesson plan submissions are only open from Friday 8:00 AM to Monday
+          8:00 AM.
+        </div>
+      )}
+      {profile.grade && canSubmit && (
         <div
           className="w-45 bg-emerald-600 text-white py-3 px-1 font-semibold text-sm text-center  rounded-2xl cursor-pointer hover:bg-emerald-700 transition"
           onClick={() => setShowForm(true)}

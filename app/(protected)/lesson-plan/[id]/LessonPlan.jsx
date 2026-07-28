@@ -2,7 +2,13 @@
 import { getLessonPlans, deleteLessonPlan } from "../actions";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState, useEffect, useTransition } from "react";
-import { BiBook, BiCalendar, BiLinkExternal, BiUser } from "react-icons/bi";
+import {
+  BiBook,
+  BiCalendar,
+  BiLinkExternal,
+  BiUser,
+  BiTrash,
+} from "react-icons/bi";
 import Status from "../status";
 import DataEntryForm from "../DataEntryForm";
 import ConfirmDeleteModal from "../ConfirmDeleteModal";
@@ -218,7 +224,7 @@ export default function LessonPlanAdmin({
                       onClick={() => setDeleteId(plan.file_id)}
                       className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-700 transition hover:bg-red-100"
                     >
-                      Remove
+                      <BiTrash size={18} />
                     </button>
                     <ConfirmDeleteModal
                       open={!!deleteId}
@@ -231,7 +237,6 @@ export default function LessonPlanAdmin({
                         setDeleteId(null);
                       }}
                       onConfirm={handleDelete}
-                      error={deleteError}
                     />
                   </td>
                 )}
