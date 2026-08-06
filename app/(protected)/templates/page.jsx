@@ -12,7 +12,7 @@ const page = async () => {
     <ReportsClient
       profile={profile}
       title={type}
-      reports={reports.data}
+      reports={reports}
       type={type}
     />
   );

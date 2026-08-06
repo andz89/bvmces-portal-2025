@@ -11,27 +11,39 @@ import {
   BiLinkAlt,
   BiCopy,
 } from "react-icons/bi";
+import { getGoogleConfig } from "./actions";
 import { findReport, getReports } from "./actions";
 import toast from "react-hot-toast";
 import FullPageLoader from "@/app/components/loader/FullPageLoader";
-export default function ReportsClient({ title, reports, type, profile }) {
+export default function ReportsClient({
+  title,
+  reports,
+  type,
+  profile,
+  googleConfig,
+}) {
   const [editingReport, setEditingReport] = useState(null);
-  const [successMessage, setSuccessMessage] = useState("");
+
   const [deleteId, setDeleteId] = useState(null);
   const [openForm, setOpenForm] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [files, setFiles] = useState(reports || {});
+  const [files, setFiles] = useState(reports ?? []);
   const refreshReports = async () => {
     setLoading(true);
-    const res = await getReports(type);
+    const res = await getReports(googleConfig);
 
     if (res?.error) {
       toast.error(res.error);
       return;
     }
+    if (res.status !== "success") {
+      toast.error(result.message || "Upload failed.");
+
+      // throw new Error(result.message || "Upload failed.");
+    }
     setLoading(false);
-    setFiles(res.data);
+    setFiles(Array.isArray(res) ? res : []);
   };
   useEffect(() => {
     if (openForm) {
@@ -45,36 +57,26 @@ export default function ReportsClient({ title, reports, type, profile }) {
     };
   }, [openForm]);
 
-  useEffect(() => {
-    if (successMessage) {
-      setOpenForm(false);
+  const sortedReports = Array.isArray(files)
+    ? [...files].sort((a, b) => {
+        const yearA = parseInt(a.school_year?.split("-")[0]);
+        const yearB = parseInt(b.school_year?.split("-")[0]);
 
-      const timer = setTimeout(() => {
-        setSuccessMessage("");
-      }, 3000);
+        if (yearB !== yearA) {
+          return yearB - yearA;
+        }
 
-      return () => clearTimeout(timer);
-    }
-  }, [successMessage]);
+        if (a.stage === "pre" && b.stage !== "pre") {
+          return -1;
+        }
 
-  const sortedReports = [...files].sort((a, b) => {
-    const yearA = parseInt(a.school_year?.split("-")[0]);
-    const yearB = parseInt(b.school_year?.split("-")[0]);
+        if (a.stage !== "pre" && b.stage === "pre") {
+          return 1;
+        }
 
-    if (yearB !== yearA) {
-      return yearB - yearA;
-    }
-
-    if (a.stage === "pre" && b.stage !== "pre") {
-      return -1;
-    }
-
-    if (a.stage !== "pre" && b.stage === "pre") {
-      return 1;
-    }
-
-    return 0;
-  });
+        return 0;
+      })
+    : [];
   const getAllReports = () => {
     refreshReports();
   };
@@ -89,15 +91,6 @@ export default function ReportsClient({ title, reports, type, profile }) {
   };
   return (
     <div className="min-h-screen bg-[#f6f8fb]">
-      {/* Notification */}
-      <div className="fixed bottom-6 right-6  ">
-        {successMessage && (
-          <div className="rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-500 to-green-600 px-5 py-3 text-white shadow-2xl">
-            {successMessage}
-          </div>
-        )}
-      </div>
-
       {/* Modal */}
       {openForm && (
         <ReportForm
@@ -105,7 +98,6 @@ export default function ReportsClient({ title, reports, type, profile }) {
           key={editingReport?.id || "create"}
           setEditingReport={setEditingReport}
           editingReport={editingReport}
-          setSuccessMessage={setSuccessMessage}
           setOpenForm={setOpenForm}
           refreshReports={refreshReports}
         />
@@ -113,7 +105,6 @@ export default function ReportsClient({ title, reports, type, profile }) {
       {loading && <FullPageLoader />}
       {/* Hero */}
       <div className="border-b border-slate-200 bg-[#0f172a]">
-        <div className="absolute top-0 right-0 h-72 w-72 rounded-full bg-blue-500/10 blur-3xl" />
         <div className="absolute bottom-0 left-0 h-72 w-72 rounded-full bg-violet-500/10 blur-3xl" />
 
         <div className="max-w-7xl mx-auto px-5 py-7">
@@ -349,27 +340,28 @@ cursor-pointer
 
                     {deleteId === report.id ? (
                       <DeleteForm
-                        reportId={report.id}
+                        file_id={report.file_id}
                         onCancel={() => setDeleteId(null)}
                         refreshReports={refreshReports}
+                        googleConfig={googleConfig}
                       />
                     ) : (
                       <button
                         onClick={() => setDeleteId(report.id)}
                         className="
-flex
-h-9
-w-9
-items-center
-justify-center
-rounded-xl
-bg-slate-100
-text-slate-700
-transition
-hover:bg-red-500
-hover:text-white
-cursor-pointer
-"
+                          flex
+                          h-9
+                          w-9
+                          items-center
+                          justify-center
+                          rounded-xl
+                          bg-slate-100
+                          text-slate-700
+                          transition
+                          hover:bg-red-500
+                          hover:text-white
+                          cursor-pointer
+                        "
                       >
                         <BiSolidTrash size={20} />
                       </button>

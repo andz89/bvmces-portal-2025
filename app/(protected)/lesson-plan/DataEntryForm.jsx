@@ -1,55 +1,44 @@
 "use client";
 import { useRef, useState } from "react";
 import { addLessonPlan } from "./actions";
-import { canSubmitLessonPlan } from "@/utils/lib/lessonPlanSchedule";
-import {
-  BiUpload,
-  BiUser,
-  BiEnvelope,
-  BiLockAlt,
-  BiCalendar,
-} from "react-icons/bi";
+import { canSubmitLessonPlan } from "@/utils/lib/canSubmitLessonPlan";
+import { BiUpload, BiUser } from "react-icons/bi";
 import toast from "react-hot-toast";
-export default function DataEntryForm({ profile, setUpdateLessonPlan }) {
+import SuccessModal from "./SuccessModal";
+export default function DataEntryForm({ profile, upload_lesson_plan }) {
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState("");
+  const [showSuccess, setShowSuccess] = useState(false);
   const [fileName, setFileName] = useState("");
   const MAX_FILE_SIZE = 943718;
   const fileInputRef = useRef(null);
   const formRef = useRef(null);
-  const uploadFile = (file) => {
-    return new Promise((resolve, reject) => {
-      const fr = new FileReader();
+  // const uploadFile = (file) => {
+  //   return new Promise((resolve, reject) => {
+  //     const fr = new FileReader();
 
-      fr.onload = (e) => {
-        const data = e.target.result.split(",");
+  //     fr.onload = (e) => {
+  //       const data = e.target.result.split(",");
 
-        resolve({
-          fileName: file.name,
-          mimeType: data[0].match(/:(\w.+);/)[1],
-          data: data[1],
-        });
-      };
+  //       resolve({
+  //         fileName: file.name,
+  //         mimeType: data[0].match(/:(\w.+);/)[1],
+  //         data: data[1],
+  //       });
+  //     };
 
-      fr.onerror = reject;
+  //     fr.onerror = reject;
 
-      fr.readAsDataURL(file);
-    });
-  };
+  //     fr.readAsDataURL(file);
+  //   });
+  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    setMessage("");
-    setMessageType("");
 
     const file = fileInputRef.current?.files?.[0];
 
     if (!file) {
-      // setMessage("Please select a file to upload.");
-      // setMessageType("error");
-
       toast.error("Please select a file to upload.");
       return;
     }
@@ -57,8 +46,6 @@ export default function DataEntryForm({ profile, setUpdateLessonPlan }) {
     if (file.size > MAX_FILE_SIZE) {
       toast.error("File size must not exceed 1 MB.");
 
-      // setMessage("File size must not exceed 1 MB.");
-      // setMessageType("error");
       return;
     }
 
@@ -67,34 +54,15 @@ export default function DataEntryForm({ profile, setUpdateLessonPlan }) {
     try {
       const formData = new FormData(e.currentTarget);
 
-      const result = await addLessonPlan(formData);
+      await addLessonPlan(formData);
 
-      if (result.status !== "success") {
-        toast.error(result.message || "Upload failed.");
-
-        // throw new Error(result.message || "Upload failed.");
-      }
-      toast.success(result.message || "Lesson plan uploaded successfully.");
-
-      // setMessage(result.message || "Lesson plan uploaded successfully.");
-      // setMessageType("success");
+      // toast.success("Report submitted successfully!");
+      setShowSuccess(true);
 
       formRef.current.reset();
       setFileName("");
       setShowForm(false);
-      // Close only on success
-      // setTimeout(() => {
-      //   setShowForm(false);
-      //   setMessage("");
-      // }, 1000);
     } catch (err) {
-      // setMessage(
-      //   err instanceof Error
-      //     ? err.message
-      //     : "An unexpected error occurred. Please try again.",
-      // );
-      // setMessageType("error");
-
       toast.error(
         err instanceof Error
           ? err.message
@@ -104,23 +72,39 @@ export default function DataEntryForm({ profile, setUpdateLessonPlan }) {
       setLoading(false);
     }
   };
+  console.log("upload_lesson_plan", upload_lesson_plan);
   const canSubmit = canSubmitLessonPlan();
   return (
     <div className=" ">
-      {profile.grade && !canSubmit && (
+      {profile.grade && !canSubmit && !upload_lesson_plan && (
         <div className="rounded-xl bg-amber-100 px-4 py-3 text-sm text-amber-800">
           Lesson plan submissions are only open from Friday 8:00 AM to Monday
           8:00 AM.
         </div>
       )}
-      {profile.grade && canSubmit && (
+      <SuccessModal open={showSuccess} onClose={() => setShowSuccess(false)} />
+      {/* {profile.grade && canSubmit && upload_lesson_plan && (
         <div
           className="w-45 bg-emerald-600 text-white py-3 px-1 font-semibold text-sm text-center  rounded-2xl cursor-pointer hover:bg-emerald-700 transition"
           onClick={() => setShowForm(true)}
         >
           Submit Lesson Plan
         </div>
+      )} */}
+      {profile.grade && (canSubmit || upload_lesson_plan) && (
+        <div
+          className="w-45 bg-emerald-600 text-white py-3 px-1 font-semibold text-sm text-center rounded-2xl cursor-pointer hover:bg-emerald-700 transition"
+          onClick={() => setShowForm(true)}
+        >
+          Submit Lesson Plan
+        </div>
       )}
+      {/* <div
+        className="w-45 bg-emerald-600 text-white py-3 px-1 font-semibold text-sm text-center  rounded-2xl cursor-pointer hover:bg-emerald-700 transition"
+        onClick={() => setShowForm(true)}
+      >
+        Submit Lesson Plan
+      </div> */}
       <div
         className={`fixed inset-0 size-auto     bg-slate-100/50 z-50 h-screen    flex items-center justify-center   mx-auto w-full ${showForm ? "" : "hidden"}`}
       >
@@ -270,7 +254,50 @@ export default function DataEntryForm({ profile, setUpdateLessonPlan }) {
                 </select>
               </div>
             </div>
+            <div>
+              <label className="block text-sm font-medium text-neutral-700 mb-2">
+                Subject
+              </label>
 
+              <div className="relative">
+                <select
+                  name="subject"
+                  required
+                  defaultValue=""
+                  className="
+                w-full
+                rounded-2xl
+                border
+                border-neutral-200
+                bg-white
+                px-4
+                py-3
+                outline-none
+                transition
+                focus:border-emerald-500
+                focus:ring-4
+                focus:ring-emerald-100
+              "
+                >
+                  <option value="" disabled>
+                    Select Subject
+                  </option>
+
+                  <option value="English">English</option>
+                  <option value="Science">Science</option>
+                  <option value="Mathematics">Mathematics</option>
+                  <option value="Filipino">Filipino</option>
+                  <option value="Araling Panlipunan">Araling Panlipunan</option>
+                  <option value="MAPEH">MAPEH</option>
+                  <option value="EPP">EPP</option>
+                  <option value="ESP">ESP</option>
+                  <option value="Reading and Literacy">
+                    Reading and Literacy
+                  </option>
+                  <option value="Language">Language</option>
+                </select>
+              </div>
+            </div>
             {/* Upload */}
             <div>
               <label className="block text-sm font-medium text-neutral-700 mb-3">
@@ -300,7 +327,7 @@ export default function DataEntryForm({ profile, setUpdateLessonPlan }) {
                   ref={fileInputRef}
                   type="file"
                   name="file"
-                  accept=".xlsx,.xls"
+                  accept=".doc,.docx"
                   className="hidden"
                   onChange={(e) => {
                     const file = e.target.files?.[0];
@@ -310,18 +337,29 @@ export default function DataEntryForm({ profile, setUpdateLessonPlan }) {
                       return;
                     }
 
-                    if (file.size > MAX_FILE_SIZE) {
-                      // setMessage("File size must not exceed 1 MB.");
-                      // setMessageType("error");
-                      toast.error("File size must not exceed 1 MB.");
+                    const allowedExtensions = [".doc", ".docx"];
+                    const fileName = file.name.toLowerCase();
 
+                    const isWordFile = allowedExtensions.some((ext) =>
+                      fileName.endsWith(ext),
+                    );
+
+                    if (!isWordFile) {
+                      toast.error(
+                        "Only Microsoft Word (.doc, .docx) files are allowed.",
+                      );
                       e.target.value = "";
                       setFileName("");
                       return;
                     }
 
-                    // setMessage("");
-                    // setMessageType("");
+                    if (file.size > MAX_FILE_SIZE) {
+                      toast.error("File size must not exceed 1 MB.");
+                      e.target.value = "";
+                      setFileName("");
+                      return;
+                    }
+
                     setFileName(file.name);
                   }}
                 />
@@ -339,7 +377,7 @@ export default function DataEntryForm({ profile, setUpdateLessonPlan }) {
 
                     formRef.current.reset();
                     setFileName("");
-                    // setMessage("");
+
                     setShowForm(false);
                   }}
                   className="

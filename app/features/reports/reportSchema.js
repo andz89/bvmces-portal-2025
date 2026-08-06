@@ -26,8 +26,6 @@ export const reportSchema = z.object({
 
   description: textField("Description", 100),
 
-  link: z.string().trim().url("Invalid URL").max(500),
-
   type: textField("Type", 50, 1),
 
   stage: textField("Stage", 20, 1),

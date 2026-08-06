@@ -1,5 +1,5 @@
 import LessonPlan from "./LessonPlan";
-import { getLessonPlansByTerm } from "../actions";
+import { getLessonPlansByTerm, getSettings } from "../actions";
 import RefreshError from "../RefreshError";
 import { checkRole } from "@/utils/lib/checkRole.js";
 import { redirect } from "next/navigation";
@@ -10,11 +10,10 @@ export default async function Page({ searchParams }) {
   //   if (profile.role !== "admin" && profile.role !== "visitor") {
   //     redirect("/");
   //   }
-
+  const { data, errorSettings } = await getSettings();
   const { term, id } = await searchParams;
 
   let lessonPlans = [];
-  let error = null;
 
   let termParams = term ? parseInt(term) : 1;
   let teacher_id = id;
@@ -22,15 +21,19 @@ export default async function Page({ searchParams }) {
   try {
     lessonPlans = await getLessonPlansByTerm({
       term: termParams,
-      teacher_id: teacher_id,
+      teacher_id,
     });
   } catch (err) {
     console.error(err);
-    error = "Unable to load lesson plans. Please refresh the page.";
-  }
-  if (error) {
+
     return (
-      <RefreshError message="Unable to load lesson plans. Please refresh the page." />
+      <RefreshError
+        message={
+          err instanceof Error
+            ? err.message
+            : "Unable to load lesson plans. Please refresh the page."
+        }
+      />
     );
   }
   return (
@@ -41,6 +44,7 @@ export default async function Page({ searchParams }) {
           lessonPlans={lessonPlans}
           termParams={termParams}
           teacher_id={teacher_id}
+          upload_lesson_plan={data?.active}
         />
       </div>
     </div>

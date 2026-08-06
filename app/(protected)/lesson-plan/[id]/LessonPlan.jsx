@@ -18,6 +18,7 @@ export default function LessonPlanAdmin({
   profile,
   termParams,
   teacher_id,
+  upload_lesson_plan,
 }) {
   const [updatedLessonPlan, setUpdateLessonPlan] = useState(lessonPlans);
   const [deleteId, setDeleteId] = useState(null);
@@ -36,11 +37,7 @@ export default function LessonPlanAdmin({
       setDeleting(true);
       setDeleteError("");
 
-      const result = await deleteLessonPlan(deleteId);
-
-      if (!result?.success && result?.status !== "success") {
-        throw new Error(result?.message || "Unable to delete lesson plan.");
-      }
+      await deleteLessonPlan(deleteId);
 
       setUpdateLessonPlan((prev) =>
         prev.filter((plan) => plan.file_id !== deleteId),
@@ -108,7 +105,10 @@ export default function LessonPlanAdmin({
             Lesson Plans
           </h2>
         </div>
-        <DataEntryForm profile={profile} />
+        <DataEntryForm
+          profile={profile}
+          upload_lesson_plan={upload_lesson_plan}
+        />
       </div>
       <div className="border-b border-neutral-200 bg-white px-6 py-4">
         <div className="max-w-100 gap-2 flex items-center">
@@ -150,100 +150,118 @@ export default function LessonPlanAdmin({
             </p>
           </div>
         </div>
+        <div className="overflow-x-auto">
+          <table className="w-full  z-54 ">
+            <thead className="border-b">
+              <tr className="text-left text-slate-700 text-sm ">
+                <th className="px-6 py-3 w-40">Teacher</th>
+                <th className="px-6 py-3 w-40">Grade</th>
+                <th className="px-6 py-3">Week</th>
 
-        <table className="w-full  overflow-auto">
-          <thead className="border-b">
-            <tr className="text-left text-slate-700">
-              <th className="px-6 py-3 w-40">Teacher</th>
-              <th className="px-6 py-3 w-40">Grade</th>
-              <th className="px-6 py-3">Week</th>
-              <th className="px-6 py-3">Term</th>
-              <th className="px-6 py-3 text-center">Lesson Plan</th>
-              <th className="px-6 py-3  ">Status</th>
+                <th className="px-6 py-3">Term</th>
+                <th className="px-6 py-3 text-center">Subject</th>
 
-              {/* {canDelete && <th className="px-6 py-3 text-center">--</th>} */}
-            </tr>
-          </thead>
+                <th className="px-6 py-3 text-center">Submitted </th>
+                <th className="px-6 py-3 text-center">Lesson Plan</th>
+                <th className="px-6 py-3  ">Status</th>
 
-          <tbody>
-            {sortedLessonPlans.map((plan) => (
-              <tr
-                key={plan.file_id}
-                className="border-b border-neutral-100 hover:bg-neutral-50 transition "
-              >
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-3 ">
-                    <div className="h-10 w-10 rounded-full bg-emerald-100 flex items-center justify-center">
-                      <BiUser className="text-emerald-600 text-lg" />
+                {/* {canDelete && <th className="px-6 py-3 text-center">--</th>} */}
+              </tr>
+            </thead>
+
+            <tbody>
+              {sortedLessonPlans.map((plan) => (
+                <tr
+                  key={plan.file_id}
+                  className="border-b border-neutral-100 hover:bg-neutral-50 transition text-xs"
+                >
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-3 ">
+                      <div className="h-10 w-10 rounded-full bg-emerald-100 flex items-center justify-center">
+                        <BiUser className="text-emerald-600 text-lg" />
+                      </div>
+
+                      <span className="font-medium text-neutral-800 uppercase text-sm w-40">
+                        {plan.teacherName}
+                      </span>
                     </div>
+                  </td>
 
-                    <span className="font-medium text-neutral-800 uppercase text-sm w-40">
-                      {plan.teacherName}
+                  <td className="px-6 py-4 uppercase text-sm w-40">
+                    {plan.grade}
+                  </td>
+
+                  <td className="px-6 py-4 ">
+                    <span className="inline-flex w-15 items-center gap-1 rounded-full   py-1 text-sm font-medium text-emerald-700">
+                      W - {plan.week}
                     </span>
-                  </div>
-                </td>
+                  </td>
 
-                <td className="px-6 py-4 uppercase text-sm w-40">
-                  {plan.grade}
-                </td>
-
-                <td className="px-6 py-4">
-                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-700">
-                    <BiCalendar />
-                    Week {plan.week}
-                  </span>
-                </td>
-
-                <td className="px-6 py-4">
-                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-700">
-                    {plan.term}
-                  </span>
-                </td>
-
-                <td className="px-6 py-4 text-center">
-                  <a
-                    href={plan.FileLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-700 transition hover:bg-emerald-100"
-                  >
-                    <BiLinkExternal />
-                    Open
-                  </a>
-                </td>
-                <td className="px-6 py-4">
-                  <Status
-                    plan={plan}
-                    profile={profile}
-                    setUpdateLessonPlan={setUpdateLessonPlan}
-                  />
-                </td>
-                {profile.id === plan.teacher_id && (
+                  <td className="px-6 py-4">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-700">
+                      {plan.term}
+                    </span>
+                  </td>
+                  <td className="  py-4 w-full     text-center">
+                    <span className="items-center gap-1 rounded-full uppercase text-xs font-medium text-emerald-700 ">
+                      {plan.subject}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-700">
+                      {(() => {
+                        const formatted = new Date(
+                          plan.Timestamp,
+                        ).toLocaleDateString("en-US");
+                        return formatted;
+                      })()}
+                    </span>
+                  </td>
                   <td className="px-6 py-4 text-center">
-                    <button
-                      onClick={() => setDeleteId(plan.file_id)}
-                      className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-700 transition hover:bg-red-100"
+                    <a
+                      href={plan.FileLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-700 transition hover:bg-emerald-100"
                     >
-                      <BiTrash size={18} />
-                    </button>
-                    <ConfirmDeleteModal
-                      open={!!deleteId}
-                      loading={deleting}
-                      error={deleteError}
-                      onCancel={() => {
-                        if (deleting) return;
-
-                        setDeleteError("");
-                        setDeleteId(null);
-                      }}
-                      onConfirm={handleDelete}
+                      <BiLinkExternal />
+                      Open
+                    </a>
+                  </td>
+                  <td className="px-6 py-4">
+                    <Status
+                      plan={plan}
+                      profile={profile}
+                      setUpdateLessonPlan={setUpdateLessonPlan}
                     />
                   </td>
-                )}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                  {profile.id === plan.teacher_id && (
+                    <td className="px-6 py-4 text-center">
+                      <button
+                        onClick={() => setDeleteId(plan.file_id)}
+                        className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-700 transition hover:bg-red-100"
+                      >
+                        <BiTrash size={18} />
+                      </button>
+                      <ConfirmDeleteModal
+                        open={!!deleteId}
+                        loading={deleting}
+                        error={deleteError}
+                        onCancel={() => {
+                          if (deleting) return;
+
+                          setDeleteError("");
+                          setDeleteId(null);
+                        }}
+                        onConfirm={handleDelete}
+                      />
+                    </td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

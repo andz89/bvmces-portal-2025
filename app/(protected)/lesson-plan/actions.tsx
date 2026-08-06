@@ -1,7 +1,7 @@
 "use server";
 import { Buffer } from "node:buffer";
 import { revalidatePath } from "next/cache";
-
+import { handleAppScriptResponse } from "./handleAppScriptResponse";
 import { createClient } from "@/utils/supabase/server";
 type LessonPlanFilters = {
   term?: number | string;
@@ -18,6 +18,22 @@ type AppsScriptResponse = {
   message?: string;
   data?: unknown;
 };
+export async function getSettings() {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("settings")
+    .select("active")
+    .eq("name", "upload_lesson_plan")
+    .single();
+
+  if (error) {
+    console.error(error);
+    return { error: error.message };
+  }
+
+  return { data, error };
+}
 export async function getLessonPlans({
   term,
   week,
@@ -28,7 +44,7 @@ export async function getLessonPlans({
   if (!appScriptUrl) {
     throw new Error("APPSCRIPT_URL is not configured.");
   }
-  const res = await fetch(appScriptUrl, {
+  const response = await fetch(appScriptUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -42,16 +58,7 @@ export async function getLessonPlans({
     }),
   });
 
-  if (!res.ok) {
-    throw new Error("Unable to connect to the lesson plan service.");
-  }
-
-  const result: AppsScriptResponse = await res.json();
-
-  // Apps Script returned an error
-  if (result.status === "error") {
-    throw new Error(result.message || "Unable to fetch lesson plans.");
-  }
+  const result = await handleAppScriptResponse(response);
 
   return result;
 }
@@ -64,7 +71,7 @@ export async function getAdminLessonPlans({
   if (!appScriptUrl) {
     throw new Error("APPSCRIPT_URL is not configured.");
   }
-  const res = await fetch(appScriptUrl, {
+  const response = await fetch(appScriptUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -77,11 +84,9 @@ export async function getAdminLessonPlans({
     }),
   });
 
-  if (!res.ok) {
-    throw new Error("Unable to fetch lesson plans.");
-  }
+  const result = await handleAppScriptResponse(response);
 
-  return await res.json();
+  return result;
 }
 type LessonPlanByTermFilters = {
   term?: number | string;
@@ -93,7 +98,7 @@ export async function deleteLessonPlan(file_id: string) {
   if (!appScriptUrl) {
     throw new Error("APPSCRIPT_URL is not configured.");
   }
-  const res = await fetch(appScriptUrl, {
+  const response = await fetch(appScriptUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -104,11 +109,7 @@ export async function deleteLessonPlan(file_id: string) {
     }),
   });
 
-  if (!res.ok) {
-    throw new Error("Failed to delete lesson plan.");
-  }
-
-  const result = await res.json();
+  const result = await handleAppScriptResponse(response);
 
   return result;
 }
@@ -132,6 +133,8 @@ export async function addLessonPlan(formData: FormData) {
     action: "addLessonPlan",
     formDataObj: {
       schoolYear: formData.get("schoolYear"),
+      subject: formData.get("subject"),
+
       teacherName: formData.get("teacherName"),
       week: Number(formData.get("week")?.toString()) || null,
       grade: formData.get("grade")?.toString() || null,
@@ -152,9 +155,11 @@ export async function addLessonPlan(formData: FormData) {
     },
     body: JSON.stringify(payload),
   });
+  const result = await handleAppScriptResponse(response);
+
   revalidatePath("/lesson-plan");
 
-  return await response.json();
+  return result;
 }
 export async function getUsers() {
   const supabase = await createClient();
@@ -181,7 +186,7 @@ export async function updateLessonPlanStatus(
   if (!appScriptUrl) {
     throw new Error("APPSCRIPT_URL is not configured.");
   }
-  const res = await fetch(appScriptUrl, {
+  const response = await fetch(appScriptUrl, {
     method: "POST",
     headers: {
       "Content-Type": "text/plain;charset=utf-8",
@@ -193,16 +198,7 @@ export async function updateLessonPlanStatus(
     }),
   });
 
-  if (!res.ok) {
-    throw new Error("Unable to connect to the server.");
-  }
-
-  const result: AppsScriptResponse = await res.json();
-
-  if (result.status !== "success") {
-    throw new Error(result.message || "Failed to update status.");
-  }
-
+  const result = await handleAppScriptResponse(response);
   return result;
 }
 export async function getLessonPlansByTerm({
@@ -214,7 +210,7 @@ export async function getLessonPlansByTerm({
   if (!appScriptUrl) {
     throw new Error("APPSCRIPT_URL is not configured.");
   }
-  const res = await fetch(appScriptUrl, {
+  const response = await fetch(appScriptUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -227,16 +223,7 @@ export async function getLessonPlansByTerm({
     }),
   });
 
-  if (!res.ok) {
-    throw new Error("Unable to connect to the lesson plan service.");
-  }
-
-  const result: AppsScriptResponse = await res.json();
-
-  // Apps Script returned an error
-  if (result.status === "error") {
-    throw new Error(result.message || "Unable to fetch lesson plans.");
-  }
+  const result = await handleAppScriptResponse(response);
 
   return result;
 }

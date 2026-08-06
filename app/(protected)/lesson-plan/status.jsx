@@ -34,15 +34,7 @@ const status = ({ plan, profile, setUpdateLessonPlan }) => {
       setRetryStatus(status);
       setActiveStatus(null);
 
-      const result = await updateLessonPlanStatus(
-        plan.file_id,
-        status,
-        profile.full_name,
-      );
-
-      if (result.status !== "success") {
-        throw new Error(result.message || "Unable to update lesson plan.");
-      }
+      await updateLessonPlanStatus(plan.file_id, status, profile.full_name);
 
       setUpdateLessonPlan((prev) =>
         prev.map((item) =>
@@ -87,7 +79,7 @@ const status = ({ plan, profile, setUpdateLessonPlan }) => {
   }
 
   return (
-    <div ref={menuRef} className="flex flex-col gap-1">
+    <div ref={menuRef} className="flex flex-col gap-1 z-100">
       <div className="  w-30">
         <button
           disabled={loading}
@@ -117,9 +109,9 @@ const status = ({ plan, profile, setUpdateLessonPlan }) => {
           )}
         </button>
 
-        <div className="relative z-51">
+        <div className="relative z-100">
           {activeStatus === plan.file_id && (
-            <div className="absolute -right-0 w-30 z-100  -mt-29 rounded border border-neutral-200 bg-white shadow-sm flex flex-col items-start    py-1  text-sm">
+            <div className="absolute -right-0 w-30 z-100  -mt-15 rounded border border-neutral-200 bg-white shadow-sm flex flex-col items-start    py-1  text-sm">
               <button
                 onClick={() => handleUpdate("PENDING")}
                 className="hover:bg-slate-100 px-3 cursor-pointer w-full py-[2px] text-left"

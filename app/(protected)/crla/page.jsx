@@ -9,7 +9,7 @@ const page = async () => {
   return (
     <ReportsClient
       title={type}
-      reports={reports.data}
+      reports={reports}
       type={type}
       profile={profile}
     />

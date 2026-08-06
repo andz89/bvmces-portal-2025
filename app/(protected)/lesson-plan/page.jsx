@@ -34,8 +34,7 @@ export default async function Page({ searchParams }) {
     redirect(`/lesson-plan/teacher?${params.toString()}`);
   }
   try {
-    if (profile?.role === "admin" || profile?.role === "visitor") {
-      console.log("visitor");
+    if (profile.role === "admin" || profile.role === "visitor") {
       lessonPlans = await getAdminLessonPlans({
         term: termParams,
         week: weekParams,
@@ -45,11 +44,15 @@ export default async function Page({ searchParams }) {
     }
   } catch (err) {
     console.error("Failed to load lesson plans:", err);
-    error = "Unable to load lesson plans. Please refresh the page.";
-  }
-  if (error) {
+
     return (
-      <RefreshError message="Unable to load lesson plans. Please refresh the page." />
+      <RefreshError
+        message={
+          err instanceof Error
+            ? err.message
+            : "Unable to load lesson plans. Please refresh the page."
+        }
+      />
     );
   }
   return (

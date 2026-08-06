@@ -59,29 +59,29 @@ export default async function DesktopMenu({ profile }) {
               GPA
             </Link>
 
-            <Link
+            {/* <Link
               href="/rma"
               className="flex items-center gap-3 rounded-xl px-2 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
             >
               <BiGridAlt size={18} />
               RMA
-            </Link>
+            </Link> */}
 
-            <Link
+            {/* <Link
               href="/phil-iri"
               className="flex items-center gap-3 rounded-xl px-2 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
             >
               <BiBook size={18} />
               PHIL-IRI
-            </Link>
+            </Link> */}
 
-            <Link
+            {/* <Link
               href="/crla"
               className="flex items-center gap-3 rounded-xl px-2 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
             >
               <BiBook size={18} />
               CRLA
-            </Link>
+            </Link> */}
 
             <Link
               href="/lesson-plan"

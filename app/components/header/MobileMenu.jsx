@@ -138,29 +138,29 @@ export default function MobileMenu({ profile }) {
                       GPA
                     </Link>
 
-                    <Link
+                    {/* <Link
                       href="/rma"
                       className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-white"
                     >
                       <BiGridAlt size={18} />
                       RMA
-                    </Link>
+                    </Link> */}
 
-                    <Link
+                    {/* <Link
                       href="/phil-iri"
                       className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-white"
                     >
                       <BiBook size={18} />
                       PHIL-IRI
-                    </Link>
+                    </Link> */}
 
-                    <Link
+                    {/* <Link
                       href="/crla"
                       className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-white"
                     >
                       <BiBook size={18} />
                       CRLA
-                    </Link>
+                    </Link> */}
                   </div>
                 )}
               </div>
