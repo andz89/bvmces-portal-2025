@@ -12,6 +12,18 @@
   "main": ".open-next/worker.js",
   "compatibility_date": "2025-12-01",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "routes": [
+    {
+      "pattern": "bvasquezmces.com",
+      "zone_name": "bvasquezmces.com",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.bvasquezmces.com",
+      "zone_name": "bvasquezmces.com",
+      "custom_domain": true
+    }
+  ],
   "assets": {
     "binding": "ASSETS",
     "directory": ".open-next/assets"
@@ -26,11 +38,24 @@
       // Self-reference service binding, the service name must match the worker name
       // see https://opennext.js.org/cloudflare/caching
       "binding": "WORKER_SELF_REFERENCE",
-      "service": "bvasquezmces"
+      "service": "bvasquezmces",
+      "environment": "production"
     }
   ],
   "observability": {
     "enabled": true
+  },
+  /**
+   * Environment Variables
+   * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
+   * Note: these are NEXT_PUBLIC_* values, which are not secret (they ship to
+   * the browser bundle already). Real secrets stay in Cloudflare's encrypted
+   * "Secrets" store and are untouched by `wrangler deploy` diffing them here.
+   */
+  "vars": {
+    "NEXT_PUBLIC_SUPABASE_URL": "https://zmmkqncfbjkmwfyngaha.supabase.co",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptbWtxbmNmYmprbXdmeW5nYWhhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM4NDU1ODgsImV4cCI6MjA3OTQyMTU4OH0.sqPf6MvIbZ5mfYTV2bRvTooE4V01uFtvaq3hvJ9hKNQ",
+    "NEXT_PUBLIC_ELECTION_PASSWORD": "vote2026132289"
   }
   /**
    * Smart Placement
@@ -43,11 +68,4 @@
    * databases, object storage, AI inference, real-time communication and more.
    * https://developers.cloudflare.com/workers/runtime-apis/bindings/
    */
-  /**
-   * Environment Variables
-   * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
-   * Note: Use secrets to store sensitive data.
-   * https://developers.cloudflare.com/workers/configuration/secrets/
-   */
-  // "vars": {  "MY_VARIABLE": "production_value" }
 }
