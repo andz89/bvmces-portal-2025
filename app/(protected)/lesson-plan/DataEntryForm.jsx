@@ -1,38 +1,22 @@
 "use client";
 import { useRef, useState } from "react";
-import { addLessonPlan } from "./actions";
-import { canSubmitLessonPlan } from "@/utils/lib/canSubmitLessonPlan";
 import { BiUpload, BiUser } from "react-icons/bi";
 import toast from "react-hot-toast";
 import SuccessModal from "./SuccessModal";
-export default function DataEntryForm({ profile, upload_lesson_plan }) {
+export default function DataEntryForm({
+  profile,
+  upload_lesson_plan,
+  canSubmit,
+}) {
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
   const [fileName, setFileName] = useState("");
-  const MAX_FILE_SIZE = 943718;
+  const MAX_FILE_SIZE = 52428800;
   const fileInputRef = useRef(null);
   const formRef = useRef(null);
-  // const uploadFile = (file) => {
-  //   return new Promise((resolve, reject) => {
-  //     const fr = new FileReader();
 
-  //     fr.onload = (e) => {
-  //       const data = e.target.result.split(",");
-
-  //       resolve({
-  //         fileName: file.name,
-  //         mimeType: data[0].match(/:(\w.+);/)[1],
-  //         data: data[1],
-  //       });
-  //     };
-
-  //     fr.onerror = reject;
-
-  //     fr.readAsDataURL(file);
-  //   });
-  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -44,8 +28,7 @@ export default function DataEntryForm({ profile, upload_lesson_plan }) {
     }
 
     if (file.size > MAX_FILE_SIZE) {
-      toast.error("File size must not exceed 1 MB.");
-
+      toast.error("File size must not exceed 50 MB.");
       return;
     }
 
@@ -54,26 +37,37 @@ export default function DataEntryForm({ profile, upload_lesson_plan }) {
     try {
       const formData = new FormData(e.currentTarget);
 
-      await addLessonPlan(formData);
+      console.log("BEFORE UPLOAD FETCH");
 
-      // toast.success("Report submitted successfully!");
+      const response = await fetch("/api/lesson-plan/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      console.log("UPLOAD RESPONSE:", response.status);
+
+      const result = await response.json();
+
+      if (!response.ok || result.status === "error") {
+        throw new Error(result.message || "Upload failed.");
+      }
+
       setShowSuccess(true);
 
       formRef.current.reset();
       setFileName("");
       setShowForm(false);
     } catch (err) {
+      console.error("UPLOAD ERROR:", err);
+
       toast.error(
-        err instanceof Error
-          ? err.message
-          : "An unexpected error occurred. Please try again.",
+        err instanceof Error ? err.message : "An unexpected error occurred.",
       );
     } finally {
       setLoading(false);
     }
   };
-  console.log("upload_lesson_plan", upload_lesson_plan);
-  const canSubmit = canSubmitLessonPlan();
+
   return (
     <div className=" ">
       {profile.grade && !canSubmit && !upload_lesson_plan && (
@@ -83,14 +77,14 @@ export default function DataEntryForm({ profile, upload_lesson_plan }) {
         </div>
       )}
       <SuccessModal open={showSuccess} onClose={() => setShowSuccess(false)} />
-      {/* {profile.grade && canSubmit && upload_lesson_plan && (
-        <div
-          className="w-45 bg-emerald-600 text-white py-3 px-1 font-semibold text-sm text-center  rounded-2xl cursor-pointer hover:bg-emerald-700 transition"
-          onClick={() => setShowForm(true)}
-        >
-          Submit Lesson Plan
-        </div>
-      )} */}
+
+      {/* <div
+        className="w-45 bg-emerald-600 text-white py-3 px-1 font-semibold text-sm text-center  rounded-2xl cursor-pointer hover:bg-emerald-700 transition"
+        onClick={() => setShowForm(true)}
+      >
+        Submit Lesson Plan
+      </div> */}
+
       {profile.grade && (canSubmit || upload_lesson_plan) && (
         <div
           className="w-45 bg-emerald-600 text-white py-3 px-1 font-semibold text-sm text-center rounded-2xl cursor-pointer hover:bg-emerald-700 transition"
@@ -156,21 +150,14 @@ export default function DataEntryForm({ profile, upload_lesson_plan }) {
                 />
               </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-2">
-                Grade
-              </label>
 
-              <div className="relative">
-                <input
-                  value={profile?.grade || ""}
-                  readOnly
-                  type="text"
-                  name="grade"
-                  className="uppercase w-full rounded-2xl border border-neutral-200 px-4 py-3 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
-                />
-              </div>
-            </div>
+            <input
+              type="hidden"
+              value={profile?.grade || ""}
+              name="grade"
+              className="uppercase w-full rounded-2xl border border-neutral-200 px-4 py-3 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+            />
+
             <input
               type="hidden"
               value={profile?.id || ""}
@@ -179,7 +166,37 @@ export default function DataEntryForm({ profile, upload_lesson_plan }) {
               placeholder="Enter teacher name"
               className="uppercase w-full rounded-2xl border border-neutral-200 pl-12 pr-4 py-3 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
             />
+            <select
+              name="lesson_level"
+              required
+              defaultValue=""
+              className="
+    w-full
+    rounded-2xl
+    border
+    border-neutral-200
+    bg-white
+    px-4
+    py-3
+    outline-none
+    transition
+    focus:border-emerald-500
+    focus:ring-4
+    focus:ring-emerald-100
+  "
+            >
+              <option value="" disabled>
+                Select Grade
+              </option>
 
+              <option value="Kinder">Kinder</option>
+
+              {Array.from({ length: 6 }, (_, i) => (
+                <option key={i + 1} value={i + 1}>
+                  {i + 1}
+                </option>
+              ))}
+            </select>
             <div>
               <label className="block text-sm font-medium text-neutral-700 mb-2">
                 Week
@@ -288,9 +305,10 @@ export default function DataEntryForm({ profile, upload_lesson_plan }) {
                   <option value="Mathematics">Mathematics</option>
                   <option value="Filipino">Filipino</option>
                   <option value="Araling Panlipunan">Araling Panlipunan</option>
+                  <option value="MAKABANSA">MAKABANSA</option>
                   <option value="MAPEH">MAPEH</option>
                   <option value="EPP">EPP</option>
-                  <option value="ESP">ESP</option>
+                  <option value="GMRC">GMRC</option>
                   <option value="Reading and Literacy">
                     Reading and Literacy
                   </option>
@@ -354,7 +372,7 @@ export default function DataEntryForm({ profile, upload_lesson_plan }) {
                     }
 
                     if (file.size > MAX_FILE_SIZE) {
-                      toast.error("File size must not exceed 1 MB.");
+                      toast.error("File size must not exceed 50 MB.");
                       e.target.value = "";
                       setFileName("");
                       return;

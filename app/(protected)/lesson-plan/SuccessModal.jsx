@@ -30,8 +30,9 @@ export default function SuccessModal({ open, onClose }) {
           <p className="mt-3 text-center text-slate-500">
             Your lesson plan has been successfully submitted.
             <br />
-            If the newly submitted lesson plan is not displayed in the list,
-            please refresh the page.
+            <br />
+            Note: If the newly submitted lesson plan is not displayed in the
+            list, please refresh the page.
           </p>
 
           <button

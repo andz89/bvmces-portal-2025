@@ -5,12 +5,7 @@ import { deleteReport } from "./actions";
 import toast from "react-hot-toast";
 import FullPageLoader from "../../components/loader/FullPageLoader";
 
-export default function DeleteForm({
-  file_id,
-  onCancel,
-  refreshReports,
-  googleConfig,
-}) {
+export default function DeleteForm({ file_id, onCancel, refreshReports, type }) {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -18,7 +13,7 @@ export default function DeleteForm({
     try {
       setLoading(true);
 
-      const result = await deleteReport(file_id, password, googleConfig);
+      const result = await deleteReport(file_id, password, type);
 
       if (result?.error) {
         toast.error(result.error);

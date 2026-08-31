@@ -11,17 +11,10 @@ import {
   BiLinkAlt,
   BiCopy,
 } from "react-icons/bi";
-import { getGoogleConfig } from "./actions";
-import { findReport, getReports } from "./actions";
+import { getReports } from "./actions";
 import toast from "react-hot-toast";
 import FullPageLoader from "@/app/components/loader/FullPageLoader";
-export default function ReportsClient({
-  title,
-  reports,
-  type,
-  profile,
-  googleConfig,
-}) {
+export default function ReportsClient({ title, reports, type, profile }) {
   const [editingReport, setEditingReport] = useState(null);
 
   const [deleteId, setDeleteId] = useState(null);
@@ -29,21 +22,24 @@ export default function ReportsClient({
   const [loading, setLoading] = useState(false);
 
   const [files, setFiles] = useState(reports ?? []);
+  const [searchTerm, setSearchTerm] = useState("");
   const refreshReports = async () => {
     setLoading(true);
-    const res = await getReports(googleConfig);
 
-    if (res?.error) {
-      toast.error(res.error);
-      return;
-    }
-    if (res.status !== "success") {
-      toast.error(result.message || "Upload failed.");
+    try {
+      const res = await getReports(type);
+      setFiles(Array.isArray(res) ? res : []);
+    } catch (err) {
+      console.error(err);
 
-      // throw new Error(result.message || "Upload failed.");
+      toast.error(
+        err instanceof Error
+          ? err.message
+          : "Unable to refresh the file list.",
+      );
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-    setFiles(Array.isArray(res) ? res : []);
   };
   useEffect(() => {
     if (openForm) {
@@ -57,37 +53,41 @@ export default function ReportsClient({
     };
   }, [openForm]);
 
-  const sortedReports = Array.isArray(files)
-    ? [...files].sort((a, b) => {
-        const yearA = parseInt(a.school_year?.split("-")[0]);
-        const yearB = parseInt(b.school_year?.split("-")[0]);
+  const sortedReports = (Array.isArray(files) ? files : [])
+    .filter((report) => {
+      if (!searchTerm) return true;
 
-        if (yearB !== yearA) {
-          return yearB - yearA;
-        }
+      const term = searchTerm.toLowerCase();
 
-        if (a.stage === "pre" && b.stage !== "pre") {
-          return -1;
-        }
+      return (
+        report.filename?.toLowerCase().includes(term) ||
+        report.description?.toLowerCase().includes(term)
+      );
+    })
+    .sort((a, b) => {
+      const yearA = parseInt(a.school_year?.split("-")[0]);
+      const yearB = parseInt(b.school_year?.split("-")[0]);
 
-        if (a.stage !== "pre" && b.stage === "pre") {
-          return 1;
-        }
+      if (yearB !== yearA) {
+        return yearB - yearA;
+      }
 
-        return 0;
-      })
-    : [];
+      if (a.stage === "pre" && b.stage !== "pre") {
+        return -1;
+      }
+
+      if (a.stage !== "pre" && b.stage === "pre") {
+        return 1;
+      }
+
+      return 0;
+    });
   const getAllReports = () => {
+    setSearchTerm("");
     refreshReports();
   };
-  const handleInputSearch = async (keyword) => {
-    setLoading(true);
-    const res = await findReport(keyword, type);
-    if (res.error) {
-      toast.error(res.error);
-    }
-    setFiles(res.data);
-    setLoading(false);
+  const handleInputSearch = (keyword) => {
+    setSearchTerm(keyword);
   };
   return (
     <div className="min-h-screen bg-[#f6f8fb]">
@@ -343,7 +343,7 @@ cursor-pointer
                         file_id={report.file_id}
                         onCancel={() => setDeleteId(null)}
                         refreshReports={refreshReports}
-                        googleConfig={googleConfig}
+                        type={type}
                       />
                     ) : (
                       <button

@@ -3,6 +3,7 @@ import LessonPlanAdmin from "./LessonPlanAdmin";
 import { getLessonPlans, getUsers, getAdminLessonPlans } from "./actions";
 import RefreshError from "./RefreshError";
 import { checkRole } from "@/utils/lib/checkRole.js";
+import { canSubmitLessonPlan } from "@/utils/lib/canSubmitLessonPlan";
 import { redirect } from "next/navigation";
 export default async function Page({ searchParams }) {
   const profile = await checkRole();
@@ -64,6 +65,7 @@ export default async function Page({ searchParams }) {
           users={users}
           termParams={termParams}
           weekParams={weekParams}
+          canSubmit={canSubmitLessonPlan()}
         />
 
         {/* <LessonPlanIndividual lessonPlans={lessonPlans} /> */}

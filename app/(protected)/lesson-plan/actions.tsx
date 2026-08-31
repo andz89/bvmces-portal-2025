@@ -3,12 +3,17 @@ import { Buffer } from "node:buffer";
 import { revalidatePath } from "next/cache";
 import { handleAppScriptResponse } from "./handleAppScriptResponse";
 import { createClient } from "@/utils/supabase/server";
+import { checkRole } from "@/utils/lib/checkRole";
+
 type LessonPlanFilters = {
   term?: number | string;
   week?: number | string;
   teacher_id?: string;
 };
-
+type LessonPlanByTermFilters = {
+  term?: number | string;
+  teacher_id?: string;
+};
 type AdminLessonPlanFilters = {
   term?: number | string;
   week?: number | string;
@@ -88,11 +93,59 @@ export async function getAdminLessonPlans({
 
   return result;
 }
-type LessonPlanByTermFilters = {
-  term?: number | string;
-  teacher_id?: string;
-};
+
+// Checks whether `teacher_id` owns `file_id` by looking it up across all
+// terms, reusing getLessonPlansByTerm's own owner-scoped, fail-closed fetch.
+async function ownsLessonPlan(file_id: string, teacher_id: string) {
+  const terms = [1, 2, 3];
+
+  const settled = await Promise.allSettled(
+    terms.map((term) => getLessonPlansByTerm({ term, teacher_id })),
+  );
+
+  const fulfilledValues = settled
+    .filter((r) => r.status === "fulfilled")
+    .map((r) => (r as PromiseFulfilledResult<unknown>).value as Array<{
+      file_id?: unknown;
+    }>);
+
+  if (fulfilledValues.length === 0) {
+    const rejected = settled.find(
+      (r): r is PromiseRejectedResult => r.status === "rejected",
+    );
+    throw (
+      rejected?.reason ??
+      new Error("Unable to verify lesson plan ownership.")
+    );
+  }
+
+  return fulfilledValues.some((plans) =>
+    plans.some((plan) => String(plan.file_id ?? "").trim() === file_id),
+  );
+}
+
 export async function deleteLessonPlan(file_id: string) {
+  const profile = await checkRole();
+
+  if (!profile) {
+    throw new Error("Unauthorized.");
+  }
+
+  const trimmedFileId = String(file_id || "").trim();
+
+  if (!trimmedFileId) {
+    throw new Error("File ID is required.");
+  }
+
+  const isOwner = await ownsLessonPlan(trimmedFileId, profile.id);
+
+  if (!isOwner) {
+    console.error(
+      `SECURITY ERROR: ${profile.id} attempted to delete lesson plan ${trimmedFileId} they do not own.`,
+    );
+    throw new Error("You can only delete your own lesson plans.");
+  }
+
   const appScriptUrl = process.env.APPSCRIPT_URL;
 
   if (!appScriptUrl) {
@@ -105,62 +158,15 @@ export async function deleteLessonPlan(file_id: string) {
     },
     body: JSON.stringify({
       action: "delete",
-      file_id: file_id,
+      file_id: trimmedFileId,
     }),
   });
 
-  const result = await handleAppScriptResponse(response);
+  const result = await handleAppScriptResponse(response, "delete");
 
   return result;
 }
 
-export async function addLessonPlan(formData: FormData) {
-  const file = formData.get("file") as File | null;
-
-  let fileData = null;
-
-  if (file && file.size > 0) {
-    const buffer = Buffer.from(await file.arrayBuffer());
-
-    fileData = {
-      fileName: file.name,
-      mimeType: file.type,
-      data: buffer.toString("base64"),
-    };
-  }
-
-  const payload = {
-    action: "addLessonPlan",
-    formDataObj: {
-      schoolYear: formData.get("schoolYear"),
-      subject: formData.get("subject"),
-
-      teacherName: formData.get("teacherName"),
-      week: Number(formData.get("week")?.toString()) || null,
-      grade: formData.get("grade")?.toString() || null,
-      term: Number(formData.get("term")?.toString()) || null,
-      teacher_id: formData.get("teacher_id"),
-      ...(fileData && { fileData }),
-    },
-  };
-  const appScriptUrl = process.env.APPSCRIPT_URL;
-
-  if (!appScriptUrl) {
-    throw new Error("APPSCRIPT_URL is not configured.");
-  }
-  const response = await fetch(appScriptUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "text/plain;charset=utf-8",
-    },
-    body: JSON.stringify(payload),
-  });
-  const result = await handleAppScriptResponse(response);
-
-  revalidatePath("/lesson-plan");
-
-  return result;
-}
 export async function getUsers() {
   const supabase = await createClient();
 
@@ -179,8 +185,13 @@ export async function getUsers() {
 export async function updateLessonPlanStatus(
   file_id: string,
   status: "PENDING" | "CHECKED",
-  name: string,
 ) {
+  const profile = await checkRole();
+
+  if (!profile || profile.role !== "admin") {
+    throw new Error("Only admins can update a lesson plan's status.");
+  }
+
   const appScriptUrl = process.env.APPSCRIPT_URL;
 
   if (!appScriptUrl) {
@@ -194,13 +205,39 @@ export async function updateLessonPlanStatus(
     body: JSON.stringify({
       action: "updateLessonPlanStatus",
       file_id,
-      checkedDetails: { status: status, checkedBy: name },
+      checkedDetails: { status: status, checkedBy: profile.full_name },
     }),
   });
 
   const result = await handleAppScriptResponse(response);
   return result;
 }
+// export async function getLessonPlansByTerm({
+//   term,
+//   teacher_id,
+// }: LessonPlanByTermFilters = {}) {
+//   const appScriptUrl = process.env.APPSCRIPT_URL;
+
+//   if (!appScriptUrl) {
+//     throw new Error("APPSCRIPT_URL is not configured.");
+//   }
+//   const response = await fetch(appScriptUrl, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     cache: "no-store",
+//     body: JSON.stringify({
+//       action: "getLessonPlansByTerm",
+//       teacher_id,
+//       term: term ? Number(term) : 1,
+//     }),
+//   });
+
+//   const result = await handleAppScriptResponse(response);
+
+//   return result;
+// }
 export async function getLessonPlansByTerm({
   term,
   teacher_id,
@@ -210,6 +247,16 @@ export async function getLessonPlansByTerm({
   if (!appScriptUrl) {
     throw new Error("APPSCRIPT_URL is not configured.");
   }
+
+  // Fail closed
+  const requestedTeacherId = String(teacher_id || "").trim();
+
+  if (!requestedTeacherId) {
+    throw new Error("Teacher ID is required.");
+  }
+
+  const requestedTerm = term ? Number(term) : 1;
+
   const response = await fetch(appScriptUrl, {
     method: "POST",
     headers: {
@@ -218,12 +265,37 @@ export async function getLessonPlansByTerm({
     cache: "no-store",
     body: JSON.stringify({
       action: "getLessonPlansByTerm",
-      teacher_id,
-      term: term ? Number(term) : 1,
+      teacher_id: requestedTeacherId,
+      term: requestedTerm,
     }),
   });
 
-  const result = await handleAppScriptResponse(response);
+  const result = await handleAppScriptResponse(
+    response,
+    "getLessonPlansByTerm",
+  );
+
+  // ---------------------------------
+  // FINAL SAFETY CHECK
+  // ---------------------------------
+
+  if (!Array.isArray(result)) {
+    throw new Error("Invalid lesson plan response.");
+  }
+
+  const unsafeRecord = result.some((lessonPlan) => {
+    const ownerId = String(lessonPlan.teacher_id ?? "").trim();
+
+    return ownerId !== requestedTeacherId;
+  });
+
+  if (unsafeRecord) {
+    console.error(
+      "SECURITY ERROR: getLessonPlansByTerm returned data belonging to another teacher.",
+    );
+
+    throw new Error("Unable to safely retrieve lesson plans.");
+  }
 
   return result;
 }

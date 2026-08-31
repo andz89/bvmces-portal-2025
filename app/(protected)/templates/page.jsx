@@ -6,6 +6,7 @@ const page = async () => {
   const profile = await checkRole();
 
   const type = "templates";
+
   const reports = await getReports(type);
 
   return (

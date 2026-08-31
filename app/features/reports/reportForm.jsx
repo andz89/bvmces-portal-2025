@@ -23,7 +23,7 @@ export default function ReportForm({
   refreshReports,
 }) {
   const [fileName, setFileName] = useState("");
-  const MAX_FILE_SIZE = 943718;
+  const MAX_FILE_SIZE = 52428800;
   const pathname = usePathname();
   const fileInputRef = useRef(null);
 
@@ -33,19 +33,13 @@ export default function ReportForm({
     e.preventDefault();
     const file = fileInputRef.current?.files?.[0];
 
-    if (!file) {
-      // setMessage("Please select a file to upload.");
-      // setMessageType("error");
-
+    if (!file && !editingReport) {
       toast.error("Please select a file to upload.");
       return;
     }
 
-    if (file.size > MAX_FILE_SIZE) {
-      toast.error("File size must not exceed 1 MB.");
-
-      // setMessage("File size must not exceed 1 MB.");
-      // setMessageType("error");
+    if (file && file.size > MAX_FILE_SIZE) {
+      toast.error("File size must not exceed 50 MB.");
       return;
     }
 
@@ -61,11 +55,6 @@ export default function ReportForm({
       if (result?.error) {
         toast.error(result.error);
         return;
-      }
-      if (result.status !== "success") {
-        toast.error(result.message || "Upload failed.");
-
-        // throw new Error(result.message || "Upload failed.");
       }
       toast.success(
         editingReport
@@ -241,9 +230,7 @@ export default function ReportForm({
                           }
 
                           if (file.size > MAX_FILE_SIZE) {
-                            // setMessage("File size must not exceed 1 MB.");
-                            // setMessageType("error");
-                            toast.error("File size must not exceed 1 MB.");
+                            toast.error("File size must not exceed 50 MB.");
 
                             e.target.value = "";
                             setFileName("");

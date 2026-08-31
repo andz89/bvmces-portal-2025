@@ -19,6 +19,7 @@ export default function LessonPlanAdmin({
   termParams,
   teacher_id,
   upload_lesson_plan,
+  canSubmit,
 }) {
   const [updatedLessonPlan, setUpdateLessonPlan] = useState(lessonPlans);
   const [deleteId, setDeleteId] = useState(null);
@@ -108,6 +109,7 @@ export default function LessonPlanAdmin({
         <DataEntryForm
           profile={profile}
           upload_lesson_plan={upload_lesson_plan}
+          canSubmit={canSubmit}
         />
       </div>
       <div className="border-b border-neutral-200 bg-white px-6 py-4">
@@ -188,7 +190,7 @@ export default function LessonPlanAdmin({
                   </td>
 
                   <td className="px-6 py-4 uppercase text-sm w-40">
-                    {plan.grade}
+                    {plan.lesson_level}
                   </td>
 
                   <td className="px-6 py-4 ">
@@ -243,18 +245,6 @@ export default function LessonPlanAdmin({
                       >
                         <BiTrash size={18} />
                       </button>
-                      <ConfirmDeleteModal
-                        open={!!deleteId}
-                        loading={deleting}
-                        error={deleteError}
-                        onCancel={() => {
-                          if (deleting) return;
-
-                          setDeleteError("");
-                          setDeleteId(null);
-                        }}
-                        onConfirm={handleDelete}
-                      />
                     </td>
                   )}
                 </tr>
@@ -263,6 +253,18 @@ export default function LessonPlanAdmin({
           </table>
         </div>
       </div>
+      <ConfirmDeleteModal
+        open={!!deleteId}
+        loading={deleting}
+        error={deleteError}
+        onCancel={() => {
+          if (deleting) return;
+
+          setDeleteError("");
+          setDeleteId(null);
+        }}
+        onConfirm={handleDelete}
+      />
     </div>
   );
 }

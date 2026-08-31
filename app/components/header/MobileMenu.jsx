@@ -131,11 +131,27 @@ export default function MobileMenu({ profile }) {
                     </Link>
 
                     <Link
+                      href="/mps-term"
+                      className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-white"
+                    >
+                      <BiBarChart size={18} />
+                      MPS Term
+                    </Link>
+
+                    <Link
                       href="/gpa"
                       className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-white"
                     >
                       <BiAward size={18} />
                       GPA
+                    </Link>
+
+                    <Link
+                      href="/summative-test"
+                      className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-white"
+                    >
+                      <BiBook size={18} />
+                      Summative Test
                     </Link>
 
                     {/* <Link

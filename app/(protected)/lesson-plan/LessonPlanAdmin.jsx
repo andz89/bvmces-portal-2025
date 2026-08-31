@@ -20,6 +20,7 @@ export default function LessonPlanAdmin({
   profile,
   weekParams,
   termParams,
+  canSubmit,
 }) {
   const [updatedLessonPlan, setUpdateLessonPlan] = useState(lessonPlans);
   const [showAll, setShowAll] = useState(false);
@@ -123,6 +124,7 @@ export default function LessonPlanAdmin({
         <DataEntryForm
           profile={profile}
           setUpdateLessonPlan={setUpdateLessonPlan}
+          canSubmit={canSubmit}
         />
       </div>
       <SearchBar weekParams={weekParams} termParams={termParams} />
@@ -283,7 +285,7 @@ export default function LessonPlanAdmin({
                                 </div>
                               </td>
                               <td className="px-6 py-4 uppercase text-sm w-40">
-                                {plan.grade}
+                                {plan.lesson_level}
                               </td>
                               <td className="px-6 py-4  ">
                                 <span className="inline-flex w-15 items-center gap-1 rounded-full   py-1 text-sm font-medium text-emerald-700">
@@ -336,18 +338,6 @@ export default function LessonPlanAdmin({
                                 >
                                   <BiTrash size={18} />
                                 </button>
-                                <ConfirmDeleteModal
-                                  open={!!deleteId}
-                                  loading={deleting}
-                                  error={deleteError}
-                                  onCancel={() => {
-                                    if (deleting) return;
-
-                                    setDeleteError("");
-                                    setDeleteId(null);
-                                  }}
-                                  onConfirm={handleDelete}
-                                />
                               </td>
                             </tr>
                           ))}
@@ -361,6 +351,18 @@ export default function LessonPlanAdmin({
           ))}
         </div>
       )}
+      <ConfirmDeleteModal
+        open={!!deleteId}
+        loading={deleting}
+        error={deleteError}
+        onCancel={() => {
+          if (deleting) return;
+
+          setDeleteError("");
+          setDeleteId(null);
+        }}
+        onConfirm={handleDelete}
+      />
     </div>
   );
 }

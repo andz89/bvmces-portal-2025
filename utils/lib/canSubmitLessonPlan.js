@@ -1,15 +1,19 @@
-export function canSubmitLessonPlan() {
-  const now = new Date();
+export function canSubmitLessonPlan(date = new Date()) {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Manila",
+    weekday: "short",
+    hour: "numeric",
+    hourCycle: "h23",
+  }).formatToParts(date);
 
-  // Philippine time
-  const manila = new Date(
-    now.toLocaleString("en-US", {
-      timeZone: "Asia/Manila",
-    }),
-  );
+  const weekday = parts.find((p) => p.type === "weekday").value;
+  let hour = Number(parts.find((p) => p.type === "hour").value);
 
-  const day = manila.getDay(); // 0=Sun, 1=Mon, ..., 5=Fri, 6=Sat
-  const hour = manila.getHours();
+  // Some ICU implementations report midnight as "24" even with hourCycle h23.
+  if (hour === 24) hour = 0;
+
+  const dayMap = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+  const day = dayMap[weekday];
 
   // Friday 8:00 AM onwards
   if (day === 5 && hour >= 8) return true;

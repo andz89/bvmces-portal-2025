@@ -5,28 +5,8 @@ import { revalidatePath } from "next/cache";
 import { reportSchema } from "./reportSchema";
 import { v4 as uuidv4 } from "uuid";
 
-export async function getGoogleConfig(type) {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("google_config")
-    .select("folder_id, spreadSheet_id, sheet_name")
-    .eq("type", type)
-    .limit(1)
-    .single();
-  if (error) {
-    console.error(error);
-    return { error: error.message };
-  }
-  return { data, error };
-}
 export async function createReport(formData) {
   const type = formData.get("type");
-  const { data: googleConfig, error: configError } =
-    await getGoogleConfig(type);
-
-  if (configError) {
-    return { error: configError };
-  }
 
   const rawData = {
     description: formData.get("description"),
@@ -65,79 +45,90 @@ export async function createReport(formData) {
   const pathname = formData.get("pathname");
   const file = formData.get("file");
 
-  let fileData = null;
-
-  if (file && file.size > 0) {
-    const buffer = Buffer.from(await file.arrayBuffer());
-
-    fileData = {
-      fileName: file.name,
-      mimeType: file.type,
-      data: buffer.toString("base64"),
-    };
-  }
-
-  const payload = {
-    action: "addTemplate",
-    data: {
-      id: uuidv4(),
-      filename: formData.get("filename"),
-      description: formData.get("description"),
-
-      type: formData.get("type"),
-      stage: formData.get("stage") || "null",
-      school_year: formData.get("school_year") || "null",
-      owner_email: user.email,
-      owner_id: user.id,
-      ...(fileData && { fileData }),
-      folder_id: googleConfig.folder_id,
-      sheet_name: googleConfig.sheet_name,
-      spreadSheet_id: googleConfig.spreadSheet_id,
-    },
-  };
-  const appScriptUrl = process.env.APPSCRIPT_URL_FILE;
-
-  if (!appScriptUrl) {
-    throw new Error("APPSCRIPT_URL_FILE is not configured.");
-  }
-
-  const response = await fetch(appScriptUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
-
-  const body = await response.text();
-
-  let result;
-
   try {
-    result = JSON.parse(body);
-  } catch {
-    console.error("Apps Script returned non-JSON:");
-    console.error("Status:", response.status);
-    console.error("Body:", body);
+    const appScriptUrl = process.env.APPSCRIPT_URL_FILE;
+
+    if (!appScriptUrl) {
+      return {
+        error: "The file service is not configured. Please contact an admin.",
+      };
+    }
+
+    let fileData = null;
+
+    if (file && file.size > 0) {
+      const buffer = Buffer.from(await file.arrayBuffer());
+
+      fileData = {
+        fileName: file.name,
+        mimeType: file.type,
+        data: buffer.toString("base64"),
+      };
+    }
+
+    const payload = {
+      action: "addTemplate",
+      data: {
+        id: uuidv4(),
+        filename: rawData.filename,
+        description: rawData.description,
+        type: rawData.type,
+        stage: rawData.stage,
+        school_year: rawData.school_year,
+        owner_email: user.email,
+        owner_id: user.id,
+        ...(fileData && { fileData }),
+      },
+    };
+
+    const response = await fetch(appScriptUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const body = await response.text();
+
+    let result;
+
+    try {
+      result = JSON.parse(body);
+    } catch {
+      console.error("Apps Script returned non-JSON:");
+      console.error("Status:", response.status);
+      console.error("Body:", body);
+
+      return {
+        error: "Unexpected response from the file service.",
+      };
+    }
+
+    if (result.status !== "success") {
+      return {
+        error: result.message || "Unable to save template.",
+      };
+    }
+
+    revalidatePath(pathname);
 
     return {
-      error: "Unexpected response from the file service.",
+      success: true,
     };
-  }
+  } catch (err) {
+    console.error("createReport failed:", err);
 
-  if (result.status !== "success") {
     return {
-      error: result.message || "Unable to save template.",
+      error:
+        err instanceof Error
+          ? err.message
+          : "Something went wrong while saving the report.",
     };
   }
-
-  revalidatePath(pathname);
-
-  return {
-    success: true,
-  };
 }
-export async function getReports(googleConfig) {
+
+export async function getReports(type) {
   const appScriptUrl = process.env.APPSCRIPT_URL_FILE;
 
   if (!appScriptUrl) {
@@ -151,11 +142,7 @@ export async function getReports(googleConfig) {
     cache: "no-store",
     body: JSON.stringify({
       action: "getFiles",
-      data: {
-        folder_id: googleConfig.folder_id,
-        sheet_name: googleConfig.sheet_name,
-        spreadSheet_id: googleConfig.spreadSheet_id,
-      },
+      data: { type },
     }),
   });
 
@@ -173,7 +160,7 @@ export async function getReports(googleConfig) {
   return result;
 }
 
-export async function deleteReport(file_id, password, googleConfig) {
+export async function deleteReport(file_id, password, type) {
   const supabase = await createClient();
 
   const {
@@ -191,74 +178,75 @@ export async function deleteReport(file_id, password, googleConfig) {
   const appScriptUrl = process.env.APPSCRIPT_URL_FILE;
 
   if (!appScriptUrl) {
-    throw new Error("APPSCRIPT_URL_FILE is not configured.");
-  }
-  const res = await fetch(appScriptUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      action: "delete",
-      data: {
-        file_id: file_id,
-        folder_id: googleConfig.folder_id,
-        sheet_name: googleConfig.sheet_name,
-        spreadSheet_id: googleConfig.spreadSheet_id,
-      },
-    }),
-  });
-  console.log("Delete report response status:", res);
-  if (!res.ok) {
-    console.error("Failed to delete report. Status:", res.status);
     return {
       result: false,
-      error: "Failed to delete report. Please try again later.",
+      error: "The file service is not configured. Please contact an admin.",
     };
   }
 
-  return { result: true };
+  try {
+    const res = await fetch(appScriptUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        action: "delete",
+        data: { file_id, type },
+      }),
+    });
+
+    if (!res.ok) {
+      console.error("Failed to delete report. Status:", res.status);
+      return {
+        result: false,
+        error: "Failed to delete report. Please try again later.",
+      };
+    }
+
+    const body = await res.text();
+    let result;
+
+    try {
+      result = JSON.parse(body);
+    } catch {
+      console.error("Apps Script returned non-JSON:", body.slice(0, 500));
+      return {
+        result: false,
+        error: "Unexpected response from the file service.",
+      };
+    }
+
+    if (result.status !== "success") {
+      return {
+        result: false,
+        error: result.message || "Unable to delete report.",
+      };
+    }
+
+    return { result: true };
+  } catch (err) {
+    console.error("deleteReport failed:", err);
+
+    return {
+      result: false,
+      error:
+        err instanceof Error
+          ? err.message
+          : "Something went wrong while deleting the report.",
+    };
+  }
 }
-export async function deleteReport1(formData) {
-  const supabase = await createClient();
-  const id = formData.get("id");
-  const password = formData.get("password");
-  const pathname = formData.get("pathname");
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return { error: "Unauthorized" };
-  }
-  if (password !== "132289132289") {
-    return { error: "Wrong password" };
-  }
-  const { error } = await supabase
-    .from("files")
-    .delete()
-    .eq("id", id)
-    .eq("owner_id", user.id);
-
-  if (error) {
-    return { error: error.message };
-  }
-
-  revalidatePath(pathname);
-
-  return { success: true };
-}
-
-export async function updateReport(id, prevState, formData) {
+export async function updateReport(id, formData) {
   const type = formData.get("type");
 
   const rawData = {
-    // id,
     description: formData.get("description"),
     filename: formData.get("filename"),
-    link: formData.get("link"),
     type,
+    stage: formData.get("stage") || "null",
+    school_year: formData.get("school_year") || "null",
   };
 
   // only include these fields if NOT template
@@ -274,6 +262,7 @@ export async function updateReport(id, prevState, formData) {
       values: rawData,
     };
   }
+
   const supabase = await createClient();
   const pathname = formData.get("pathname");
 
@@ -285,54 +274,58 @@ export async function updateReport(id, prevState, formData) {
     return { error: "Unauthorized" };
   }
 
-  const updatedData = {
-    description: formData.get("description"),
-    filename: formData.get("filename"),
-    link: formData.get("link"),
-    type: formData.get("type"),
-    stage: formData.get("stage") || "null",
-    school_year: formData.get("school_year") || "null",
-  };
-
-  const { error } = await supabase
-    .from("files")
-    .update(updatedData)
-    .eq("id", id)
-    .eq("owner_id", user.id);
-
-  if (error) {
-    return { error: error.message };
-  }
-
-  return { success: true };
-}
-
-export async function findReport(keyword, type) {
   try {
-    const supabase = await createClient();
+    const appScriptUrl = process.env.APPSCRIPT_URL_FILE;
 
-    const { data, error } = await supabase
-      .from("files")
-      .select("*")
-      .eq("type", type)
-      .ilike("filename", `%${keyword}%`);
-
-    if (error) {
-      console.error(error);
-
+    if (!appScriptUrl) {
       return {
-        error: error.message,
+        error: "The file service is not configured. Please contact an admin.",
       };
     }
-    console.log(data);
-    return {
-      data,
-    };
-  } catch (error) {
-    console.error(error);
+
+    const response = await fetch(appScriptUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        action: "updateFile",
+        data: {
+          id,
+          filename: rawData.filename,
+          description: rawData.description,
+          type: rawData.type,
+          stage: rawData.stage,
+          school_year: rawData.school_year,
+        },
+      }),
+    });
+
+    const body = await response.text();
+    let result;
+
+    try {
+      result = JSON.parse(body);
+    } catch {
+      console.error("Apps Script returned non-JSON:", body.slice(0, 500));
+      return { error: "Unexpected response from the file service." };
+    }
+
+    if (result.status !== "success") {
+      return { error: result.message || "Unable to update report." };
+    }
+
+    revalidatePath(pathname);
+
+    return { success: true };
+  } catch (err) {
+    console.error("updateReport failed:", err);
 
     return {
-      error: "Server timeout. Please try again.",
+      error:
+        err instanceof Error
+          ? err.message
+          : "Something went wrong while updating the report.",
     };
   }
 }

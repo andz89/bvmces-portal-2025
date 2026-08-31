@@ -34,7 +34,7 @@ const status = ({ plan, profile, setUpdateLessonPlan }) => {
       setRetryStatus(status);
       setActiveStatus(null);
 
-      await updateLessonPlanStatus(plan.file_id, status, profile.full_name);
+      await updateLessonPlanStatus(plan.file_id, status);
 
       setUpdateLessonPlan((prev) =>
         prev.map((item) =>

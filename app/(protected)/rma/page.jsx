@@ -6,13 +6,14 @@ const page = async () => {
   const profile = await checkRole();
 
   const type = "rma";
+
   const reports = await getReports(type);
 
   return (
     <ReportsClient
       profile={profile}
       title={type}
-      reports={reports.data}
+      reports={reports}
       type={type}
     />
   );
