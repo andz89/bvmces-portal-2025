@@ -147,11 +147,11 @@ const TermTable = ({
 
       {/* Table */}
       <div className="overflow-x-auto w-full">
-        <table className=" w-full ">
+        <table className="w-full text-xs">
           {/* Head */}
           <thead className="bg-gray-50">
-            <tr className="text-gray-600 text-sm">
-              <th className="px-5 py-4 text-left font-semibold  min-w-[200px] max-w-[200px]">
+            <tr className="text-gray-600 text-[11px]">
+              <th className="px-2 py-2 text-left font-semibold min-w-[110px] max-w-[130px]">
                 Class
               </th>
 
@@ -168,18 +168,18 @@ const TermTable = ({
               ].map((subject) => (
                 <th
                   key={subject}
-                  className="px-4 py-4 text-center font-semibold"
+                  className="px-1.5 py-2 text-center font-semibold"
                 >
                   {subject}
                 </th>
               ))}
 
-              <th className="px-4 py-4 text-center font-semibold">Average</th>
+              <th className="px-1.5 py-2 text-center font-semibold">Avg</th>
 
-              <th className="px-4 py-4 text-center font-semibold">File</th>
+              <th className="px-1.5 py-2 text-center font-semibold">File</th>
 
               {profile.role === "admin" && (
-                <th className="px-4 py-4 text-center font-semibold">Actions</th>
+                <th className="px-1.5 py-2 text-center font-semibold">Actions</th>
               )}
             </tr>
           </thead>
@@ -225,24 +225,20 @@ const TermTable = ({
                   "
                 >
                   {/* Class */}
-                  <td className="px-5 py-4 min-w-[200px] max-w-[200px]w-full">
+                  <td className="px-2 py-2 min-w-[110px] max-w-[130px]">
                     <div>
-                      <h3 className="font-semibold text-gray-800">
+                      <h3 className="font-semibold text-gray-800 text-xs">
                         Grade {item.class.grade}
                       </h3>
 
-                      <p className="text-sm text-blue-600 font-medium uppercase">
+                      <p className="text-[11px] text-blue-600 font-medium uppercase">
                         {item.class.section}
                       </p>
-                      <span className="text-xs text-slate-400   uppercase">
-                        Adviser:
-                      </span>
-                      <span className="text-xs text-slate-600 font-bold uppercase">
-                        {item.class.adviser?.full_name?.length > 22
-                          ? `${item.class.adviser.full_name.slice(0, 22)}...`
+                      <p className="text-[10px] text-slate-500 font-semibold uppercase truncate">
+                        {item.class.adviser?.full_name?.length > 14
+                          ? `${item.class.adviser.full_name.slice(0, 14)}...`
                           : item.class.adviser?.full_name || "N/A"}
-                      </span>
-                      <p className="text-xs text-slate-600 font-bold uppercase"></p>
+                      </p>
                     </div>
                   </td>
 
@@ -258,19 +254,19 @@ const TermTable = ({
                     item.mapeh,
                     item.reading_literacy,
                   ].map((score, idx) => (
-                    <td key={idx} className="px-4 py-4 text-center">
+                    <td key={idx} className="px-1.5 py-2 text-center">
                       <div
                         className="
                           inline-flex
                           items-center
                           justify-center
-                          min-w-[52px]
-                          h-10
-                          rounded-xl
+                          min-w-[30px]
+                          h-7
+                          rounded-lg
                           bg-gray-100
                           text-gray-700
                           font-semibold
-                          text-sm
+                          text-xs
                         "
                       >
                         {score || "-"}
@@ -279,20 +275,21 @@ const TermTable = ({
                   ))}
 
                   {/* Average */}
-                  <td className="px-4 py-4 text-center">
+                  <td className="px-1.5 py-2 text-center">
                     <div
                       className="
                         inline-flex
                         items-center
                         justify-center
-                        min-w-[75px]
-                        h-11
-                        rounded-2xl
+                        min-w-[44px]
+                        h-7
+                        rounded-lg
                         bg-gradient-to-r
                         from-blue-600
                         to-indigo-600
                         text-white
                         font-bold
+                        text-xs
                         shadow-md
                       "
                     >
@@ -301,7 +298,7 @@ const TermTable = ({
                   </td>
 
                   {/* File */}
-                  <td className="px-4 py-4">
+                  <td className="px-1.5 py-2">
                     <div className="flex items-center justify-center gap-2">
                       {item.file_url ? (
                         <a
@@ -311,13 +308,13 @@ const TermTable = ({
                             inline-flex
                             items-center
                             gap-1
-                            rounded-xl
+                            rounded-lg
                             border
                             border-gray-200
                             bg-white
-                            px-3
-                            py-2
-                            text-xs
+                            px-2
+                            py-1
+                            text-[11px]
                             font-medium
                             text-gray-700
                             shadow-sm
@@ -325,10 +322,10 @@ const TermTable = ({
                           "
                         >
                           View
-                          <BiLinkExternal size={14} />
+                          <BiLinkExternal size={11} />
                         </a>
                       ) : (
-                        <span className="text-xs text-gray-400">
+                        <span className="text-[11px] text-gray-400">
                           No file
                         </span>
                       )}
@@ -337,8 +334,8 @@ const TermTable = ({
 
                   {/* Actions */}
                   {profile.role === "admin" && (
-                    <td className="px-4 py-4 ">
-                      <div className="flex items-center justify-center gap-2">
+                    <td className="px-1.5 py-2">
+                      <div className="flex items-center justify-center gap-1">
                         {/* Edit */}
                         <button
                           onClick={() => {
@@ -346,9 +343,9 @@ const TermTable = ({
                             setOpenForm(true);
                           }}
                           className="
-                            h-11
-                            w-11
-                            rounded-2xl
+                            h-7
+                            w-7
+                            rounded-lg
                             bg-blue-50
                             text-blue-600
                             flex
@@ -358,7 +355,7 @@ const TermTable = ({
                             transition
                           "
                         >
-                          <BiEdit size={21} />
+                          <BiEdit size={14} />
                         </button>
 
                         {/* Delete */}
@@ -369,9 +366,9 @@ const TermTable = ({
                             setTargetRow(item);
                           }}
                           className="
-                                  h-11
-                                  w-11
-                                  rounded-2xl
+                                  h-7
+                                  w-7
+                                  rounded-lg
                                   bg-red-50
                                   text-red-600
                                   flex
@@ -381,7 +378,7 @@ const TermTable = ({
                                   transition
                                 "
                         >
-                          <BiSolidTrash size={21} />
+                          <BiSolidTrash size={14} />
                         </button>
                       </div>
                     </td>

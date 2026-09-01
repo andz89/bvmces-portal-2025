@@ -195,11 +195,11 @@ const ConsolidatedTable = ({ title, mps }) => {
 
       {/* Table */}
       <div className="overflow-x-auto">
-        <table className="min-w-full">
+        <table className="w-full text-xs">
           {/* Head */}
           <thead className="bg-gray-50">
-            <tr className="text-gray-600 text-sm">
-              <th className="px-5 py-4 text-left font-semibold">Grade</th>
+            <tr className="text-gray-600 text-[11px]">
+              <th className="px-2 py-2 text-left font-semibold">Grade</th>
 
               {[
                 "GMRC",
@@ -214,13 +214,13 @@ const ConsolidatedTable = ({ title, mps }) => {
               ].map((subject) => (
                 <th
                   key={subject}
-                  className="px-4 py-4 text-center font-semibold"
+                  className="px-1.5 py-2 text-center font-semibold"
                 >
                   {subject}
                 </th>
               ))}
 
-              <th className="px-4 py-4 text-center font-semibold">Average</th>
+              <th className="px-1.5 py-2 text-center font-semibold">Avg</th>
             </tr>
           </thead>
 
@@ -238,7 +238,7 @@ const ConsolidatedTable = ({ title, mps }) => {
                 "
               >
                 {/* Grade */}
-                <td className="px-5 py-4">
+                <td className="px-2 py-2">
                   <div
                     className="
                       inline-flex
@@ -248,14 +248,15 @@ const ConsolidatedTable = ({ title, mps }) => {
                   >
                     <div
                       className="
-                        h-10
-                        w-10
-                        rounded-xl
+                        h-7
+                        w-7
+                        rounded-lg
                         bg-gradient-to-r
                         from-blue-500
                         to-indigo-600
                         text-white
                         font-bold
+                        text-xs
                         flex
                         items-center
                         justify-center
@@ -265,13 +266,9 @@ const ConsolidatedTable = ({ title, mps }) => {
                       {item.grade}
                     </div>
 
-                    <div>
-                      <p className="font-semibold text-gray-800">
-                        Grade {item.grade}
-                      </p>
-
-                      <p className="text-xs text-gray-500">Consolidated Data</p>
-                    </div>
+                    <p className="font-semibold text-gray-800 text-xs whitespace-nowrap">
+                      Grade {item.grade}
+                    </p>
                   </div>
                 </td>
 
@@ -287,19 +284,19 @@ const ConsolidatedTable = ({ title, mps }) => {
                   item.mapeh,
                   item.reading_literacy,
                 ].map((score, idx) => (
-                  <td key={idx} className="px-4 py-4 text-center">
+                  <td key={idx} className="px-1.5 py-2 text-center">
                     <div
                       className="
                         inline-flex
                         items-center
                         justify-center
-                        min-w-[65px]
-                        h-10
-                        rounded-xl
+                        min-w-[38px]
+                        h-7
+                        rounded-lg
                         bg-gray-100
                         text-gray-700
                         font-semibold
-                        text-sm
+                        text-xs
                       "
                     >
                       {score}
@@ -308,20 +305,21 @@ const ConsolidatedTable = ({ title, mps }) => {
                 ))}
 
                 {/* Average */}
-                <td className="px-4 py-4 text-center">
+                <td className="px-1.5 py-2 text-center">
                   <div
                     className="
                       inline-flex
                       items-center
                       justify-center
-                      min-w-[80px]
-                      h-11
-                      rounded-2xl
+                      min-w-[48px]
+                      h-7
+                      rounded-lg
                       bg-gradient-to-r
                       from-violet-600
                       to-indigo-600
                       text-white
                       font-bold
+                      text-xs
                       shadow-md
                     "
                   >
