@@ -57,7 +57,7 @@ export default async function Page({ searchParams }) {
     );
   }
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-100 via-green-50 to-white py-12 px-4">
+    <div className="min-h-screen bg-lis-panel-header py-12 px-4">
       <div className="max-w-7xl mx-auto space-y-10">
         <LessonPlanAdmin
           profile={profile}

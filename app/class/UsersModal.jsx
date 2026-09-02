@@ -66,7 +66,7 @@ const UsersModal = ({
           fixed
           inset-0
           bg-black/40
-          backdrop-blur-sm
+          
         "
         onClick={onClose}
       />
@@ -79,9 +79,9 @@ const UsersModal = ({
             w-full
             max-w-2xl
             overflow-hidden
-            rounded-[32px]
+            rounded-sm
             bg-white
-            shadow-[0_25px_80px_rgba(0,0,0,0.18)]
+            
           "
         >
           {/* Header */}
@@ -89,16 +89,16 @@ const UsersModal = ({
             className="
               relative
               overflow-hidden
-              bg-gradient-to-r
-              from-emerald-600
-              via-green-600
-              to-teal-600
+              bg-lis-primary
+              
+              
+              
               px-8
               py-7
             "
           >
             {/* Glow */}
-            <div className="absolute right-0 top-0 h-40 w-40 bg-white/10 rounded-full blur-3xl"></div>
+            <div className="absolute right-0 top-0 h-40 w-40 bg-white/10 rounded-full "></div>
 
             <div className="relative flex items-start justify-between gap-5">
               {/* Left */}
@@ -109,16 +109,16 @@ const UsersModal = ({
                     w-25
                        md:h-16
                     md:w-16
-                    rounded-3xl
+                    rounded-sm
                     bg-white/10
-                    backdrop-blur-xl
+                    
                     border
                     border-white/10
                     text-white
                     flex
                     items-center
                     justify-center
-                    shadow-sm
+                    
                  
                   "
                 >
@@ -126,11 +126,11 @@ const UsersModal = ({
                 </div>
 
                 <div>
-                  <h2 className="text-3xl font-black text-white">
+                  <h2 className="text-3xl font-bold text-white">
                     Assign Adviser
                   </h2>
 
-                  <p className="text-emerald-100 mt-2 max-w-md">
+                  <p className="text-white/80 mt-2 max-w-md">
                     Assign an adviser to manage academic records, learners, and
                     classroom activities.
                   </p>
@@ -143,7 +143,7 @@ const UsersModal = ({
                 className="
                   h-11
                   w-11
-                  rounded-2xl
+                  rounded-sm
                   bg-white/10
                   border
                   border-white/10
@@ -165,10 +165,10 @@ const UsersModal = ({
               <div
                 className="
                   bg-white/10
-                  backdrop-blur-xl
+                  
                   border
                   border-white/10
-                  rounded-2xl
+                  rounded-sm
                   px-5
                   py-4
                   min-w-[180px]
@@ -179,7 +179,7 @@ const UsersModal = ({
                     className="
                       h-11
                       w-11
-                      rounded-xl
+                      rounded-sm
                       bg-white/10
                       flex
                       items-center
@@ -191,11 +191,11 @@ const UsersModal = ({
                   </div>
 
                   <div>
-                    <p className="text-xs uppercase tracking-wide text-emerald-100">
+                    <p className="text-xs uppercase tracking-wide text-white/80">
                       Grade
                     </p>
 
-                    <h3 className="text-2xl font-black text-white mt-1">
+                    <h3 className="text-2xl font-bold text-white mt-1">
                       Grade {currentAdviserClass.grade.toUpperCase()}
                     </h3>
                   </div>
@@ -206,10 +206,10 @@ const UsersModal = ({
               <div
                 className="
                   bg-white/10
-                  backdrop-blur-xl
+                  
                   border
                   border-white/10
-                  rounded-2xl
+                  rounded-sm
                   px-5
                   py-4
                   min-w-[180px]
@@ -220,7 +220,7 @@ const UsersModal = ({
                     className="
                       h-11
                       w-11
-                      rounded-xl
+                      rounded-sm
                       bg-white/10
                       flex
                       items-center
@@ -232,11 +232,11 @@ const UsersModal = ({
                   </div>
 
                   <div>
-                    <p className="text-xs uppercase tracking-wide text-emerald-100">
+                    <p className="text-xs uppercase tracking-wide text-white/80">
                       Section
                     </p>
 
-                    <h3 className="text-2xl font-black text-white mt-1 uppercase">
+                    <h3 className="text-2xl font-bold text-white mt-1 uppercase">
                       {currentAdviserClass.section}
                     </h3>
                   </div>
@@ -247,10 +247,10 @@ const UsersModal = ({
               <div
                 className="
                   bg-white/10
-                  backdrop-blur-xl
+                  
                   border
                   border-white/10
-                  rounded-2xl
+                  rounded-sm
                   px-5
                   py-4
                   min-w-[220px]
@@ -261,7 +261,7 @@ const UsersModal = ({
                     className="
                       h-11
                       w-11
-                      rounded-xl
+                      rounded-sm
                       bg-white/10
                       flex
                       items-center
@@ -273,11 +273,11 @@ const UsersModal = ({
                   </div>
 
                   <div>
-                    <p className="text-xs uppercase tracking-wide text-emerald-100">
+                    <p className="text-xs uppercase tracking-wide text-white/80">
                       Current Adviser
                     </p>
 
-                    <h3 className="text-lg font-black text-white mt-1 uppercase">
+                    <h3 className="text-lg font-bold text-white mt-1 uppercase">
                       {currentAdviserClass?.users?.full_name || "No Adviser"}
                     </h3>
                   </div>
@@ -288,16 +288,16 @@ const UsersModal = ({
 
           {/* Form */}
           <form onSubmit={handleSubmit}>
-            <div className="bg-[#f5f7fb] px-6 md:px-8 py-8">
+            <div className="bg-lis-bg px-6 md:px-8 py-8">
               {/* Adviser Selection */}
               <div
                 className="
                   bg-white
-                  rounded-3xl
+                  rounded-sm
                   border
-                  border-gray-100
+                  border-lis-panel-border
                   p-6
-                  shadow-sm
+                  
                 "
               >
                 <div className="flex items-center gap-3 mb-6">
@@ -305,26 +305,26 @@ const UsersModal = ({
                     className="
                       h-12
                       w-12
-                      rounded-2xl
-                      bg-gradient-to-r
-                      from-emerald-500
-                      to-green-600
+                      rounded-sm
+                      bg-lis-primary
+                      
+                      
                       text-white
                       flex
                       items-center
                       justify-center
-                      shadow-lg
+                      
                     "
                   >
                     <BiUser size={24} />
                   </div>
 
                   <div>
-                    <h3 className="text-xl font-bold text-gray-800">
+                    <h3 className="text-xl font-bold text-lis-text">
                       Select Adviser
                     </h3>
 
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-lis-muted">
                       Choose a teacher to assign for this class section.
                     </p>
                   </div>
@@ -336,19 +336,19 @@ const UsersModal = ({
                   defaultValue={currentAdviserClass?.users?.id || ""}
                   className="
                     w-full
-                    rounded-2xl
+                    rounded-sm
                     border
-                    border-gray-200
+                    border-lis-panel-border
                     bg-white
                     px-4
                     py-4
                     text-sm
-                    text-gray-700
+                    text-lis-text
                     outline-none
                     transition
-                    focus:border-emerald-500
+                    focus:border-lis-primary
                     focus:ring-4
-                    focus:ring-emerald-100
+                    focus:ring-lis-primary
                   "
                 >
                   <option value="">Select adviser</option>
@@ -364,21 +364,21 @@ const UsersModal = ({
                 <div
                   className="
                     mt-5
-                    rounded-2xl
+                    rounded-sm
                     border
-                    border-emerald-100
-                    bg-gradient-to-r
-                    from-emerald-50
-                    to-green-50
+                    border-lis-panel-border
+                    bg-lis-panel-header
+                    
+                    
                     px-5
                     py-4
                   "
                 >
-                  <p className="text-sm font-semibold text-emerald-700">
+                  <p className="text-sm font-semibold text-lis-success-text">
                     Adviser Permissions
                   </p>
 
-                  <p className="text-sm text-emerald-600 mt-1">
+                  <p className="text-sm text-lis-success-text mt-1">
                     Assigned advisers can manage enrollment, GPA, MPS, and
                     learner academic records for this class.
                   </p>
@@ -390,7 +390,7 @@ const UsersModal = ({
             <div
               className="
                 border-t
-                border-gray-100
+                border-lis-panel-border
                 bg-white
                 px-6
                 md:px-8
@@ -410,16 +410,16 @@ const UsersModal = ({
                 className="
                   w-full
                   sm:w-auto
-                  rounded-2xl
+                  rounded-sm
                   border
-                  border-gray-200
+                  border-lis-panel-border
                   bg-white
                   px-6
                   py-3
                   font-medium
-                  text-gray-700
+                  text-lis-text
                   transition
-                  hover:bg-gray-100
+                  hover:bg-lis-panel-header
                 "
               >
                 Cancel
@@ -436,15 +436,15 @@ const UsersModal = ({
                   items-center
                   justify-center
                   gap-2
-                  rounded-2xl
-                  bg-gradient-to-r
-                  from-emerald-600
-                  to-green-600
+                  rounded-sm
+                  bg-lis-primary
+                  
+                  
                   px-7
                   py-3
                   font-semibold
                   text-white
-                  shadow-lg
+                  
                   transition
                   hover:scale-[1.01]
                   disabled:opacity-60

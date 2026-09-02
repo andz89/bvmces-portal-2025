@@ -50,7 +50,7 @@ export default function ArchiveUsersModal({
         items-center
         justify-center
         bg-black/40
-        backdrop-blur-sm
+        
         p-4
       "
     >
@@ -60,11 +60,11 @@ export default function ArchiveUsersModal({
         className="
           w-full
           max-w-5xl
-          rounded-[32px]
+          rounded-sm
           bg-white
-          shadow-[0_20px_80px_rgba(0,0,0,0.12)]
+          
           border
-          border-neutral-200
+          border-lis-panel-border
           overflow-hidden
         "
       >
@@ -77,8 +77,8 @@ export default function ArchiveUsersModal({
             px-6
             py-5
             border-b
-            border-neutral-100
-            bg-neutral-50
+            border-lis-panel-border
+            bg-lis-panel-header
           "
         >
           <div className="flex items-center gap-4">
@@ -86,9 +86,9 @@ export default function ArchiveUsersModal({
               className="
                 h-12
                 w-12
-                rounded-2xl
-                bg-yellow-100
-                text-yellow-700
+                rounded-sm
+                bg-lis-warning-bg
+                text-lis-warning-text
                 flex
                 items-center
                 justify-center
@@ -98,11 +98,11 @@ export default function ArchiveUsersModal({
             </div>
 
             <div>
-              <h2 className="text-xl font-semibold text-neutral-900">
+              <h2 className="text-xl font-semibold text-lis-text">
                 Archived Users
               </h2>
 
-              <p className="text-sm text-neutral-500 mt-1">
+              <p className="text-sm text-lis-muted mt-1">
                 Users moved to archive can no longer login.
               </p>
             </div>
@@ -114,14 +114,14 @@ export default function ArchiveUsersModal({
             className="
               h-11
               w-11
-              rounded-2xl
+              rounded-sm
               border
-              border-neutral-200
+              border-lis-panel-border
               flex
               items-center
               justify-center
-              text-neutral-500
-              hover:bg-neutral-100
+              text-lis-muted
+              hover:bg-lis-panel-header
               transition
             "
           >
@@ -132,21 +132,21 @@ export default function ArchiveUsersModal({
         {/* Table */}
         <div className="overflow-x-auto">
           <table className="min-w-full">
-            <thead className="bg-neutral-50">
-              <tr className="border-b border-neutral-200">
-                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-neutral-500">
+            <thead className="bg-lis-panel-header">
+              <tr className="border-b border-lis-panel-border">
+                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-lis-muted">
                   User
                 </th>
 
-                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-neutral-500">
+                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-lis-muted">
                   Email
                 </th>
 
-                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-neutral-500">
+                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-lis-muted">
                   Role
                 </th>
 
-                <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wide text-neutral-500">
+                <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wide text-lis-muted">
                   Actions
                 </th>
               </tr>
@@ -158,8 +158,8 @@ export default function ArchiveUsersModal({
                   key={user.id}
                   className="
                     border-b
-                    border-neutral-100
-                    hover:bg-neutral-50
+                    border-lis-panel-border
+                    hover:bg-lis-panel-header
                     transition
                   "
                 >
@@ -170,24 +170,24 @@ export default function ArchiveUsersModal({
                         className="
                           h-11
                           w-11
-                          rounded-2xl
-                          bg-neutral-100
+                          rounded-sm
+                          bg-lis-panel-header
                           flex
                           items-center
                           justify-center
                           font-semibold
-                          text-neutral-700
+                          text-lis-text
                         "
                       >
                         {user.full_name?.charAt(0)?.toUpperCase()}
                       </div>
 
                       <div>
-                        <p className="font-medium text-neutral-900">
+                        <p className="font-medium text-lis-text">
                           {user.full_name}
                         </p>
 
-                        <p className="text-xs text-neutral-500 mt-1">
+                        <p className="text-xs text-lis-muted mt-1">
                           Archived User
                         </p>
                       </div>
@@ -196,7 +196,7 @@ export default function ArchiveUsersModal({
 
                   {/* Email */}
                   <td className="px-6 py-5">
-                    <p className="text-sm text-neutral-700">{user.email}</p>
+                    <p className="text-sm text-lis-text">{user.email}</p>
                   </td>
 
                   {/* Role */}
@@ -206,13 +206,13 @@ export default function ArchiveUsersModal({
                         inline-flex
                         items-center
                         rounded-full
-                        bg-neutral-100
+                        bg-lis-panel-header
                         px-3
                         py-1
                         text-xs
                         font-medium
                         capitalize
-                        text-neutral-700
+                        text-lis-text
                       "
                     >
                       {user.role}
@@ -228,14 +228,14 @@ export default function ArchiveUsersModal({
                           inline-flex
                           items-center
                           gap-2
-                          rounded-xl
-                          bg-emerald-600
+                          rounded-sm
+                          bg-lis-success
                           px-4
                           py-2
                           text-sm
                           font-medium
                           text-white
-                          hover:bg-emerald-700
+                          hover:bg-lis-success-hover
                           transition
                         "
                       >
@@ -255,22 +255,22 @@ export default function ArchiveUsersModal({
                           mx-auto
                           h-16
                           w-16
-                          rounded-3xl
-                          bg-neutral-100
+                          rounded-sm
+                          bg-lis-panel-header
                           flex
                           items-center
                           justify-center
-                          text-neutral-400
+                          text-lis-muted
                         "
                       >
                         <BiArchive size={30} />
                       </div>
 
-                      <h3 className="text-xl font-semibold text-neutral-700">
+                      <h3 className="text-xl font-semibold text-lis-text">
                         No Archived Users
                       </h3>
 
-                      <p className="text-sm text-neutral-500">
+                      <p className="text-sm text-lis-muted">
                         Archived users will appear here.
                       </p>
                     </div>

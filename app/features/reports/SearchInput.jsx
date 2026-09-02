@@ -36,7 +36,7 @@ export default function SearchInput({
             left-3
             top-1/2
             -translate-y-1/2
-            text-gray-400
+            text-lis-muted
           "
         />
 
@@ -47,9 +47,9 @@ export default function SearchInput({
           placeholder={placeholder}
           className="
             w-full
-            rounded-xl
+            rounded-sm
             border
-            border-gray-300
+            border-lis-panel-border
             bg-white
             py-2.5
             pl-10
@@ -72,7 +72,7 @@ export default function SearchInput({
               right-3
               top-1/2
               -translate-y-1/2
-              text-gray-400
+              text-lis-muted
               hover:text-black
               transition
             "
@@ -85,7 +85,7 @@ export default function SearchInput({
       <button
         type="submit"
         className="
-          rounded-xl
+          rounded-sm
           bg-black
           px-4
           py-2.5

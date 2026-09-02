@@ -69,7 +69,7 @@ const GPAClient = ({ school_year, profile, gpa, classData }) => {
   }, {});
 
   return (
-    <div className="min-h-screen bg-[#f4f7fb] pb-20">
+    <div className="min-h-screen bg-lis-bg pb-20">
       {/* Edit Modal */}
       <EditGPAModal
         openEdit={openEdit}
@@ -89,11 +89,11 @@ const GPAClient = ({ school_year, profile, gpa, classData }) => {
 
       {/* Hero */}
       {/* Hero */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-emerald-600 via-green-600 to-teal-600">
+      <div className="relative overflow-hidden bg-lis-primary   ">
         {/* Glow Effects */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full "></div>
 
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-emerald-300/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-72 h-72 bg-lis-panel-header/10 rounded-full "></div>
 
         <div className="relative w-full mx-auto px-4 md:px-10 py-10">
           <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-8">
@@ -108,7 +108,7 @@ const GPAClient = ({ school_year, profile, gpa, classData }) => {
             border
             border-white/10
             bg-white/10
-            backdrop-blur-md
+            
             px-4
             py-1.5
             text-white
@@ -119,11 +119,11 @@ const GPAClient = ({ school_year, profile, gpa, classData }) => {
                 Grade Performance Analysis
               </div>
 
-              <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">
+              <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
                 GPA Dashboard
               </h1>
 
-              <p className="text-emerald-100 text-base mt-3 max-w-2xl">
+              <p className="text-white/80 text-base mt-3 max-w-2xl">
                 Analyze learner performance, monitor grade trends, and manage
                 GPA reports efficiently.
               </p>
@@ -133,16 +133,16 @@ const GPAClient = ({ school_year, profile, gpa, classData }) => {
                 <div
                   className="
               bg-white/10
-              backdrop-blur-xl
+              
               border
               border-white/10
-              rounded-2xl
+              rounded-sm
               px-5
               py-4
               min-w-[170px]
             "
                 >
-                  <p className="text-xs uppercase tracking-wide text-emerald-100">
+                  <p className="text-xs uppercase tracking-wide text-white/80">
                     School Year
                   </p>
 
@@ -154,20 +154,20 @@ const GPAClient = ({ school_year, profile, gpa, classData }) => {
                 <div
                   className="
               bg-white/10
-              backdrop-blur-xl
+              
               border
               border-white/10
-              rounded-2xl
+              rounded-sm
               px-5
               py-4
               min-w-[170px]
             "
                 >
-                  <p className="text-xs uppercase tracking-wide text-emerald-100">
+                  <p className="text-xs uppercase tracking-wide text-white/80">
                     GPA Records
                   </p>
 
-                  <h3 className="text-2xl font-black text-white mt-1">
+                  <h3 className="text-2xl font-bold text-white mt-1">
                     {gpa.length}
                   </h3>
                 </div>
@@ -175,16 +175,16 @@ const GPAClient = ({ school_year, profile, gpa, classData }) => {
                 <div
                   className="
               bg-white/10
-              backdrop-blur-xl
+              
               border
               border-white/10
-              rounded-2xl
+              rounded-sm
               px-5
               py-4
               min-w-[170px]
             "
                 >
-                  <p className="text-xs uppercase tracking-wide text-emerald-100">
+                  <p className="text-xs uppercase tracking-wide text-white/80">
                     View Mode
                   </p>
 
@@ -199,19 +199,19 @@ const GPAClient = ({ school_year, profile, gpa, classData }) => {
               <div
                 className="
           bg-white/10
-          backdrop-blur-xl
+          
           border
           border-white/10
-          rounded-3xl
+          rounded-sm
           p-6
-          shadow-2xl
+          
           w-full
           max-w-sm
         "
               >
                 <h2 className="text-white text-xl font-bold">Quick Actions</h2>
 
-                <p className="text-emerald-100 text-sm mt-1">
+                <p className="text-white/80 text-sm mt-1">
                   Manage GPA records and consolidated reports.
                 </p>
 
@@ -225,7 +225,7 @@ const GPAClient = ({ school_year, profile, gpa, classData }) => {
               items-center
               justify-center
               gap-2
-              rounded-2xl
+              rounded-sm
               bg-white/10
               border
               border-white/10
@@ -259,13 +259,13 @@ const GPAClient = ({ school_year, profile, gpa, classData }) => {
               items-center
               justify-center
               gap-2
-              rounded-2xl
+              rounded-sm
               bg-white
               px-5
               py-3
-              text-emerald-700
+              text-lis-success-text
               font-semibold
-              shadow-lg
+              
               hover:scale-[1.02]
               transition
             "
@@ -300,26 +300,26 @@ const GPAClient = ({ school_year, profile, gpa, classData }) => {
                     className="
                       h-14
                       w-14
-                      rounded-2xl
-                      bg-gradient-to-r
-                      from-indigo-600
-                      to-blue-600
+                      rounded-sm
+                      bg-lis-primary
+                      
+                      
                       text-white
                       flex
                       items-center
                       justify-center
-                      shadow-lg
+                      
                     "
                   >
                     <BiBarChartAlt2 size={28} />
                   </div>
 
                   <div>
-                    <h2 className="text-3xl font-black text-gray-800">
+                    <h2 className="text-3xl font-bold text-lis-text">
                       Quarter {quarter}
                     </h2>
 
-                    <p className="text-gray-500 mt-1">
+                    <p className="text-lis-muted mt-1">
                       Academic performance data and analytics
                     </p>
                   </div>

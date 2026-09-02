@@ -11,7 +11,7 @@ export default async function Navbar() {
   const profile = await checkRole();
 
   return (
-    <nav className="sticky top-0 z-[50] border-b border-white/10 bg-white/80 shadow-sm backdrop-blur-xl  ">
+    <nav className="sticky top-0 z-[50] border-b border-lis-panel-border bg-white">
       <div className="    px-3 md:px-2">
         <div className="flex h-15 items-center justify-between gap-1">
           {/* Left */}
@@ -28,16 +28,16 @@ export default async function Navbar() {
               {/* Text */}
               <div className="  flex-col leading-tight">
                 <div className="flex items-center gap-2">
-                  <h1 className="text-xl font-bold tracking-tight text-slate-800">
+                  <h1 className="text-xl font-bold tracking-tight text-lis-text">
                     BVMCES
                   </h1>
 
-                  <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-blue-700">
+                  <span className="rounded-sm bg-lis-panel-header px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-lis-muted border border-lis-panel-border">
                     Portal
                   </span>
                 </div>
 
-                <p className="  text-xs text-slate-500">School ID: 132289</p>
+                <p className="  text-xs text-lis-muted">School ID: 132289</p>
               </div>
             </Link>
           </div>

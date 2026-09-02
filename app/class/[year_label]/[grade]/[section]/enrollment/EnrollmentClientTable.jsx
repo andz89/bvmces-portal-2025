@@ -83,13 +83,13 @@ export default function EnrollmentClientTable({
         />
       )}
 
-      <div className="min-h-screen bg-[#f4f7fb] pb-20">
+      <div className="min-h-screen bg-lis-bg pb-20">
         {/* Hero */}
-        <div className="relative overflow-hidden bg-gradient-to-br from-emerald-600 via-green-600 to-teal-600">
+        <div className="relative overflow-hidden bg-lis-primary   ">
           {/* Glow */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+          <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full "></div>
 
-          <div className="absolute bottom-0 left-0 w-72 h-72 bg-emerald-300/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-72 h-72 bg-lis-panel-header/10 rounded-full "></div>
 
           <div className="relative max-w-7xl mx-auto px-4 md:px-6 py-10">
             <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-8">
@@ -104,7 +104,7 @@ export default function EnrollmentClientTable({
                     border
                     border-white/10
                     bg-white/10
-                    backdrop-blur-md
+                    
                     px-4
                     py-1.5
                     text-white
@@ -115,11 +115,11 @@ export default function EnrollmentClientTable({
                   Student Enrollment
                 </div>
 
-                <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">
+                <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
                   Enrollment Dashboard
                 </h1>
 
-                <p className="text-emerald-100 text-base mt-3 max-w-2xl">
+                <p className="text-white/80 text-base mt-3 max-w-2xl">
                   Monitor learner enrollment, monthly class population, and
                   student distribution efficiently.
                 </p>
@@ -129,10 +129,10 @@ export default function EnrollmentClientTable({
                   <div
                     className="
                       bg-white/10
-                      backdrop-blur-xl
+                      
                       border
                       border-white/10
-                      rounded-2xl
+                      rounded-sm
                       px-5
                       py-4
                       min-w-[180px]
@@ -143,7 +143,7 @@ export default function EnrollmentClientTable({
                         className="
                           h-11
                           w-11
-                          rounded-xl
+                          rounded-sm
                           bg-white/10
                           flex
                           items-center
@@ -155,10 +155,10 @@ export default function EnrollmentClientTable({
                       </div>
 
                       <div>
-                        <p className="text-xs uppercase tracking-wide text-emerald-100">
+                        <p className="text-xs uppercase tracking-wide text-white/80">
                           Grade
                         </p>
-                        <h3 className="text-2xl font-black text-white mt-1">
+                        <h3 className="text-2xl font-bold text-white mt-1">
                           Grade {grade.toUpperCase()}
                         </h3>
                       </div>
@@ -169,10 +169,10 @@ export default function EnrollmentClientTable({
                   <div
                     className="
                       bg-white/10
-                      backdrop-blur-xl
+                      
                       border
                       border-white/10
-                      rounded-2xl
+                      rounded-sm
                       px-5
                       py-4
                       min-w-[180px]
@@ -183,7 +183,7 @@ export default function EnrollmentClientTable({
                         className="
                           h-11
                           w-11
-                          rounded-xl
+                          rounded-sm
                           bg-white/10
                           flex
                           items-center
@@ -195,11 +195,11 @@ export default function EnrollmentClientTable({
                       </div>
 
                       <div>
-                        <p className="text-xs uppercase tracking-wide text-emerald-100">
+                        <p className="text-xs uppercase tracking-wide text-white/80">
                           Section
                         </p>
 
-                        <h3 className="text-2xl font-black text-white mt-1">
+                        <h3 className="text-2xl font-bold text-white mt-1">
                           {section.toUpperCase()}
                         </h3>
                       </div>
@@ -210,10 +210,10 @@ export default function EnrollmentClientTable({
                   <div
                     className="
                       bg-white/10
-                      backdrop-blur-xl
+                      
                       border
                       border-white/10
-                      rounded-2xl
+                      rounded-sm
                       px-5
                       py-4
                       min-w-[180px]
@@ -224,7 +224,7 @@ export default function EnrollmentClientTable({
                         className="
                           h-11
                           w-11
-                          rounded-xl
+                          rounded-sm
                           bg-white/10
                           flex
                           items-center
@@ -236,11 +236,11 @@ export default function EnrollmentClientTable({
                       </div>
 
                       <div>
-                        <p className="text-xs uppercase tracking-wide text-emerald-100">
+                        <p className="text-xs uppercase tracking-wide text-white/80">
                           School Year
                         </p>
 
-                        <h3 className="text-2xl font-black text-white mt-1">
+                        <h3 className="text-2xl font-bold text-white mt-1">
                           {year_label}
                         </h3>
                       </div>
@@ -257,10 +257,10 @@ export default function EnrollmentClientTable({
           <div
             className="
               bg-white
-              rounded-[28px]
+              rounded-sm
               border
-              border-gray-200
-              shadow-[0_10px_35px_rgba(0,0,0,0.05)]
+              border-lis-panel-border
+              
               overflow-hidden
             "
           >
@@ -270,20 +270,19 @@ export default function EnrollmentClientTable({
                 px-6
                 py-5
                 border-b
-                border-gray-100
-                bg-gradient-to-r
-                from-emerald-50
-                via-green-50
-                to-white
+                border-lis-panel-border
+                bg-lis-panel-header
+                
+                
               "
             >
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-800">
+                  <h2 className="text-2xl font-bold text-lis-text">
                     Monthly Enrollment
                   </h2>
 
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-lis-muted mt-1">
                     Enrollment records and learner statistics by month.
                   </p>
                 </div>
@@ -295,7 +294,7 @@ export default function EnrollmentClientTable({
               <table className="min-w-full">
                 {/* Head */}
                 <thead>
-                  <tr className="bg-gradient-to-r from-emerald-600 to-green-600 text-white">
+                  <tr className="bg-lis-primary   text-white">
                     <th className="px-6 py-4 text-left text-sm font-semibold">
                       Month
                     </th>
@@ -331,8 +330,8 @@ export default function EnrollmentClientTable({
                       key={item.id}
                       className="
                           border-t
-                          border-gray-100
-                          hover:bg-emerald-50/40
+                          border-lis-panel-border
+                          hover:bg-lis-panel-header/40
                           transition
                         "
                     >
@@ -343,26 +342,26 @@ export default function EnrollmentClientTable({
                             className="
                                 h-11
                                 w-11
-                                rounded-2xl
-                                bg-gradient-to-r
-                                from-emerald-500
-                                to-green-600
+                                rounded-sm
+                                bg-lis-primary
+                                
+                                
                                 text-white
                                 flex
                                 items-center
                                 justify-center
-                                shadow-sm
+                                
                               "
                           >
                             <BiBookOpen />
                           </div>
 
                           <div>
-                            <p className="font-semibold text-gray-800 capitalize">
+                            <p className="font-semibold text-lis-text capitalize">
                               {item.month}
                             </p>
 
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-lis-muted">
                               Enrollment Month
                             </p>
                           </div>
@@ -370,12 +369,12 @@ export default function EnrollmentClientTable({
                       </td>
 
                       {/* Boys */}
-                      <td className="px-6 py-5 text-center font-medium text-gray-700">
+                      <td className="px-6 py-5 text-center font-medium text-lis-text">
                         {item.boys}
                       </td>
 
                       {/* Girls */}
-                      <td className="px-6 py-5 text-center font-medium text-gray-700">
+                      <td className="px-6 py-5 text-center font-medium text-lis-text">
                         {item.girls}
                       </td>
 
@@ -386,13 +385,13 @@ export default function EnrollmentClientTable({
                               inline-flex
                               items-center
                               justify-center
-                              rounded-2xl
-                              bg-emerald-50
+                              rounded-sm
+                              bg-lis-panel-header
                               px-4
                               py-2
                               text-sm
                               font-bold
-                              text-emerald-700
+                              text-lis-success-text
                             "
                         >
                           {item.boys + item.girls}
@@ -410,14 +409,14 @@ export default function EnrollmentClientTable({
                               inline-flex
                               items-center
                               gap-2
-                              rounded-2xl
-                              bg-emerald-50
+                              rounded-sm
+                              bg-lis-panel-header
                               px-4
                               py-2.5
                               text-sm
                               font-semibold
-                              text-emerald-700
-                              hover:bg-emerald-100
+                              text-lis-success-text
+                              hover:bg-lis-panel-header
                               transition
                             "
                           >
@@ -434,7 +433,7 @@ export default function EnrollmentClientTable({
                     <tr>
                       <td colSpan="5" className="py-16 text-center">
                         <div className="space-y-3">
-                          <h3 className="text-2xl font-bold text-gray-700">
+                          <h3 className="text-2xl font-bold text-lis-text">
                             No Enrollment Records
                           </h3>
                           {/* Create */}
@@ -445,7 +444,7 @@ export default function EnrollmentClientTable({
                             class_id={class_id}
                             enrollmentData={enrollmentData}
                           />
-                          <p className="text-gray-500">
+                          <p className="text-lis-muted">
                             There are currently no enrollment records available.
                           </p>
                         </div>

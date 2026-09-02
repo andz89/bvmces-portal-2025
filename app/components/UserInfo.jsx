@@ -25,13 +25,12 @@ const UserInfo = ({ profile }) => {
         onClick={() => setOpen((prev) => !prev)}
         className="
           cursor-pointer
-          shadow-sm
           h-10
           w-10
-          rounded-3xl
-          bg-slate-800
+          rounded-full
+          bg-lis-primary
           text-white
-          hover:bg-slate-900
+          hover:bg-lis-primary-hover
           flex
           items-center
           justify-center
@@ -51,12 +50,12 @@ const UserInfo = ({ profile }) => {
           top-[120%]
           z-[9999]
           w-60
-          rounded-2xl
+          rounded-sm
           border
-          border-slate-200
+          border-lis-panel-border
           bg-white
           p-1
-          shadow-2xl
+          
           transition-all
           duration-200
 
@@ -71,38 +70,38 @@ const UserInfo = ({ profile }) => {
           }
         `}
       >
-        <div className="bg-slate-100 hover:bg-slate-200 rounded-2xl p-1">
-          <div className="flex items-center gap-3 rounded-xl px-2 py-3 text-sm text-slate-700 transition">
+        <div className="bg-lis-panel-header hover:bg-lis-tab-active rounded-sm p-1">
+          <div className="flex items-center gap-3 rounded-sm px-2 py-3 text-sm text-lis-text transition">
             <div className="min-w-0 leading-tight flex flex-col">
               <div className="flex items-center mb-1">
                 <div
                   className="
-                    rounded-full
-                    bg-blue-900
+                    rounded-sm
+                    bg-lis-primary
                     px-2
                     py-1
                     text-[10px]
                     font-semibold
                     uppercase
                     tracking-wide
-                    text-slate-200
+                    text-white
                   "
                 >
                   {profile?.role}
                 </div>
               </div>
 
-              <p className="truncate text-sm font-semibold text-slate-800 uppercase">
+              <p className="truncate text-sm font-semibold text-lis-text uppercase">
                 {profile?.full_name}
               </p>
 
-              <p className="truncate text-sm font-semibold text-slate-800">
+              <p className="truncate text-sm font-semibold text-lis-text">
                 {profile?.email}
               </p>
 
               {Array.isArray(profile.gradeToEdit) &&
                 profile.gradeToEdit.length > 0 && (
-                  <div className="flex flex-wrap gap-1 text-sm text-slate-800 mt-1">
+                  <div className="flex flex-wrap gap-1 text-sm text-lis-text mt-1">
                     <span className="font-medium">Grade access:</span>
 
                     <span>
@@ -130,15 +129,14 @@ const UserInfo = ({ profile }) => {
                   items-center
                   justify-center
                   gap-2
-                  rounded-2xl
+                  rounded-sm
                   text-sm
-                  bg-slate-800
-                  hover:bg-slate-900
+                  bg-lis-primary
+                  hover:bg-lis-primary-hover
                   px-3
                   py-1
                   font-medium
                   text-white
-                  shadow-lg
                   transition
                 "
               >

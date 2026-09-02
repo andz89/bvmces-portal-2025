@@ -54,19 +54,19 @@ export default function BulkAddGPAModal({
 
   const inputClass = `
     w-full
-    rounded-2xl
+    rounded-sm
     border
-    border-gray-200
+    border-lis-panel-border
     bg-white
     px-4
     py-3
     text-sm
-    text-gray-700
+    text-lis-text
     outline-none
     transition
-    focus:border-emerald-500
+    focus:border-lis-primary
     focus:ring-4
-    focus:ring-emerald-100
+    focus:ring-lis-primary
   `;
 
   return (
@@ -79,7 +79,7 @@ export default function BulkAddGPAModal({
           fixed
           inset-0
           bg-black/40
-          backdrop-blur-sm
+          
         "
         onClick={onClose}
       />
@@ -92,9 +92,9 @@ export default function BulkAddGPAModal({
             w-full
             max-w-3xl
             overflow-hidden
-            rounded-[32px]
+            rounded-sm
             bg-white
-            shadow-[0_25px_80px_rgba(0,0,0,0.25)]
+            
           "
         >
           {/* Header */}
@@ -102,16 +102,16 @@ export default function BulkAddGPAModal({
             className="
               relative
               overflow-hidden
-              bg-gradient-to-r
-              from-emerald-600
-              via-green-600
-              to-teal-600
+              bg-lis-primary
+              
+              
+              
               px-8
               py-7
             "
           >
             {/* Glow */}
-            <div className="absolute right-0 top-0 h-40 w-40 bg-white/10 rounded-full blur-3xl"></div>
+            <div className="absolute right-0 top-0 h-40 w-40 bg-white/10 rounded-full "></div>
 
             <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
               {/* Left */}
@@ -120,9 +120,9 @@ export default function BulkAddGPAModal({
                   className="
                     h-16
                     w-16
-                    rounded-2xl
+                    rounded-sm
                     bg-white/10
-                    backdrop-blur-xl
+                    
                     border
                     border-white/10
                     text-white
@@ -135,11 +135,11 @@ export default function BulkAddGPAModal({
                 </div>
 
                 <div>
-                  <h2 className="text-3xl font-black text-white">
+                  <h2 className="text-3xl font-bold text-white">
                     Create GPA Records
                   </h2>
 
-                  <p className="text-emerald-100 mt-2">
+                  <p className="text-white/80 mt-2">
                     Generate GPA templates and learner performance records
                     instantly.
                   </p>
@@ -148,8 +148,8 @@ export default function BulkAddGPAModal({
 
               {/* School Year */}
               <div className="flex gap-3 flex-wrap">
-                <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-2xl px-4 py-3">
-                  <p className="text-xs uppercase text-emerald-100">
+                <div className="bg-white/10 border border-white/10  rounded-sm px-4 py-3">
+                  <p className="text-xs uppercase text-white/80">
                     School Year
                   </p>
 
@@ -162,16 +162,16 @@ export default function BulkAddGPAModal({
           </div>
 
           {/* Body */}
-          <div className="bg-[#f5f7fb] px-6 md:px-8 py-8">
+          <div className="bg-lis-bg px-6 md:px-8 py-8">
             {/* Summary */}
             <div
               className="
-                rounded-3xl
-                bg-gradient-to-r
-                from-emerald-50
-                to-green-50
+                rounded-sm
+                bg-lis-panel-header
+                
+                
                 border
-                border-emerald-100
+                border-lis-panel-border
                 p-6
                 mb-8
               "
@@ -180,18 +180,18 @@ export default function BulkAddGPAModal({
                 {/* Grade */}
                 <div
                   className="
-                    rounded-2xl
+                    rounded-sm
                     bg-white
                     border
-                    border-emerald-100
+                    border-lis-panel-border
                     px-5
                     py-4
-                    shadow-sm
+                    
                   "
                 >
-                  <p className="text-xs uppercase text-gray-500">Grade</p>
+                  <p className="text-xs uppercase text-lis-muted">Grade</p>
 
-                  <h3 className="text-lg font-bold text-gray-800 mt-1">
+                  <h3 className="text-lg font-bold text-lis-text mt-1">
                     Grade {grade}
                   </h3>
                 </div>
@@ -199,18 +199,18 @@ export default function BulkAddGPAModal({
                 {/* Section */}
                 <div
                   className="
-                    rounded-2xl
+                    rounded-sm
                     bg-white
                     border
-                    border-emerald-100
+                    border-lis-panel-border
                     px-5
                     py-4
-                    shadow-sm
+                    
                   "
                 >
-                  <p className="text-xs uppercase text-gray-500">Section</p>
+                  <p className="text-xs uppercase text-lis-muted">Section</p>
 
-                  <h3 className="text-lg font-bold text-gray-800 mt-1 uppercase">
+                  <h3 className="text-lg font-bold text-lis-text mt-1 uppercase">
                     {section}
                   </h3>
                 </div>
@@ -218,18 +218,18 @@ export default function BulkAddGPAModal({
                 {/* GPA */}
                 <div
                   className="
-                    rounded-2xl
+                    rounded-sm
                     bg-white
                     border
-                    border-emerald-100
+                    border-lis-panel-border
                     px-5
                     py-4
-                    shadow-sm
+                    
                   "
                 >
-                  <p className="text-xs uppercase text-gray-500">Record Type</p>
+                  <p className="text-xs uppercase text-lis-muted">Record Type</p>
 
-                  <h3 className="text-lg font-bold text-gray-800 mt-1">GPA</h3>
+                  <h3 className="text-lg font-bold text-lis-text mt-1">GPA</h3>
                 </div>
               </div>
             </div>
@@ -238,11 +238,11 @@ export default function BulkAddGPAModal({
             <div
               className="
                 bg-white
-                rounded-3xl
+                rounded-sm
                 border
-                border-gray-100
+                border-lis-panel-border
                 p-6
-                shadow-sm
+                
               "
             >
               <div className="flex items-center gap-3 mb-5">
@@ -250,26 +250,26 @@ export default function BulkAddGPAModal({
                   className="
                     h-12
                     w-12
-                    rounded-2xl
-                    bg-gradient-to-r
-                    from-emerald-500
-                    to-green-600
+                    rounded-sm
+                    bg-lis-primary
+                    
+                    
                     text-white
                     flex
                     items-center
                     justify-center
-                    shadow-lg
+                    
                   "
                 >
                   <BiCalendar size={24} />
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-bold text-gray-800">
+                  <h3 className="text-xl font-bold text-lis-text">
                     Select Quarter
                   </h3>
 
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-lis-muted">
                     Choose which quarter to generate GPA records for.
                   </p>
                 </div>
@@ -299,7 +299,7 @@ export default function BulkAddGPAModal({
           <div
             className="
               border-t
-              border-gray-100
+              border-lis-panel-border
               bg-white
               px-6
               md:px-8
@@ -322,15 +322,15 @@ export default function BulkAddGPAModal({
                 items-center
                 justify-center
                 gap-2
-                rounded-2xl
+                rounded-sm
                 border
-                border-gray-200
+                border-lis-panel-border
                 bg-white
                 px-6
                 py-3
                 font-medium
-                text-gray-700
-                hover:bg-gray-50
+                text-lis-text
+                hover:bg-lis-panel-header
                 transition
               "
             >
@@ -350,15 +350,15 @@ export default function BulkAddGPAModal({
                 items-center
                 justify-center
                 gap-2
-                rounded-2xl
-                bg-gradient-to-r
-                from-emerald-600
-                to-green-600
+                rounded-sm
+                bg-lis-primary
+                
+                
                 px-7
                 py-3
                 font-semibold
                 text-white
-                shadow-lg
+                
                 hover:scale-[1.01]
                 transition
                 disabled:opacity-60

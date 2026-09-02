@@ -113,11 +113,11 @@ export default function LessonPlanAdmin({
     }, {});
 
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-white shadow-sm overflow-hidden">
+    <div className="rounded-sm border border-lis-panel-border bg-white  overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200 bg-neutral-50">
+      <div className="flex items-center justify-between px-6 py-4 border-b border-lis-panel-border bg-lis-panel-header">
         <div>
-          <h2 className="text-2xl font-semibold text-neutral-900  ">
+          <h2 className="text-2xl font-semibold text-lis-text  ">
             Lesson Plans
           </h2>
         </div>
@@ -132,17 +132,17 @@ export default function LessonPlanAdmin({
       {(profile.role === "admin" || profile.role === "visitor") && (
         <div className="px-6 py-3  ">
           <div className="mb-2 flex items-center gap-2">
-            <h3 className="font-semibold text-neutral-800">
+            <h3 className="font-semibold text-lis-text">
               Teachers Without Lesson Plan
             </h3>
 
-            <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">
+            <span className="rounded-full bg-lis-danger-bg px-2 py-0.5 text-xs font-medium text-lis-danger-text">
               {usersWithoutLessonPlan.length}
             </span>
           </div>
 
           {usersWithoutLessonPlan.length === 0 ? (
-            <p className="text-sm text-emerald-600">
+            <p className="text-sm text-lis-success-text">
               All teachers have submitted their lesson plans.
             </p>
           ) : (
@@ -151,13 +151,13 @@ export default function LessonPlanAdmin({
                 {displayedUsers.map((user) => (
                   <div
                     key={user.id}
-                    className="flex gap-2 rounded-md px-2 py-1 hover:bg-neutral-50"
+                    className="flex gap-2 rounded-md px-2 py-1 hover:bg-lis-panel-header"
                   >
-                    <span className="text-sm font-medium uppercase text-neutral-800">
+                    <span className="text-sm font-medium uppercase text-lis-text">
                       {user.full_name} -
                     </span>
 
-                    <span className="text-sm font-semibold uppercase text-neutral-500">
+                    <span className="text-sm font-semibold uppercase text-lis-muted">
                       {user.grade === "implementation" ||
                       user.grade === "kindergarten"
                         ? ""
@@ -170,7 +170,7 @@ export default function LessonPlanAdmin({
                 {usersWithoutLessonPlan.length > 5 && (
                   <button
                     onClick={() => setShowAll(!showAll)}
-                    className="mt-2 px-2 text-sm font-medium text-emerald-600 hover:text-emerald-700 hover:underline"
+                    className="mt-2 px-2 text-sm font-medium text-lis-success-text hover:text-lis-success-text hover:underline"
                   >
                     {showAll
                       ? "See less"
@@ -184,13 +184,13 @@ export default function LessonPlanAdmin({
       )}
       {updatedLessonPlan.length === 0 ? (
         <div className="py-16 text-center">
-          <BiBook className="mx-auto text-5xl text-neutral-300" />
+          <BiBook className="mx-auto text-5xl text-lis-muted" />
 
-          <h3 className="mt-4 text-lg font-semibold text-neutral-700">
+          <h3 className="mt-4 text-lg font-semibold text-lis-text">
             No lesson plans found
           </h3>
 
-          <p className="mt-1 text-sm text-neutral-500">
+          <p className="mt-1 text-sm text-lis-muted">
             Upload your first lesson plan.
           </p>
         </div>
@@ -199,16 +199,16 @@ export default function LessonPlanAdmin({
           {Object.entries(groupedLessonPlans).map(([term, grades]) => (
             <div key={term} className="mb-10">
               {/* TERM */}
-              <div className="flex items-center justify-between bg-emerald-600 p-1">
+              <div className="flex items-center justify-between bg-lis-success p-1">
                 <div className="text-white px-6   text-lg font-bold">
                   Term {term} / Week {weekParams}
                 </div>
-                <div className="rounded-lg border border-neutral-200 bg-white px-4 py-2 flex items-center gap-2">
-                  <p className="text-xs uppercase tracking-wide text-neutral-500">
+                <div className="rounded-lg border border-lis-panel-border bg-white px-4 py-2 flex items-center gap-2">
+                  <p className="text-xs uppercase tracking-wide text-lis-muted">
                     Total
                   </p>
 
-                  <p className="text-sm font-bold text-neutral-900">
+                  <p className="text-sm font-bold text-lis-text">
                     {lessonPlans.length}
                   </p>
                 </div>
@@ -222,7 +222,7 @@ export default function LessonPlanAdmin({
                 return (
                   <div key={grade}>
                     {/* GRADE */}
-                    <div className="flex justify-between items-center bg-emerald-50 border-l-4 z-100 border-slate-600 px-6 py-3 font-semibold text-emerald-700 uppercase text-sm">
+                    <div className="flex justify-between items-center bg-lis-panel-header border-l-4 z-100 border-lis-panel-border px-6 py-3 font-semibold text-lis-success-text uppercase text-sm">
                       <div>
                         {grade === "implementation" || grade === "kindergarten"
                           ? ""
@@ -230,7 +230,7 @@ export default function LessonPlanAdmin({
                         {grade} / Term {term} / Week {weekParams}
                       </div>
 
-                      <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-bold text-slate-700">
+                      <span className="rounded-full bg-lis-panel-header px-2 py-0.5 text-xs font-bold text-lis-text">
                         {plans.length}
                       </span>
                     </div>
@@ -238,7 +238,7 @@ export default function LessonPlanAdmin({
                       {" "}
                       <table className="w-full  overflow-auto ">
                         <thead className="border-b">
-                          <tr className="text-left  text-slate-700 text-sm">
+                          <tr className="text-left  text-lis-text text-sm">
                             <th className="px-6 py-3 w-40">Teacher</th>
                             <th className="px-6 py-3 w-40">Grade</th>
                             <th className="px-6 py-3">Week</th>
@@ -261,16 +261,16 @@ export default function LessonPlanAdmin({
                           {plans.map((plan) => (
                             <tr
                               key={plan.file_id}
-                              className="border-b border-neutral-100 hover:bg-neutral-50 transition "
+                              className="border-b border-lis-panel-border hover:bg-lis-panel-header transition "
                             >
                               <td className="px-6 py-4">
                                 <div className="flex items-center gap-3 ">
-                                  <div className="h-10 w-10 rounded-full bg-emerald-100 flex items-center justify-center">
-                                    <BiUser className="text-emerald-600 text-lg" />
+                                  <div className="h-10 w-10 rounded-full bg-lis-panel-header flex items-center justify-center">
+                                    <BiUser className="text-lis-success-text text-lg" />
                                   </div>
 
                                   <Link
-                                    className="font-medium text-neutral-800 uppercase text-sm w-40"
+                                    className="font-medium text-lis-text uppercase text-sm w-40"
                                     href={{
                                       pathname: `/lesson-plan/teacher`,
                                       query: {
@@ -288,22 +288,22 @@ export default function LessonPlanAdmin({
                                 {plan.lesson_level}
                               </td>
                               <td className="px-6 py-4  ">
-                                <span className="inline-flex w-15 items-center gap-1 rounded-full   py-1 text-sm font-medium text-emerald-700">
+                                <span className="inline-flex w-15 items-center gap-1 rounded-full   py-1 text-sm font-medium text-lis-success-text">
                                   W - {plan.week}
                                 </span>
                               </td>
                               <td className="px-6 py-4">
-                                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-700 uppercase">
+                                <span className="inline-flex items-center gap-1 rounded-full bg-lis-panel-header px-3 py-1 text-sm font-medium text-lis-success-text uppercase">
                                   {plan.term}
                                 </span>
                               </td>
                               <td className="  py-4 w-full     text-center">
-                                <span className="items-center gap-1 rounded-full    font-medium text-emerald-700 text-xs uppercase ">
+                                <span className="items-center gap-1 rounded-full    font-medium text-lis-success-text text-xs uppercase ">
                                   {plan.subject}
                                 </span>
                               </td>
                               <td className="px-6 py-4">
-                                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-700">
+                                <span className="inline-flex items-center gap-1 rounded-full bg-lis-panel-header px-3 py-1 text-sm font-medium text-lis-success-text">
                                   {(() => {
                                     const formatted = new Date(
                                       plan.Timestamp,
@@ -317,7 +317,7 @@ export default function LessonPlanAdmin({
                                   href={plan.FileLink}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-700 transition hover:bg-emerald-100"
+                                  className="inline-flex items-center gap-2 rounded-lg border border-lis-panel-border bg-lis-panel-header px-4 py-2 text-sm font-medium text-lis-success-text transition hover:bg-lis-panel-header"
                                 >
                                   <BiLinkExternal />
                                   Open
@@ -334,7 +334,7 @@ export default function LessonPlanAdmin({
                                 <button
                                   disabled={profile.id !== plan.teacher_id}
                                   onClick={() => setDeleteId(plan.file_id)}
-                                  className={`inline-flex items-center gap-2 rounded-lg     px-4 py-2 text-sm font-medium  transition  ${profile.id !== plan.teacher_id ? "bg-gray-100 text-gray-500 cursor-not-allowed" : "hover:bg-red-100   bg-red-50 text-red-700"}`}
+                                  className={`inline-flex items-center gap-2 rounded-lg     px-4 py-2 text-sm font-medium  transition  ${profile.id !== plan.teacher_id ? "bg-lis-panel-header text-lis-muted cursor-not-allowed" : "hover:bg-lis-danger-bg   bg-lis-danger-bg text-lis-danger-text"}`}
                                 >
                                   <BiTrash size={18} />
                                 </button>

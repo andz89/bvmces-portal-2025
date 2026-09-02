@@ -61,17 +61,17 @@ export default function EditSchoolYearModal({ item }) {
           inline-flex
           items-center
           gap-2
-          rounded-2xl
+          rounded-sm
           border
-          border-neutral-200
+          border-lis-panel-border
           bg-white
           px-4
           py-2.5
           text-sm
           font-medium
-          text-neutral-700
+          text-lis-text
           transition
-          hover:bg-neutral-100
+          hover:bg-lis-panel-header
         "
       >
         <BiEditAlt size={18} />
@@ -88,7 +88,7 @@ export default function EditSchoolYearModal({ item }) {
               fixed
               inset-0
               bg-black/30
-              backdrop-blur-sm
+              
             "
             onClick={() => setOpen(false)}
           />
@@ -99,11 +99,11 @@ export default function EditSchoolYearModal({ item }) {
               className="
                 w-full
                 max-w-xl
-                rounded-[30px]
+                rounded-sm
                 border
-                border-neutral-200
+                border-lis-panel-border
                 bg-white
-                shadow-[0_10px_40px_rgba(0,0,0,0.08)]
+                
                 overflow-hidden
               "
             >
@@ -115,7 +115,7 @@ export default function EditSchoolYearModal({ item }) {
                   justify-between
                   gap-4
                   border-b
-                  border-neutral-100
+                  border-lis-panel-border
                   px-7
                   py-6
                 "
@@ -125,9 +125,9 @@ export default function EditSchoolYearModal({ item }) {
                     className="
                       h-14
                       w-14
-                      rounded-2xl
-                      bg-neutral-100
-                      text-neutral-700
+                      rounded-sm
+                      bg-lis-panel-header
+                      text-lis-text
                       flex
                       items-center
                       justify-center
@@ -137,11 +137,11 @@ export default function EditSchoolYearModal({ item }) {
                   </div>
 
                   <div>
-                    <h2 className="text-2xl font-semibold text-neutral-900">
+                    <h2 className="text-2xl font-semibold text-lis-text">
                       Edit School Year
                     </h2>
 
-                    <p className="text-sm text-neutral-500 mt-1">
+                    <p className="text-sm text-lis-muted mt-1">
                       Update school year details and settings.
                     </p>
                   </div>
@@ -153,16 +153,16 @@ export default function EditSchoolYearModal({ item }) {
                   className="
                     h-10
                     w-10
-                    rounded-xl
+                    rounded-sm
                     border
-                    border-neutral-200
+                    border-lis-panel-border
                     flex
                     items-center
                     justify-center
-                    text-neutral-500
+                    text-lis-muted
                     transition
-                    hover:bg-neutral-100
-                    hover:text-neutral-800
+                    hover:bg-lis-panel-header
+                    hover:text-lis-text
                   "
                 >
                   <BiX size={20} />
@@ -179,7 +179,7 @@ export default function EditSchoolYearModal({ item }) {
                       block
                       text-sm
                       font-medium
-                      text-neutral-700
+                      text-lis-text
                     "
                   >
                     School Year
@@ -191,14 +191,14 @@ export default function EditSchoolYearModal({ item }) {
                     value={yearLabel}
                     className="
                       w-full
-                      rounded-2xl
+                      rounded-sm
                       border
-                      border-neutral-200
-                      bg-neutral-100
+                      border-lis-panel-border
+                      bg-lis-panel-header
                       px-4
                       py-3.5
                       text-sm
-                      text-neutral-700
+                      text-lis-text
                       outline-none
                     "
                   />
@@ -212,7 +212,7 @@ export default function EditSchoolYearModal({ item }) {
                       block
                       text-sm
                       font-medium
-                      text-neutral-700
+                      text-lis-text
                     "
                   >
                     Status
@@ -224,14 +224,14 @@ export default function EditSchoolYearModal({ item }) {
                     value={status}
                     className="
                       w-full
-                      rounded-2xl
+                      rounded-sm
                       border
-                      border-neutral-200
-                      bg-neutral-100
+                      border-lis-panel-border
+                      bg-lis-panel-header
                       px-4
                       py-3.5
                       text-sm
-                      text-neutral-700
+                      text-lis-text
                       outline-none
                     "
                   />
@@ -245,7 +245,7 @@ export default function EditSchoolYearModal({ item }) {
                       block
                       text-sm
                       font-medium
-                      text-neutral-700
+                      text-lis-text
                     "
                   >
                     Enrollment Reference Month
@@ -256,17 +256,17 @@ export default function EditSchoolYearModal({ item }) {
                     onChange={(e) => setActiveMonth(e.target.value)}
                     className="
                       w-full
-                      rounded-2xl
+                      rounded-sm
                       border
-                      border-neutral-200
+                      border-lis-panel-border
                       bg-white
                       px-4
                       py-3.5
                       text-sm
-                      text-neutral-700
+                      text-lis-text
                       outline-none
                       transition
-                      focus:border-neutral-900
+                      focus:border-lis-primary
                     "
                   >
                     <option value="">Select month</option>
@@ -290,10 +290,10 @@ export default function EditSchoolYearModal({ item }) {
                   sm:justify-end
                   gap-3
                   border-t
-                  border-neutral-100
+                  border-lis-panel-border
                   px-7
                   py-5
-                  bg-neutral-50
+                  bg-lis-panel-header
                 "
               >
                 {/* Cancel */}
@@ -302,17 +302,17 @@ export default function EditSchoolYearModal({ item }) {
                   className="
                     w-full
                     sm:w-auto
-                    rounded-2xl
+                    rounded-sm
                     border
-                    border-neutral-200
+                    border-lis-panel-border
                     bg-white
                     px-5
                     py-3
                     text-sm
                     font-medium
-                    text-neutral-700
+                    text-lis-text
                     transition
-                    hover:bg-neutral-100
+                    hover:bg-lis-panel-header
                   "
                 >
                   Cancel
@@ -325,15 +325,15 @@ export default function EditSchoolYearModal({ item }) {
                   className="
                     w-full
                     sm:w-auto
-                    rounded-2xl
-                    bg-neutral-900
+                    rounded-sm
+                    bg-lis-primary
                     px-6
                     py-3
                     text-sm
                     font-medium
                     text-white
                     transition
-                    hover:bg-neutral-800
+                    hover:bg-lis-primary
                     disabled:opacity-60
                   "
                 >

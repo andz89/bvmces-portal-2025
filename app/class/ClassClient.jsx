@@ -136,19 +136,19 @@ export default function ClassClient({
 
   const inputClass = `
     w-full
-    rounded-2xl
+    rounded-sm
     border
-    border-gray-200
+    border-lis-panel-border
     bg-white
     px-4
     py-3
     text-sm
-    text-gray-700
+    text-lis-text
     outline-none
     transition
-    focus:border-emerald-500
+    focus:border-lis-primary
     focus:ring-4
-    focus:ring-emerald-100
+    focus:ring-lis-primary
   `;
 
   const [classId, setClassId] = useState(null);
@@ -200,10 +200,10 @@ export default function ClassClient({
         <div
           className="
             bg-white
-            rounded-[28px]
+            rounded-sm
             border
-            border-gray-200
-            shadow-[0_10px_35px_rgba(0,0,0,0.05)]
+            border-lis-panel-border
+            
             overflow-hidden
           "
         >
@@ -213,11 +213,8 @@ export default function ClassClient({
               px-6
               py-5
               border-b
-              border-gray-100
-              bg-gradient-to-r
-              from-emerald-50
-              via-green-50
-              to-white
+              border-lis-panel-border
+              bg-lis-panel-header
             "
           >
             <div className="flex items-center gap-4">
@@ -225,26 +222,26 @@ export default function ClassClient({
                 className="
                   h-14
                   w-14
-                  rounded-2xl
-                  bg-gradient-to-r
-                  from-emerald-500
-                  to-green-600
+                  rounded-sm
+                  bg-lis-primary
+
+
                   text-white
                   flex
                   items-center
                   justify-center
-                  shadow-lg
+
                 "
               >
                 <BiPlus size={28} />
               </div>
 
               <div>
-                <h2 className="text-2xl font-bold text-gray-800">
+                <h2 className="text-lg font-semibold text-lis-heading">
                   Create New Class
                 </h2>
 
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-lis-muted mt-1">
                   Add and organize class sections efficiently.
                 </p>
               </div>
@@ -256,7 +253,7 @@ export default function ClassClient({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {/* Grade */}
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-2">
+                <label className="block text-sm font-medium text-lis-muted mb-2">
                   Grade
                 </label>
 
@@ -287,7 +284,7 @@ export default function ClassClient({
 
               {/* Section */}
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-2">
+                <label className="block text-sm font-medium text-lis-muted mb-2">
                   Section
                 </label>
 
@@ -310,15 +307,15 @@ export default function ClassClient({
                     items-center
                     justify-center
                     gap-2
-                    rounded-2xl
-                    bg-gradient-to-r
-                    from-emerald-600
-                    to-green-600
+                    rounded-sm
+                    bg-lis-primary
+                    
+                    
                     px-5
                     py-3
                     text-white
                     font-semibold
-                    shadow-lg
+                    
                     hover:scale-[1.01]
                     transition
                     disabled:opacity-60
@@ -341,10 +338,10 @@ export default function ClassClient({
             key={gradeName}
             className="
                 bg-white
-                rounded-[28px]
+                rounded-sm
                 border
-                border-gray-200
-                shadow-[0_10px_35px_rgba(0,0,0,0.05)]
+                border-lis-panel-border
+                
                 overflow-hidden
               "
           >
@@ -354,11 +351,10 @@ export default function ClassClient({
                   px-6
                   py-5
                   border-b
-                  border-gray-100
-                  bg-gradient-to-r
-                  from-emerald-50
-                  via-green-50
-                  to-white
+                  border-lis-panel-border
+                  bg-lis-panel-header
+                  
+                  
                 "
             >
               <div className="flex items-center justify-between">
@@ -367,26 +363,26 @@ export default function ClassClient({
                     className="
                         h-14
                         w-14
-                        rounded-2xl
-                        bg-gradient-to-r
-                        from-emerald-500
-                        to-green-600
+                        rounded-sm
+                        bg-lis-primary
+                        
+                        
                         text-white
                         flex
                         items-center
                         justify-center
-                        shadow-lg
+                        
                       "
                   >
                     <BiBookOpen size={28} />
                   </div>
 
                   <div>
-                    <h2 className="text-2xl font-bold text-gray-800">
+                    <h2 className="text-lg font-semibold text-lis-heading">
                       {gradeName}
                     </h2>
 
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p className="text-sm text-lis-muted mt-1">
                       {gradeClasses.length} class sections
                     </p>
                   </div>
@@ -396,18 +392,18 @@ export default function ClassClient({
                   className="
                       bg-white
                       border
-                      border-gray-200
-                      rounded-2xl
+                      border-lis-success
+                      rounded-sm
                       px-4
                       py-2
-                      shadow-sm
+
                     "
                 >
-                  <p className="text-xs uppercase tracking-wide text-gray-500">
+                  <p className="text-xs uppercase tracking-wide text-lis-muted">
                     Total
                   </p>
 
-                  <p className="text-xl font-black text-gray-800">
+                  <p className="text-xl font-bold text-lis-success-text">
                     {gradeClasses.length}
                   </p>
                 </div>
@@ -424,12 +420,12 @@ export default function ClassClient({
                   <div
                     key={c.id}
                     className="
-                        rounded-3xl
+                        rounded-sm
                         border
-                        border-gray-100
-                        bg-gray-50
+                        border-lis-panel-border
+                        bg-lis-panel-header
                         p-3
-                        hover:bg-emerald-50/40
+                        hover:bg-lis-panel-header/40
                         transition
                       "
                   >
@@ -438,7 +434,7 @@ export default function ClassClient({
                       <div className="w-full">
                         <div className="flex items-center justify-between w-full">
                           <div className="flex items-center">
-                            <h3 className="text-md font-bold text-gray-800 uppercase">
+                            <h3 className="text-md font-bold text-lis-text uppercase">
                               {c.grade === "kindergarten" ? " " : "Grade"}{" "}
                               {c.grade} - {c.section}
                             </h3>
@@ -450,13 +446,13 @@ export default function ClassClient({
       w-7
       md:h-8
       md:w-8
-      rounded-2xl
+      rounded-sm
     
-     text-slate-600
+     text-lis-muted
       flex
       items-center
       justify-center
-      hover:bg-slate-100
+      hover:bg-lis-panel-header
       cursor-pointer
       transition
     "
@@ -474,13 +470,13 @@ export default function ClassClient({
       w-7
       md:h-8
       md:w-8
-      rounded-2xl
+      rounded-sm
        
-      text-red-600
+      text-lis-danger-text
       flex
       items-center
       justify-center
-      hover:bg-red-100
+      hover:bg-lis-danger-bg
       cursor-pointer
       transition
     "
@@ -491,13 +487,13 @@ export default function ClassClient({
                         </div>
 
                         <div className="flex items-center gap-2">
-                          <span className="text-sm text-gray-600 shadow-sm py-1 px-2  rounded font-bold  ">
+                          <span className="text-xs uppercase tracking-wide text-lis-muted py-1 px-2 rounded">
                             {" "}
                             {c.users?.full_name.toUpperCase() ||
                               "No adviser assigned"}{" "}
                           </span>
                           <button
-                            className="text-sm text-slate-600 shadow-sm py-1   px-2  rounded font-bold "
+                            className="text-xs uppercase tracking-wide text-lis-muted py-1 px-2 rounded"
                             onClick={() => {
                               (handleUsersModal(c.id),
                                 setCurrentAdviserClass(c));
@@ -516,21 +512,21 @@ export default function ClassClient({
                             flex
                             items-center
                             gap-2
-                            rounded-2xl
+                            rounded-sm
                             bg-white
                             border
-                            border-gray-200
+                            border-lis-panel-border
                             px-3
                             py-3
-                            shadow-sm
+                            
                           "
                       >
-                        <FaUsers className="text-emerald-600" />
+                        <FaUsers className="text-lis-muted" />
 
                         <div>
-                          <p className="text-xs text-gray-500">Boys</p>
+                          <p className="text-xs text-lis-muted">Boys</p>
 
-                          <p className="font-bold text-gray-800">
+                          <p className="font-bold text-lis-text">
                             {c.enrollment[0]?.boys || 0}
                           </p>
                         </div>
@@ -541,21 +537,21 @@ export default function ClassClient({
                             flex
                             items-center
                             gap-2
-                            rounded-2xl
+                            rounded-sm
                             bg-white
                             border
-                            border-gray-200
+                            border-lis-panel-border
                             px-4
                             py-3
-                            shadow-sm
+
                           "
                       >
-                        <FaUsers className="text-pink-500" />
+                        <FaUsers className="text-lis-muted" />
 
                         <div>
-                          <p className="text-xs text-gray-500">Girls</p>
+                          <p className="text-xs text-lis-muted">Girls</p>
 
-                          <p className="font-bold text-gray-800">
+                          <p className="font-bold text-lis-text">
                             {c.enrollment[0]?.girls || 0}
                           </p>
                         </div>
@@ -565,21 +561,21 @@ export default function ClassClient({
                             flex
                             items-center
                             gap-2
-                            rounded-2xl
+                            rounded-sm
                             bg-white
                             border
-                            border-gray-200
+                            border-lis-success
                             px-4
                             py-3
-                            shadow-sm
+
                           "
                       >
-                        <FaUsers className="text-purple-500" />
+                        <FaUsers className="text-lis-success" />
 
                         <div>
-                          <p className="text-xs text-gray-500">Total</p>
+                          <p className="text-xs text-lis-muted">Total</p>
 
-                          <p className="font-bold text-gray-800">{total}</p>
+                          <p className="font-bold text-lis-success-text">{total}</p>
                         </div>
                       </div>
                     </div>
@@ -598,17 +594,17 @@ export default function ClassClient({
                               inline-flex
                               items-center
                               gap-2
-                              rounded-2xl
+                              rounded-sm
                               bg-white
                               border
-                              border-gray-200
+                              border-lis-panel-border
                               px-4
                               py-2.5
                               text-sm
                               font-medium
-                              text-gray-700
-                              shadow-sm
-                              hover:bg-gray-50
+                              text-lis-text
+                              
+                              hover:bg-lis-panel-header
                             "
                         >
                           <FaUsers />
@@ -626,17 +622,17 @@ export default function ClassClient({
                               inline-flex
                               items-center
                               gap-2
-                              rounded-2xl
+                              rounded-sm
                               bg-white
                               border
-                              border-gray-200
+                              border-lis-panel-border
                               px-4
                               py-2.5
                               text-sm
                               font-medium
-                              text-gray-700
-                              shadow-sm
-                              hover:bg-gray-50
+                              text-lis-text
+                              
+                              hover:bg-lis-panel-header
                             "
                         >
                           <BiBarChartAlt2 />
@@ -654,17 +650,17 @@ export default function ClassClient({
                               inline-flex
                               items-center
                               gap-2
-                              rounded-2xl
+                              rounded-sm
                               bg-white
                               border
-                              border-gray-200
+                              border-lis-panel-border
                               px-4
                               py-2.5
                               text-sm
                               font-medium
-                              text-gray-700
-                              shadow-sm
-                              hover:bg-gray-50
+                              text-lis-text
+                              
+                              hover:bg-lis-panel-header
                             "
                         >
                           <BiSpreadsheet />
@@ -685,17 +681,17 @@ export default function ClassClient({
         <div
           className="
             bg-white
-            rounded-[28px]
+            rounded-sm
             border
-            border-gray-200
-            shadow-[0_10px_35px_rgba(0,0,0,0.05)]
+            border-lis-panel-border
+            
             p-16
             text-center
           "
         >
-          <h3 className="text-2xl font-bold text-gray-700">No Classes Yet</h3>
+          <h3 className="text-lg font-semibold text-lis-heading">No Classes Yet</h3>
 
-          <p className="text-gray-500 mt-2">
+          <p className="text-lis-muted mt-2">
             Start by creating your first class section.
           </p>
         </div>

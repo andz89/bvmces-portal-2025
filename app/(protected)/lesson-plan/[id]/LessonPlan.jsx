@@ -98,11 +98,11 @@ export default function LessonPlanAdmin({
   });
 
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-white shadow-sm overflow-hidden">
+    <div className="rounded-sm border border-lis-panel-border bg-white  overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200 bg-neutral-50">
+      <div className="flex items-center justify-between px-6 py-4 border-b border-lis-panel-border bg-lis-panel-header">
         <div>
-          <h2 className="text-2xl font-semibold text-neutral-900  ">
+          <h2 className="text-2xl font-semibold text-lis-text  ">
             Lesson Plans
           </h2>
         </div>
@@ -112,17 +112,17 @@ export default function LessonPlanAdmin({
           canSubmit={canSubmit}
         />
       </div>
-      <div className="border-b border-neutral-200 bg-white px-6 py-4">
+      <div className="border-b border-lis-panel-border bg-white px-6 py-4">
         <div className="max-w-100 gap-2 flex items-center">
           <select
             value={term}
             disabled={isPending}
             onChange={handleTermChange}
-            className={` w-50 rounded-xl border px-4 py-2.5 outline-none transition
+            className={` w-50 rounded-sm border px-4 py-2.5 outline-none transition
     ${
       isPending
-        ? "cursor-not-allowed bg-neutral-100 text-neutral-400"
-        : "border-neutral-300 focus:border-emerald-500"
+        ? "cursor-not-allowed bg-lis-panel-header text-lis-muted"
+        : "border-lis-panel-border focus:border-lis-primary"
     }`}
           >
             <option value="1">Term 1</option>
@@ -130,24 +130,24 @@ export default function LessonPlanAdmin({
             <option value="3">Term 3</option>
           </select>
           {isPending && (
-            <p className="mt-2 text-sm text-neutral-500">
+            <p className="mt-2 text-sm text-lis-muted">
               Loading lesson plans...
             </p>
           )}
         </div>
       </div>
       <div className="mb-10">
-        <div className="flex items-center justify-between bg-emerald-600 p-1">
+        <div className="flex items-center justify-between bg-lis-success p-1">
           <div className="px-6 text-lg font-bold text-white">
             Term {termParams}
           </div>
 
-          <div className="flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-4 py-2">
-            <p className="text-xs uppercase tracking-wide text-neutral-500">
+          <div className="flex items-center gap-2 rounded-lg border border-lis-panel-border bg-white px-4 py-2">
+            <p className="text-xs uppercase tracking-wide text-lis-muted">
               Total
             </p>
 
-            <p className="text-sm font-bold text-neutral-900">
+            <p className="text-sm font-bold text-lis-text">
               {sortedLessonPlans.length}
             </p>
           </div>
@@ -155,7 +155,7 @@ export default function LessonPlanAdmin({
         <div className="overflow-x-auto">
           <table className="w-full  z-54 ">
             <thead className="border-b">
-              <tr className="text-left text-slate-700 text-sm ">
+              <tr className="text-left text-lis-text text-sm ">
                 <th className="px-6 py-3 w-40">Teacher</th>
                 <th className="px-6 py-3 w-40">Grade</th>
                 <th className="px-6 py-3">Week</th>
@@ -175,15 +175,15 @@ export default function LessonPlanAdmin({
               {sortedLessonPlans.map((plan) => (
                 <tr
                   key={plan.file_id}
-                  className="border-b border-neutral-100 hover:bg-neutral-50 transition text-xs"
+                  className="border-b border-lis-panel-border hover:bg-lis-panel-header transition text-xs"
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3 ">
-                      <div className="h-10 w-10 rounded-full bg-emerald-100 flex items-center justify-center">
-                        <BiUser className="text-emerald-600 text-lg" />
+                      <div className="h-10 w-10 rounded-full bg-lis-panel-header flex items-center justify-center">
+                        <BiUser className="text-lis-success-text text-lg" />
                       </div>
 
-                      <span className="font-medium text-neutral-800 uppercase text-sm w-40">
+                      <span className="font-medium text-lis-text uppercase text-sm w-40">
                         {plan.teacherName}
                       </span>
                     </div>
@@ -194,23 +194,23 @@ export default function LessonPlanAdmin({
                   </td>
 
                   <td className="px-6 py-4 ">
-                    <span className="inline-flex w-15 items-center gap-1 rounded-full   py-1 text-sm font-medium text-emerald-700">
+                    <span className="inline-flex w-15 items-center gap-1 rounded-full   py-1 text-sm font-medium text-lis-success-text">
                       W - {plan.week}
                     </span>
                   </td>
 
                   <td className="px-6 py-4">
-                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-700">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-lis-panel-header px-3 py-1 text-sm font-medium text-lis-success-text">
                       {plan.term}
                     </span>
                   </td>
                   <td className="  py-4 w-full     text-center">
-                    <span className="items-center gap-1 rounded-full uppercase text-xs font-medium text-emerald-700 ">
+                    <span className="items-center gap-1 rounded-full uppercase text-xs font-medium text-lis-success-text ">
                       {plan.subject}
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-700">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-lis-panel-header px-3 py-1 text-sm font-medium text-lis-success-text">
                       {(() => {
                         const formatted = new Date(
                           plan.Timestamp,
@@ -224,7 +224,7 @@ export default function LessonPlanAdmin({
                       href={plan.FileLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-700 transition hover:bg-emerald-100"
+                      className="inline-flex items-center gap-2 rounded-lg border border-lis-panel-border bg-lis-panel-header px-4 py-2 text-sm font-medium text-lis-success-text transition hover:bg-lis-panel-header"
                     >
                       <BiLinkExternal />
                       Open
@@ -241,7 +241,7 @@ export default function LessonPlanAdmin({
                     <td className="px-6 py-4 text-center">
                       <button
                         onClick={() => setDeleteId(plan.file_id)}
-                        className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-700 transition hover:bg-red-100"
+                        className="inline-flex items-center gap-2 rounded-lg border border-lis-danger-border bg-lis-danger-bg px-4 py-2 text-sm font-medium text-lis-danger-text transition hover:bg-lis-danger-bg"
                       >
                         <BiTrash size={18} />
                       </button>

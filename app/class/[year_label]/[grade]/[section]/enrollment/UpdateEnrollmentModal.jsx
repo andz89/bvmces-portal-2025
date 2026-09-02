@@ -51,19 +51,19 @@ export default function UpdateEnrollmentModal({
 
   const inputClass = `
     w-full
-    rounded-2xl
+    rounded-sm
     border
-    border-gray-200
+    border-lis-panel-border
     bg-white
     px-4
     py-3
     text-sm
-    text-gray-700
+    text-lis-text
     outline-none
     transition
-    focus:border-emerald-500
+    focus:border-lis-primary
     focus:ring-4
-    focus:ring-emerald-100
+    focus:ring-lis-primary
   `;
 
   if (!open) return null;
@@ -81,7 +81,7 @@ export default function UpdateEnrollmentModal({
             fixed
             inset-0
             bg-black/40
-            backdrop-blur-sm
+            
           "
           onClick={() => {
             setOpen(false);
@@ -98,9 +98,9 @@ export default function UpdateEnrollmentModal({
               w-full
               max-w-4xl
               overflow-hidden
-              rounded-[32px]
+              rounded-sm
               bg-white
-              shadow-[0_25px_80px_rgba(0,0,0,0.25)]
+              
             "
           >
             {/* Header */}
@@ -108,16 +108,16 @@ export default function UpdateEnrollmentModal({
               className="
                 relative
                 overflow-hidden
-                bg-gradient-to-r
-                from-emerald-600
-                via-green-600
-                to-teal-600
+                bg-lis-primary
+                
+                
+                
                 px-8
                 py-7
               "
             >
               {/* Glow */}
-              <div className="absolute right-0 top-0 h-40 w-40 bg-white/10 rounded-full blur-3xl"></div>
+              <div className="absolute right-0 top-0 h-40 w-40 bg-white/10 rounded-full "></div>
 
               <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
                 {/* Left */}
@@ -126,9 +126,9 @@ export default function UpdateEnrollmentModal({
                     className="
                       h-16
                       w-16
-                      rounded-2xl
+                      rounded-sm
                       bg-white/10
-                      backdrop-blur-xl
+                      
                       border
                       border-white/10
                       text-white
@@ -141,11 +141,11 @@ export default function UpdateEnrollmentModal({
                   </div>
 
                   <div>
-                    <h2 className="text-3xl font-black text-white">
+                    <h2 className="text-3xl font-bold text-white">
                       Update Enrollment
                     </h2>
 
-                    <p className="text-emerald-100 mt-2">
+                    <p className="text-white/80 mt-2">
                       Modify monthly learner enrollment records and class
                       population.
                     </p>
@@ -153,8 +153,8 @@ export default function UpdateEnrollmentModal({
                 </div>
 
                 {/* School Year */}
-                <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-2xl px-5 py-4">
-                  <p className="text-xs uppercase text-emerald-100">
+                <div className="bg-white/10 border border-white/10  rounded-sm px-5 py-4">
+                  <p className="text-xs uppercase text-white/80">
                     School Year
                   </p>
 
@@ -175,7 +175,7 @@ export default function UpdateEnrollmentModal({
                 await handleSubmit(formData);
               }}
             >
-              <div className="bg-[#f5f7fb] px-6 md:px-8 py-8">
+              <div className="bg-lis-bg px-6 md:px-8 py-8">
                 {/* Hidden */}
                 <input type="hidden" name="id" value={editingData?.id} />
 
@@ -184,12 +184,12 @@ export default function UpdateEnrollmentModal({
                 {/* Summary */}
                 <div
                   className="
-                    rounded-3xl
-                    bg-gradient-to-r
-                    from-emerald-50
-                    to-green-50
+                    rounded-sm
+                    bg-lis-panel-header
+                    
+                    
                     border
-                    border-emerald-100
+                    border-lis-panel-border
                     p-6
                     mb-8
                   "
@@ -198,18 +198,18 @@ export default function UpdateEnrollmentModal({
                     {/* Grade */}
                     <div
                       className="
-                        rounded-2xl
+                        rounded-sm
                         bg-white
                         border
-                        border-emerald-100
+                        border-lis-panel-border
                         px-5
                         py-4
-                        shadow-sm
+                        
                       "
                     >
-                      <p className="text-xs uppercase text-gray-500">Grade</p>
+                      <p className="text-xs uppercase text-lis-muted">Grade</p>
 
-                      <h3 className="text-lg font-bold text-gray-800 mt-1">
+                      <h3 className="text-lg font-bold text-lis-text mt-1">
                         Grade {grade.toUpperCase().replace("-", " ")}
                       </h3>
                     </div>
@@ -217,18 +217,18 @@ export default function UpdateEnrollmentModal({
                     {/* Section */}
                     <div
                       className="
-                        rounded-2xl
+                        rounded-sm
                         bg-white
                         border
-                        border-emerald-100
+                        border-lis-panel-border
                         px-5
                         py-4
-                        shadow-sm
+                        
                       "
                     >
-                      <p className="text-xs uppercase text-gray-500">Section</p>
+                      <p className="text-xs uppercase text-lis-muted">Section</p>
 
-                      <h3 className="text-lg font-bold text-gray-800 mt-1 uppercase">
+                      <h3 className="text-lg font-bold text-lis-text mt-1 uppercase">
                         {section}
                       </h3>
                     </div>
@@ -236,18 +236,18 @@ export default function UpdateEnrollmentModal({
                     {/* Month */}
                     <div
                       className="
-                        rounded-2xl
+                        rounded-sm
                         bg-white
                         border
-                        border-emerald-100
+                        border-lis-panel-border
                         px-5
                         py-4
-                        shadow-sm
+                        
                       "
                     >
-                      <p className="text-xs uppercase text-gray-500">Month</p>
+                      <p className="text-xs uppercase text-lis-muted">Month</p>
 
-                      <h3 className="text-lg font-bold text-gray-800 mt-1 capitalize">
+                      <h3 className="text-lg font-bold text-lis-text mt-1 capitalize">
                         {editingData?.month}
                       </h3>
                     </div>
@@ -260,11 +260,11 @@ export default function UpdateEnrollmentModal({
                   <div
                     className="
                       bg-white
-                      rounded-3xl
+                      rounded-sm
                       border
-                      border-gray-100
+                      border-lis-panel-border
                       p-6
-                      shadow-sm
+                      
                     "
                   >
                     <div className="flex items-center gap-3 mb-5">
@@ -272,26 +272,26 @@ export default function UpdateEnrollmentModal({
                         className="
                           h-12
                           w-12
-                          rounded-2xl
-                          bg-gradient-to-r
-                          from-emerald-500
-                          to-green-600
+                          rounded-sm
+                          bg-lis-primary
+                          
+                          
                           text-white
                           flex
                           items-center
                           justify-center
-                          shadow-lg
+                          
                         "
                       >
                         <BiGroup size={24} />
                       </div>
 
                       <div>
-                        <h3 className="text-lg font-bold text-gray-800">
+                        <h3 className="text-lg font-bold text-lis-text">
                           Boys
                         </h3>
 
-                        <p className="text-sm text-gray-500">Male learners</p>
+                        <p className="text-sm text-lis-muted">Male learners</p>
                       </div>
                     </div>
 
@@ -309,11 +309,11 @@ export default function UpdateEnrollmentModal({
                   <div
                     className="
                       bg-white
-                      rounded-3xl
+                      rounded-sm
                       border
-                      border-gray-100
+                      border-lis-panel-border
                       p-6
-                      shadow-sm
+                      
                     "
                   >
                     <div className="flex items-center gap-3 mb-5">
@@ -321,26 +321,26 @@ export default function UpdateEnrollmentModal({
                         className="
                           h-12
                           w-12
-                          rounded-2xl
-                          bg-gradient-to-r
-                          from-pink-500
-                          to-rose-600
+                          rounded-sm
+                          bg-lis-primary
+                          
+                          
                           text-white
                           flex
                           items-center
                           justify-center
-                          shadow-lg
+                          
                         "
                       >
                         <BiMaleFemale size={24} />
                       </div>
 
                       <div>
-                        <h3 className="text-lg font-bold text-gray-800">
+                        <h3 className="text-lg font-bold text-lis-text">
                           Girls
                         </h3>
 
-                        <p className="text-sm text-gray-500">Female learners</p>
+                        <p className="text-sm text-lis-muted">Female learners</p>
                       </div>
                     </div>
 
@@ -358,11 +358,11 @@ export default function UpdateEnrollmentModal({
                   <div
                     className="
                       bg-white
-                      rounded-3xl
+                      rounded-sm
                       border
-                      border-gray-100
+                      border-lis-panel-border
                       p-6
-                      shadow-sm
+                      
                     "
                   >
                     <div className="flex items-center gap-3 mb-5">
@@ -370,26 +370,26 @@ export default function UpdateEnrollmentModal({
                         className="
                           h-12
                           w-12
-                          rounded-2xl
-                          bg-gradient-to-r
-                          from-violet-500
-                          to-purple-600
+                          rounded-sm
+                          bg-lis-primary
+                          
+                          
                           text-white
                           flex
                           items-center
                           justify-center
-                          shadow-lg
+                          
                         "
                       >
                         <BiBookOpen size={24} />
                       </div>
 
                       <div>
-                        <h3 className="text-lg font-bold text-gray-800">
+                        <h3 className="text-lg font-bold text-lis-text">
                           Current Total
                         </h3>
 
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-lis-muted">
                           Total enrollment
                         </p>
                       </div>
@@ -397,22 +397,22 @@ export default function UpdateEnrollmentModal({
 
                     <div
                       className="
-                        rounded-2xl
-                        bg-gradient-to-r
-                        from-emerald-50
-                        to-green-50
+                        rounded-sm
+                        bg-lis-panel-header
+                        
+                        
                         border
-                        border-emerald-100
+                        border-lis-panel-border
                         px-5
                         py-6
                         text-center
                       "
                     >
-                      <h2 className="text-4xl font-black text-emerald-700">
+                      <h2 className="text-4xl font-bold text-lis-success-text">
                         {total}
                       </h2>
 
-                      <p className="text-sm text-emerald-600 mt-1">Students</p>
+                      <p className="text-sm text-lis-success-text mt-1">Students</p>
                     </div>
                   </div>
                 </div>
@@ -422,7 +422,7 @@ export default function UpdateEnrollmentModal({
               <div
                 className="
                   border-t
-                  border-gray-100
+                  border-lis-panel-border
                   bg-white
                   px-6
                   md:px-8
@@ -450,15 +450,15 @@ export default function UpdateEnrollmentModal({
                     items-center
                     justify-center
                     gap-2
-                    rounded-2xl
+                    rounded-sm
                     border
-                    border-gray-200
+                    border-lis-panel-border
                     bg-white
                     px-6
                     py-3
                     font-medium
-                    text-gray-700
-                    hover:bg-gray-50
+                    text-lis-text
+                    hover:bg-lis-panel-header
                     transition
                   "
                 >
@@ -478,15 +478,15 @@ export default function UpdateEnrollmentModal({
                     items-center
                     justify-center
                     gap-2
-                    rounded-2xl
-                    bg-gradient-to-r
-                    from-emerald-600
-                    to-green-600
+                    rounded-sm
+                    bg-lis-primary
+                    
+                    
                     px-7
                     py-3
                     font-semibold
                     text-white
-                    shadow-lg
+                    
                     hover:scale-[1.01]
                     transition
                     disabled:opacity-60

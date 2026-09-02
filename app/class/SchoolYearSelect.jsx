@@ -67,23 +67,23 @@ export default function SchoolYearSelect({
             className="
               w-full
               appearance-none
-              rounded-xl
-              border border-gray-200
+              rounded-sm
+              border border-lis-panel-border
               bg-white
               px-4
               py-3
               pr-10
               text-sm
               font-medium
-              text-gray-700
-              shadow-sm
+              text-lis-text
+              
               outline-none
               transition-all
               duration-200
-              hover:border-blue-300
-              focus:border-blue-500
+              hover:border-lis-panel-border
+              focus:border-lis-primary
               focus:ring-4
-              focus:ring-blue-100
+              focus:ring-lis-primary
             "
           >
             {schoolYears.map((year) => (
@@ -94,7 +94,7 @@ export default function SchoolYearSelect({
           </select>
 
           {/* Arrow */}
-          <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
+          <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-lis-muted">
             <svg
               className="h-4 w-4"
               fill="none"
@@ -120,21 +120,17 @@ export default function SchoolYearSelect({
     w-full
     items-center
     gap-2
-    rounded-2xl
+    rounded-sm
     border
-    border-gray-300
-    bg-gradient-to-b
-    from-white
-    to-gray-100
+    border-lis-panel-border
+    bg-lis-panel-header
     px-4
     py-3
     cursor-pointer
-    hover:bg-gradient-to-t
-   
-   
+    hover:bg-lis-tab-active
     text-sm
-    text-gray-700
-    shadow-sm
+    text-lis-text
+    
     transition
   
   "
@@ -150,19 +146,19 @@ export default function SchoolYearSelect({
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           {/* Overlay */}
           <div
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/40 "
             onClick={() => setOpen(false)}
           />
 
           {/* Modal Content */}
-          <div className="relative w-full max-w-md overflow-hidden rounded-3xl bg-white shadow-2xl border border-gray-100">
+          <div className="relative w-full max-w-md overflow-hidden rounded-sm bg-white  border border-lis-panel-border">
             {/* Header */}
-            <div className="border-b border-gray-100 px-6 py-5">
-              <h2 className="text-xl font-bold text-gray-900">
+            <div className="border-b border-lis-panel-border px-6 py-5">
+              <h2 className="text-xl font-bold text-lis-text">
                 Create School Year
               </h2>
 
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-1 text-sm text-lis-muted">
                 Add a new school year to the system.
               </p>
             </div>
@@ -170,7 +166,7 @@ export default function SchoolYearSelect({
             {/* Body */}
             <div className="p-6">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-lis-text">
                   School Year
                 </label>
 
@@ -179,20 +175,20 @@ export default function SchoolYearSelect({
                   onChange={(e) => setYearLabel(e.target.value)}
                   className="
                     w-full
-                    rounded-xl
-                    border border-gray-200
-                    bg-gray-50
+                    rounded-sm
+                    border border-lis-panel-border
+                    bg-lis-panel-header
                     px-4
                     py-3
                     text-sm
                     font-medium
-                    text-gray-700
+                    text-lis-text
                     outline-none
                     transition
-                    focus:border-blue-500
+                    focus:border-lis-primary
                     focus:bg-white
                     focus:ring-4
-                    focus:ring-blue-100
+                    focus:ring-lis-primary
                   "
                 >
                   <option value={nextSchoolYear}>{nextSchoolYear}</option>
@@ -201,20 +197,20 @@ export default function SchoolYearSelect({
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-end gap-3 border-t border-gray-100 px-6 py-4 bg-gray-50">
+            <div className="flex items-center justify-end gap-3 border-t border-lis-panel-border px-6 py-4 bg-lis-panel-header">
               <button
                 onClick={() => setOpen(false)}
                 className="
-                  rounded-xl
-                  border border-gray-200
+                  rounded-sm
+                  border border-lis-panel-border
                   bg-white
                   px-4
                   py-2.5
                   text-sm
                   font-medium
-                  text-gray-700
+                  text-lis-text
                   transition
-                  hover:bg-gray-100
+                  hover:bg-lis-panel-header
                 "
               >
                 Cancel
@@ -227,15 +223,15 @@ export default function SchoolYearSelect({
                 }}
                 disabled={loading || !nextSchoolYear}
                 className="
-                  rounded-xl
-                  bg-blue-600
+                  rounded-sm
+                  bg-lis-primary
                   px-5
                   py-2.5
                   text-sm
                   font-semibold
                   text-white
                   transition
-                  hover:bg-blue-700
+                  hover:bg-lis-primary-hover
                   disabled:cursor-not-allowed
                   disabled:opacity-50
                 "

@@ -7,5 +7,5 @@ export default async function layout({ children }) {
     redirect("/");
   }
 
-  return <div className="">{children}</div>;
+  return <div className="min-h-screen bg-lis-bg">{children}</div>;
 }

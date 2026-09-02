@@ -52,10 +52,10 @@ const TermTable = ({
     <div
       className="
         bg-white
-        rounded-[28px]
+        rounded-sm
         border
-        border-gray-200
-        shadow-[0_10px_35px_rgba(0,0,0,0.05)]
+        border-lis-panel-border
+        
         overflow-hidden
         w-full
       "
@@ -66,11 +66,10 @@ const TermTable = ({
           px-6
           py-5
           border-b
-          border-gray-100
-          bg-gradient-to-r
-          from-blue-50
-          via-indigo-50
-          to-white
+          border-lis-panel-border
+          bg-lis-panel-header
+          
+          
         "
       >
         {/* Delete Modal */}
@@ -89,9 +88,9 @@ const TermTable = ({
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           {/* Left */}
           <div>
-            <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
+            <h2 className="text-2xl font-bold text-lis-text">{title}</h2>
 
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-lis-muted mt-1">
               {mps.length} record
               {mps.length > 1 ? "s" : ""} available
             </p>
@@ -103,19 +102,19 @@ const TermTable = ({
               className="
                 bg-white
                 border
-                border-gray-200
-                rounded-2xl
+                border-lis-panel-border
+                rounded-sm
                 px-4
                 py-2
-                shadow-sm
+                
                   text-center
               "
             >
-              <p className="text-xs uppercase tracking-wide text-gray-500">
+              <p className="text-xs uppercase tracking-wide text-lis-muted">
                 Total Records
               </p>
 
-              <p className="text-lg font-bold text-gray-800">{mps.length}</p>
+              <p className="text-lg font-bold text-lis-text">{mps.length}</p>
             </div>
 
             <button
@@ -124,15 +123,15 @@ const TermTable = ({
                 inline-flex
                 items-center
                 gap-2
-                rounded-2xl
-                bg-gradient-to-r
-                from-emerald-500
-                to-green-600
+                rounded-sm
+                bg-lis-primary
+                
+                
                 px-5
                 py-3
                 text-white
                 font-semibold
-                shadow-lg
+                
                 transition
                 hover:scale-[1.02]
               "
@@ -149,8 +148,8 @@ const TermTable = ({
       <div className="overflow-x-auto w-full">
         <table className="w-full text-xs">
           {/* Head */}
-          <thead className="bg-gray-50">
-            <tr className="text-gray-600 text-[11px]">
+          <thead className="bg-lis-panel-header">
+            <tr className="text-lis-muted text-[11px]">
               <th className="px-2 py-2 text-left font-semibold min-w-[110px] max-w-[130px]">
                 Class
               </th>
@@ -218,8 +217,8 @@ const TermTable = ({
                   key={item.id}
                   className="
                     border-t
-                    border-gray-100
-                    hover:bg-blue-50/40
+                    border-lis-panel-border
+                    hover:bg-lis-panel-header/40
                     transition
                     duration-200
                   "
@@ -227,14 +226,14 @@ const TermTable = ({
                   {/* Class */}
                   <td className="px-2 py-2 min-w-[110px] max-w-[130px]">
                     <div>
-                      <h3 className="font-semibold text-gray-800 text-xs">
+                      <h3 className="font-semibold text-lis-text text-xs">
                         Grade {item.class.grade}
                       </h3>
 
-                      <p className="text-[11px] text-blue-600 font-medium uppercase">
+                      <p className="text-[11px] text-lis-link font-medium uppercase">
                         {item.class.section}
                       </p>
-                      <p className="text-[10px] text-slate-500 font-semibold uppercase truncate">
+                      <p className="text-[10px] text-lis-muted font-semibold uppercase truncate">
                         {item.class.adviser?.full_name?.length > 14
                           ? `${item.class.adviser.full_name.slice(0, 14)}...`
                           : item.class.adviser?.full_name || "N/A"}
@@ -263,8 +262,8 @@ const TermTable = ({
                           min-w-[30px]
                           h-7
                           rounded-lg
-                          bg-gray-100
-                          text-gray-700
+                          bg-lis-panel-header
+                          text-lis-text
                           font-semibold
                           text-xs
                         "
@@ -284,13 +283,13 @@ const TermTable = ({
                         min-w-[44px]
                         h-7
                         rounded-lg
-                        bg-gradient-to-r
-                        from-blue-600
-                        to-indigo-600
+                        bg-lis-primary
+                        
+                        
                         text-white
                         font-bold
                         text-xs
-                        shadow-md
+                        
                       "
                     >
                       {average}
@@ -310,22 +309,22 @@ const TermTable = ({
                             gap-1
                             rounded-lg
                             border
-                            border-gray-200
+                            border-lis-panel-border
                             bg-white
                             px-2
                             py-1
                             text-[11px]
                             font-medium
-                            text-gray-700
-                            shadow-sm
-                            hover:bg-gray-50
+                            text-lis-text
+                            
+                            hover:bg-lis-panel-header
                           "
                         >
                           View
                           <BiLinkExternal size={11} />
                         </a>
                       ) : (
-                        <span className="text-[11px] text-gray-400">
+                        <span className="text-[11px] text-lis-muted">
                           No file
                         </span>
                       )}
@@ -346,12 +345,12 @@ const TermTable = ({
                             h-7
                             w-7
                             rounded-lg
-                            bg-blue-50
-                            text-blue-600
+                            bg-lis-panel-header
+                            text-lis-link
                             flex
                             items-center
                             justify-center
-                            hover:bg-blue-100
+                            hover:bg-lis-panel-header
                             transition
                           "
                         >
@@ -369,12 +368,12 @@ const TermTable = ({
                                   h-7
                                   w-7
                                   rounded-lg
-                                  bg-red-50
-                                  text-red-600
+                                  bg-lis-danger-bg
+                                  text-lis-danger-text
                                   flex
                                   items-center
                                   justify-center
-                                  hover:bg-red-100
+                                  hover:bg-lis-danger-bg
                                   transition
                                 "
                         >
@@ -392,11 +391,11 @@ const TermTable = ({
               <tr>
                 <td colSpan="100%" className="py-16 text-center">
                   <div className="space-y-3">
-                    <h3 className="text-2xl font-bold text-gray-700">
+                    <h3 className="text-2xl font-bold text-lis-text">
                       No Records Found
                     </h3>
 
-                    <p className="text-gray-500">
+                    <p className="text-lis-muted">
                       There are currently no MPS records available.
                     </p>
                   </div>

@@ -51,11 +51,11 @@ export default function TestUploadPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 p-10">
-      <div className="mx-auto max-w-xl rounded-2xl bg-white p-8 shadow">
+    <div className="min-h-screen bg-lis-panel-header p-10">
+      <div className="mx-auto max-w-xl rounded-sm bg-white p-8 shadow">
         <h1 className="mb-2 text-2xl font-bold">Upload Test</h1>
 
-        <p className="mb-6 text-sm text-slate-500">
+        <p className="mb-6 text-sm text-lis-muted">
           This bypasses the Server Action and tests the Route Handler directly.
         </p>
 
@@ -68,12 +68,12 @@ export default function TestUploadPage() {
             <input
               type="file"
               onChange={(e) => setFile(e.target.files?.[0] || null)}
-              className="block w-full rounded-lg border border-slate-300 p-3"
+              className="block w-full rounded-lg border border-lis-panel-border p-3"
             />
           </div>
 
           {file && (
-            <div className="rounded-lg bg-slate-50 p-4 text-sm">
+            <div className="rounded-lg bg-lis-panel-header p-4 text-sm">
               <p>
                 <strong>Name:</strong> {file.name}
               </p>
@@ -91,14 +91,14 @@ export default function TestUploadPage() {
           <button
             type="submit"
             disabled={!file || loading}
-            className="w-full rounded-lg bg-emerald-600 px-5 py-3 font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full rounded-lg bg-lis-success px-5 py-3 font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loading ? "Uploading..." : "Test Upload"}
           </button>
         </form>
 
         {result && (
-          <div className="mt-6 rounded-lg bg-slate-100 p-4">
+          <div className="mt-6 rounded-lg bg-lis-panel-header p-4">
             <pre className="whitespace-pre-wrap text-sm">
               {JSON.stringify(result, null, 2)}
             </pre>

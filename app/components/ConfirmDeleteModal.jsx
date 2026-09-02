@@ -27,12 +27,12 @@ export default function ConfirmDeleteModal({
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
 
       {/* Modal */}
-      <div className="relative bg-white rounded-lg shadow-lg w-full max-w-md p-6">
-        <h2 className="text-lg font-semibold text-red-600 mb-2">
+      <div className="relative bg-white rounded-lg  w-full max-w-md p-6">
+        <h2 className="text-lg font-semibold text-lis-danger-text mb-2">
           Confirm Delete
         </h2>
 
-        <p className="text-sm text-gray-600 mb-4">
+        <p className="text-sm text-lis-muted mb-4">
           {description ??
             "This action is permanent. Enter the delete password to continue."}
         </p>
@@ -46,7 +46,7 @@ export default function ConfirmDeleteModal({
         />
 
         {/* Error message */}
-        {error && <p className="text-sm text-red-600 mb-3">{error}</p>}
+        {error && <p className="text-sm text-lis-danger-text mb-3">{error}</p>}
 
         <div className="flex justify-end gap-2">
           <button
@@ -60,7 +60,7 @@ export default function ConfirmDeleteModal({
           <button
             onClick={() => onConfirm(password)}
             disabled={loading || !password}
-            className="bg-red-600 text-white px-4 py-2 rounded"
+            className="bg-lis-danger text-white px-4 py-2 rounded"
           >
             {loading ? "Deleting…" : "Delete"}
           </button>

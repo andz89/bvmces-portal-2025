@@ -27,7 +27,7 @@ export default function DeleteUserButton({ userId }) {
       {loading && <FullPageLoader />}
       <button
         onClick={handleDelete}
-        className="text-red-600 hover:underline text-sm"
+        className="text-lis-danger-text hover:underline text-sm"
         disabled={loading}
       >
         Delete

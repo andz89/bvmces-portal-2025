@@ -71,19 +71,19 @@ export default function MPSTermForm({
   // --------------------------------------------------
   const inputClass = `
     w-full
-    rounded-2xl
+    rounded-sm
     border
-    border-gray-200
+    border-lis-panel-border
     bg-white
     px-4
     py-3
     text-sm
-    text-gray-700
+    text-lis-text
     outline-none
     transition
-    focus:border-emerald-500
+    focus:border-lis-primary
     focus:ring-4
-    focus:ring-emerald-100
+    focus:ring-lis-primary
   `;
 
   // --------------------------------------------------
@@ -119,7 +119,7 @@ export default function MPSTermForm({
           fixed
           inset-0
           bg-black/40
-          backdrop-blur-sm
+          
         "
         onClick={() => setOpenForm(false)}
       />
@@ -133,9 +133,9 @@ export default function MPSTermForm({
             w-full
             max-w-6xl
             overflow-hidden
-            rounded-[32px]
+            rounded-sm
             bg-white
-            shadow-[0_25px_80px_rgba(0,0,0,0.25)]
+            
           "
         >
           {/* Header */}
@@ -143,16 +143,16 @@ export default function MPSTermForm({
             className="
               relative
               overflow-hidden
-              bg-gradient-to-r
-              from-emerald-600
-              via-green-600
-              to-teal-600
+              bg-lis-primary
+              
+              
+              
               px-8
               py-7
             "
           >
             {/* Glow */}
-            <div className="absolute right-0 top-0 h-40 w-40 bg-white/10 rounded-full blur-3xl"></div>
+            <div className="absolute right-0 top-0 h-40 w-40 bg-white/10 rounded-full "></div>
 
             <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
               {/* Left */}
@@ -161,9 +161,9 @@ export default function MPSTermForm({
                   className="
                     h-16
                     w-16
-                    rounded-2xl
+                    rounded-sm
                     bg-white/10
-                    backdrop-blur-xl
+                    
                     border
                     border-white/10
                     text-white
@@ -176,11 +176,11 @@ export default function MPSTermForm({
                 </div>
 
                 <div>
-                  <h2 className="text-3xl font-black text-white">
+                  <h2 className="text-3xl font-bold text-white">
                     {formTitle}
                   </h2>
 
-                  <p className="text-emerald-100 mt-2">
+                  <p className="text-white/80 mt-2">
                     Manage academic performance and learner progress summaries.
                   </p>
                 </div>
@@ -188,8 +188,8 @@ export default function MPSTermForm({
 
               {/* School Year */}
               <div className="flex gap-3 flex-wrap">
-                <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-2xl px-4 py-3">
-                  <p className="text-xs uppercase text-emerald-100">
+                <div className="bg-white/10 border border-white/10  rounded-sm px-4 py-3">
+                  <p className="text-xs uppercase text-white/80">
                     School Year
                   </p>
 
@@ -198,8 +198,8 @@ export default function MPSTermForm({
                   </p>
                 </div>
 
-                <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-2xl px-4 py-3">
-                  <p className="text-xs uppercase text-emerald-100">Status</p>
+                <div className="bg-white/10 border border-white/10  rounded-sm px-4 py-3">
+                  <p className="text-xs uppercase text-white/80">Status</p>
 
                   <p className="text-lg font-bold text-white mt-1">
                     {statusLabel}
@@ -210,16 +210,16 @@ export default function MPSTermForm({
           </div>
 
           {/* Body */}
-          <div className="max-h-[75vh] overflow-y-auto bg-[#f5f7fb] px-6 md:px-8 py-8">
+          <div className="max-h-[75vh] overflow-y-auto bg-lis-bg px-6 md:px-8 py-8">
             {/* Top Controls */}
             <div
               className="
                 bg-white
-                rounded-3xl
+                rounded-sm
                 border
-                border-gray-100
+                border-lis-panel-border
                 p-6
-                shadow-sm
+                
                 mb-8
               "
             >
@@ -239,7 +239,7 @@ export default function MPSTermForm({
                 {/* Class */}
                 {!isEditing ? (
                   <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-2">
+                    <label className="block text-sm font-medium text-lis-muted mb-2">
                       Select Class
                     </label>
 
@@ -264,7 +264,7 @@ export default function MPSTermForm({
                   <>
                     {/* Grade */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-600 mb-2">
+                      <label className="block text-sm font-medium text-lis-muted mb-2">
                         Grade
                       </label>
 
@@ -272,7 +272,7 @@ export default function MPSTermForm({
                         readOnly
                         type="text"
                         defaultValue={initialData?.class?.grade || ""}
-                        className={`${inputClass} bg-gray-100`}
+                        className={`${inputClass} bg-lis-panel-header`}
                       />
 
                       <input
@@ -285,7 +285,7 @@ export default function MPSTermForm({
 
                     {/* Section */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-600 mb-2">
+                      <label className="block text-sm font-medium text-lis-muted mb-2">
                         Section
                       </label>
 
@@ -293,7 +293,7 @@ export default function MPSTermForm({
                         readOnly
                         type="text"
                         defaultValue={initialData?.class?.section || ""}
-                        className={`${inputClass} bg-gray-100`}
+                        className={`${inputClass} bg-lis-panel-header`}
                       />
                     </div>
                   </>
@@ -302,7 +302,7 @@ export default function MPSTermForm({
                 {/* Term */}
                 {!isEditing ? (
                   <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-2">
+                    <label className="block text-sm font-medium text-lis-muted mb-2">
                       Term
                     </label>
 
@@ -321,7 +321,7 @@ export default function MPSTermForm({
                   </div>
                 ) : (
                   <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-2">
+                    <label className="block text-sm font-medium text-lis-muted mb-2">
                       Term
                     </label>
 
@@ -330,7 +330,7 @@ export default function MPSTermForm({
                       name="term"
                       type="text"
                       defaultValue={initialData?.term || ""}
-                      className={`${inputClass} bg-gray-100`}
+                      className={`${inputClass} bg-lis-panel-header`}
                     />
                   </div>
                 )}
@@ -338,7 +338,7 @@ export default function MPSTermForm({
                 {/* Exam Type */}
                 {!isEditing ? (
                   <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-2">
+                    <label className="block text-sm font-medium text-lis-muted mb-2">
                       Examination Type
                     </label>
 
@@ -357,7 +357,7 @@ export default function MPSTermForm({
                   </div>
                 ) : (
                   <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-2">
+                    <label className="block text-sm font-medium text-lis-muted mb-2">
                       Examination Type
                     </label>
 
@@ -366,7 +366,7 @@ export default function MPSTermForm({
                       name="exam_type"
                       type="text"
                       defaultValue={initialData?.exam_type || "Test Exam"}
-                      className={`${inputClass} bg-gray-100`}
+                      className={`${inputClass} bg-lis-panel-header`}
                     />
                   </div>
                 )}
@@ -380,11 +380,11 @@ export default function MPSTermForm({
                   key={subject}
                   className="
                     bg-white
-                    rounded-3xl
+                    rounded-sm
                     border
-                    border-gray-100
+                    border-lis-panel-border
                     p-6
-                    shadow-sm
+                    
                   "
                 >
                   {/* Card Header */}
@@ -393,33 +393,33 @@ export default function MPSTermForm({
                       className="
                         h-12
                         w-12
-                        rounded-2xl
-                        bg-gradient-to-r
-                        from-emerald-500
-                        to-green-600
+                        rounded-sm
+                        bg-lis-primary
+                        
+                        
                         text-white
                         flex
                         items-center
                         justify-center
                         font-bold
-                        shadow-lg
+                        
                       "
                     >
                       {index + 1}
                     </div>
 
                     <div>
-                      <h3 className="text-lg font-bold text-gray-800 uppercase">
+                      <h3 className="text-lg font-bold text-lis-text uppercase">
                         {subject.replace("_", " ")}
                       </h3>
 
-                      <p className="text-sm text-gray-500">Subject MPS score</p>
+                      <p className="text-sm text-lis-muted">Subject MPS score</p>
                     </div>
                   </div>
 
                   {/* Input */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-2">
+                    <label className="block text-sm font-medium text-lis-muted mb-2">
                       Enter Score
                     </label>
 
@@ -440,45 +440,45 @@ export default function MPSTermForm({
               className="
                 mt-8
                 bg-white
-                rounded-3xl
+                rounded-sm
                 border
-                border-gray-100
+                border-lis-panel-border
                 p-6
-                shadow-sm
+                
               "
             >
-              <h3 className="text-xl font-bold text-gray-800 mb-5">
+              <h3 className="text-xl font-bold text-lis-text mb-5">
                 MPS File
               </h3>
 
               <label className="block cursor-pointer">
                 <div
                   className="
-                    rounded-2xl
+                    rounded-sm
                     border
                     border-dashed
-                    border-gray-300
-                    bg-gray-50
-                    hover:border-emerald-400
+                    border-lis-panel-border
+                    bg-lis-panel-header
+                    hover:border-lis-panel-border
                     transition
                     p-8
                     text-center
                   "
                 >
-                  <BiUpload className="mx-auto text-3xl text-gray-400 mb-2" />
+                  <BiUpload className="mx-auto text-3xl text-lis-muted mb-2" />
 
-                  <p className="text-sm font-medium text-gray-700">
+                  <p className="text-sm font-medium text-lis-text">
                     Click to upload the MPS file
                   </p>
 
-                  <p className="text-xs text-gray-400 mt-1">
+                  <p className="text-xs text-lis-muted mt-1">
                     {isEditing
                       ? "Leave blank to keep the current file"
                       : "Required"}
                   </p>
 
                   {fileName && (
-                    <p className="mt-3 inline-flex items-center gap-2 text-xs font-medium text-emerald-700">
+                    <p className="mt-3 inline-flex items-center gap-2 text-xs font-medium text-lis-success-text">
                       <BiFile size={16} />
                       {fileName}
                     </p>
@@ -489,7 +489,7 @@ export default function MPSTermForm({
                       href={initialData.file_url}
                       target="_blank"
                       onClick={(e) => e.stopPropagation()}
-                      className="mt-3 inline-flex items-center gap-2 text-xs font-medium text-blue-600 hover:underline"
+                      className="mt-3 inline-flex items-center gap-2 text-xs font-medium text-lis-link hover:underline"
                     >
                       <BiFile size={16} />
                       Current file
@@ -512,7 +512,7 @@ export default function MPSTermForm({
           <div
             className="
               border-t
-              border-gray-100
+              border-lis-panel-border
               bg-white
               px-6
               md:px-8
@@ -536,15 +536,15 @@ export default function MPSTermForm({
                 items-center
                 justify-center
                 gap-2
-                rounded-2xl
+                rounded-sm
                 border
-                border-gray-200
+                border-lis-panel-border
                 bg-white
                 px-6
                 py-3
                 font-medium
-                text-gray-700
-                hover:bg-gray-50
+                text-lis-text
+                hover:bg-lis-panel-header
                 transition
               "
             >
@@ -563,15 +563,15 @@ export default function MPSTermForm({
                 items-center
                 justify-center
                 gap-2
-                rounded-2xl
-                bg-gradient-to-r
-                from-emerald-600
-                to-green-600
+                rounded-sm
+                bg-lis-primary
+                
+                
                 px-7
                 py-3
                 font-semibold
                 text-white
-                shadow-lg
+                
                 hover:scale-[1.01]
                 transition
                 disabled:opacity-60

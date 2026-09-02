@@ -27,7 +27,7 @@ export default function SchoolYearSelect({ currentYear }) {
       <select
         value={currentYear}
         onChange={handleChange}
-        className="border border-slate-300 py-3 px-3"
+        className="border border-lis-panel-border py-3 px-3"
       >
         <option value="2024-2025">2024-2025</option>
         <option value="2025-2026">2025-2026</option>

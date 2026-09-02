@@ -50,7 +50,7 @@ export default function MobileMenu({ profile }) {
       {/* Hamburger */}
       <button
         onClick={() => setOpen(!open)}
-        className="flex h-10 w-10 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-100"
+        className="flex h-10 w-10 items-center justify-center rounded-sm border border-lis-panel-border bg-lis-panel-header text-lis-text transition hover:bg-lis-tab-active"
         aria-label="Open menu"
       >
         {open ? <BiX size={24} /> : <BiMenu size={24} />}
@@ -58,23 +58,21 @@ export default function MobileMenu({ profile }) {
 
       {/* Overlay */}
       {open && (
-        <div className="fixed inset-0 z-[9998] bg-black/40 backdrop-blur-sm" />
+        <div className="fixed inset-0 z-[9998] bg-black/40 " />
       )}
       {open && (
-        <div className="fixed h-full h-screen inset-y-0 right-0 z-[9999] w-full max-w-sm bg-white shadow-2xl   ">
+        <div className="fixed h-full h-screen inset-y-0 right-0 z-[9999] w-full max-w-sm bg-white    ">
           {/* Header */}
-          <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 px-6 py-8 text-white">
-            <div className="absolute top-0 right-0 h-40 w-40 rounded-full bg-white/10 blur-3xl" />
-
+          <div className="relative overflow-hidden bg-lis-primary px-6 py-8 text-white">
             <div className="relative z-10 flex items-center justify-between">
               <div>
-                <p className="text-sm text-blue-100">School Portal</p>
+                <p className="text-sm text-white/80">School Portal</p>
                 <h2 className="mt-1 text-2xl font-bold">Navigation</h2>
               </div>
 
               <button
                 onClick={() => setOpen(false)}
-                className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/10 backdrop-blur hover:bg-white/20"
+                className="flex h-10 w-10 items-center justify-center rounded-sm bg-white/10 hover:bg-white/20"
               >
                 <BiX size={24} />
               </button>
@@ -87,7 +85,7 @@ export default function MobileMenu({ profile }) {
               {/* Access */}
               <Link
                 href="/access"
-                className="flex items-center gap-3 rounded-2xl px-4 py-3 text-slate-700 transition hover:bg-slate-100"
+                className="flex items-center gap-3 rounded-sm px-4 py-3 text-lis-text transition hover:bg-lis-panel-header"
               >
                 <BiHomeAlt size={22} />
                 Access
@@ -96,17 +94,17 @@ export default function MobileMenu({ profile }) {
               {/* Equity */}
               <Link
                 href="/equity"
-                className="flex items-center gap-3 rounded-2xl px-4 py-3 text-slate-700 transition hover:bg-slate-100"
+                className="flex items-center gap-3 rounded-sm px-4 py-3 text-lis-text transition hover:bg-lis-panel-header"
               >
                 <BiGridAlt size={22} />
                 Equity
               </Link>
 
               {/* Quality */}
-              <div className="rounded-2xl border border-slate-200 bg-slate-50">
+              <div className="rounded-sm border border-lis-panel-border bg-lis-panel-header">
                 <button
                   onClick={() => setQualityOpen(!qualityOpen)}
-                  className="flex w-full items-center justify-between px-4 py-3 text-slate-700"
+                  className="flex w-full items-center justify-between px-4 py-3 text-lis-text"
                 >
                   <div className="flex items-center gap-3">
                     <BiBarChart size={22} />
@@ -121,10 +119,10 @@ export default function MobileMenu({ profile }) {
                 </button>
 
                 {qualityOpen && (
-                  <div className="space-y-1 border-t border-slate-200 p-2">
+                  <div className="space-y-1 border-t border-lis-panel-border p-2">
                     <Link
                       href="/mps"
-                      className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-white"
+                      className="flex items-center gap-3 rounded-sm px-4 py-3 text-sm text-lis-text transition hover:bg-white"
                     >
                       <BiBarChart size={18} />
                       MPS
@@ -132,7 +130,7 @@ export default function MobileMenu({ profile }) {
 
                     <Link
                       href="/mps-term"
-                      className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-white"
+                      className="flex items-center gap-3 rounded-sm px-4 py-3 text-sm text-lis-text transition hover:bg-white"
                     >
                       <BiBarChart size={18} />
                       MPS Term
@@ -140,7 +138,7 @@ export default function MobileMenu({ profile }) {
 
                     <Link
                       href="/gpa"
-                      className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-white"
+                      className="flex items-center gap-3 rounded-sm px-4 py-3 text-sm text-lis-text transition hover:bg-white"
                     >
                       <BiAward size={18} />
                       GPA
@@ -148,7 +146,7 @@ export default function MobileMenu({ profile }) {
 
                     <Link
                       href="/summative-test"
-                      className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-white"
+                      className="flex items-center gap-3 rounded-sm px-4 py-3 text-sm text-lis-text transition hover:bg-white"
                     >
                       <BiBook size={18} />
                       Summative Test
@@ -156,7 +154,7 @@ export default function MobileMenu({ profile }) {
 
                     {/* <Link
                       href="/rma"
-                      className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-white"
+                      className="flex items-center gap-3 rounded-sm px-4 py-3 text-sm text-lis-text transition hover:bg-white"
                     >
                       <BiGridAlt size={18} />
                       RMA
@@ -164,7 +162,7 @@ export default function MobileMenu({ profile }) {
 
                     {/* <Link
                       href="/phil-iri"
-                      className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-white"
+                      className="flex items-center gap-3 rounded-sm px-4 py-3 text-sm text-lis-text transition hover:bg-white"
                     >
                       <BiBook size={18} />
                       PHIL-IRI
@@ -172,7 +170,7 @@ export default function MobileMenu({ profile }) {
 
                     {/* <Link
                       href="/crla"
-                      className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-white"
+                      className="flex items-center gap-3 rounded-sm px-4 py-3 text-sm text-lis-text transition hover:bg-white"
                     >
                       <BiBook size={18} />
                       CRLA
@@ -184,7 +182,7 @@ export default function MobileMenu({ profile }) {
               {/* Others */}
               <Link
                 href="/"
-                className="flex items-center gap-3 rounded-2xl px-4 py-3 text-slate-700 transition hover:bg-slate-100"
+                className="flex items-center gap-3 rounded-sm px-4 py-3 text-lis-text transition hover:bg-lis-panel-header"
               >
                 <BiBook size={22} />
                 Resiliency & Well-being
@@ -192,7 +190,7 @@ export default function MobileMenu({ profile }) {
 
               <Link
                 href="/"
-                className="flex items-center gap-3 rounded-2xl px-4 py-3 text-slate-700 transition hover:bg-slate-100"
+                className="flex items-center gap-3 rounded-sm px-4 py-3 text-lis-text transition hover:bg-lis-panel-header"
               >
                 <BiGridAlt size={22} />
                 Enabling Mechanism
@@ -201,7 +199,7 @@ export default function MobileMenu({ profile }) {
               {/* Templates */}
               <Link
                 href="/templates"
-                className="flex items-center gap-3 rounded-2xl px-4 py-3 text-slate-700 transition hover:bg-slate-100"
+                className="flex items-center gap-3 rounded-sm px-4 py-3 text-lis-text transition hover:bg-lis-panel-header"
               >
                 <BiFile size={22} />
                 Templates
@@ -210,7 +208,7 @@ export default function MobileMenu({ profile }) {
               {/* Class */}
               <Link
                 href="/class"
-                className="flex items-center gap-3 rounded-2xl px-4 py-3 text-slate-700 transition hover:bg-slate-100"
+                className="flex items-center gap-3 rounded-sm px-4 py-3 text-lis-text transition hover:bg-lis-panel-header"
               >
                 <BiGridAlt size={22} />
                 Class
@@ -221,14 +219,14 @@ export default function MobileMenu({ profile }) {
                 <>
                   <Link
                     href="/admin-dashboard"
-                    className="flex items-center gap-3 rounded-2xl px-4 py-3 text-slate-700 transition hover:bg-slate-100"
+                    className="flex items-center gap-3 rounded-sm px-4 py-3 text-lis-text transition hover:bg-lis-panel-header"
                   >
                     <BiShield size={22} />
                     Admin
                   </Link>
                   <Link
                     href="/users"
-                    className="flex items-center gap-3 rounded-2xl px-4 py-3 text-slate-700 transition hover:bg-slate-100"
+                    className="flex items-center gap-3 rounded-sm px-4 py-3 text-lis-text transition hover:bg-lis-panel-header"
                   >
                     <BiUser size={22} />
                     Users

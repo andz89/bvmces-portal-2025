@@ -94,7 +94,7 @@ export default function SummativeTestClient({ profile, records }) {
     .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-lis-panel-header">
       {openForm && (
         <SummativeTestForm
           key={editingRecord?.id || "create"}
@@ -108,14 +108,14 @@ export default function SummativeTestClient({ profile, records }) {
       {loading && <FullPageLoader />}
 
       {/* Header */}
-      <div className="border-b border-gray-200 bg-white">
+      <div className="border-b border-lis-panel-border bg-white">
         <div className="max-w-7xl mx-auto px-5 py-6">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div>
-              <h1 className="text-xl font-semibold text-gray-900">
+              <h1 className="text-xl font-semibold text-lis-text">
                 Summative Test
               </h1>
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-1 text-sm text-lis-muted">
                 Submit your Summative Test and TOS files here.
               </p>
             </div>
@@ -126,7 +126,7 @@ export default function SummativeTestClient({ profile, records }) {
                   setEditingRecord(null);
                   setOpenForm(true);
                 }}
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-gray-700 cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-lis-primary px-4 py-2.5 text-sm font-medium text-white transition hover:bg-lis-panel-header cursor-pointer"
               >
                 <BiPlus size={18} />
                 Submit
@@ -142,7 +142,7 @@ export default function SummativeTestClient({ profile, records }) {
           <select
             value={term}
             onChange={(e) => setTerm(e.target.value)}
-            className="w-40 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 outline-none transition focus:border-gray-400"
+            className="w-40 rounded-lg border border-lis-panel-border bg-white px-3 py-2 text-sm text-lis-text outline-none transition focus:border-lis-primary"
           >
             <option value="1">Term 1</option>
             <option value="2">Term 2</option>
@@ -158,12 +158,12 @@ export default function SummativeTestClient({ profile, records }) {
           />
         </div>
 
-        <div className="rounded-lg border border-gray-200 bg-white overflow-hidden">
-          <div className="flex items-center justify-between border-b border-gray-200 px-5 py-3">
-            <div className="text-sm font-medium text-gray-700">
+        <div className="rounded-lg border border-lis-panel-border bg-white overflow-hidden">
+          <div className="flex items-center justify-between border-b border-lis-panel-border px-5 py-3">
+            <div className="text-sm font-medium text-lis-text">
               Term {term}
             </div>
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-lis-muted">
               {sortedItems.length} submission
               {sortedItems.length === 1 ? "" : "s"}
             </div>
@@ -171,18 +171,18 @@ export default function SummativeTestClient({ profile, records }) {
 
           {sortedItems.length === 0 ? (
             <div className="py-16 text-center">
-              <h3 className="text-sm font-medium text-gray-700">
+              <h3 className="text-sm font-medium text-lis-text">
                 No submissions yet
               </h3>
-              <p className="mt-1 text-sm text-gray-400">
+              <p className="mt-1 text-sm text-lis-muted">
                 Submitted summative tests for this term will appear here.
               </p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="border-b border-gray-200 bg-gray-50">
-                  <tr className="text-left text-gray-500 text-xs uppercase tracking-wide">
+                <thead className="border-b border-lis-panel-border bg-lis-panel-header">
+                  <tr className="text-left text-lis-muted text-xs uppercase tracking-wide">
                     <th className="px-5 py-3 font-medium">Title</th>
                     <th className="px-5 py-3 font-medium">Grade</th>
                     <th className="px-5 py-3 font-medium">Subject</th>
@@ -194,28 +194,28 @@ export default function SummativeTestClient({ profile, records }) {
                   </tr>
                 </thead>
 
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-lis-panel-border">
                   {sortedItems.map((item) => (
-                    <tr key={item.id} className="text-sm hover:bg-gray-50 transition">
+                    <tr key={item.id} className="text-sm hover:bg-lis-panel-header transition">
                       <td className="px-5 py-4 max-w-60">
-                        <div className="font-medium text-gray-900 break-words">
+                        <div className="font-medium text-lis-text break-words">
                           {item.title}
                         </div>
                         {item.description && (
-                          <div className="mt-1 text-xs text-gray-400 break-words">
+                          <div className="mt-1 text-xs text-lis-muted break-words">
                             {item.description}
                           </div>
                         )}
                       </td>
-                      <td className="px-5 py-4 text-gray-600">{item.grade}</td>
-                      <td className="px-5 py-4 text-gray-600">{item.subject}</td>
+                      <td className="px-5 py-4 text-lis-muted">{item.grade}</td>
+                      <td className="px-5 py-4 text-lis-muted">{item.subject}</td>
                       <td className="px-5 py-4">
-                        <span className="inline-flex items-center rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600">
+                        <span className="inline-flex items-center rounded-md bg-lis-panel-header px-2.5 py-1 text-xs font-medium text-lis-muted">
                           {item.term}
                         </span>
                       </td>
-                      <td className="px-5 py-4 text-gray-600">{item.school_year}</td>
-                      <td className="px-5 py-4 max-w-40 break-all text-gray-500">
+                      <td className="px-5 py-4 text-lis-muted">{item.school_year}</td>
+                      <td className="px-5 py-4 max-w-40 break-all text-lis-muted">
                         {item.owner_email}
                       </td>
                       <td className="px-5 py-4">
@@ -234,14 +234,14 @@ export default function SummativeTestClient({ profile, records }) {
                                 setEditingRecord(item);
                                 setOpenForm(true);
                               }}
-                              className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
+                              className="flex h-8 w-8 items-center justify-center rounded-lg text-lis-muted transition hover:bg-lis-panel-header hover:text-lis-text cursor-pointer"
                             >
                               <BiEdit size={16} />
                             </button>
 
                             <button
                               onClick={() => setDeleteId(item.id)}
-                              className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition hover:bg-red-50 hover:text-red-600 cursor-pointer"
+                              className="flex h-8 w-8 items-center justify-center rounded-lg text-lis-muted transition hover:bg-lis-danger-bg hover:text-lis-danger-text cursor-pointer"
                             >
                               <BiSolidTrash size={16} />
                             </button>
@@ -279,7 +279,7 @@ function FileLink({ label, href }) {
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-1 text-xs font-medium text-gray-600 transition hover:text-gray-900"
+        className="inline-flex items-center gap-1 text-xs font-medium text-lis-muted transition hover:text-lis-text"
       >
         <BiLinkAlt size={13} />
         {label}
@@ -295,7 +295,7 @@ function FileLink({ label, href }) {
             toast.error("Failed to copy link.");
           }
         }}
-        className="flex p-1 items-center justify-center rounded-md text-gray-400 transition hover:bg-gray-100 hover:text-gray-700 cursor-pointer"
+        className="flex p-1 items-center justify-center rounded-md text-lis-muted transition hover:bg-lis-panel-header hover:text-lis-text cursor-pointer"
       >
         <BiCopy size={12} />
       </button>

@@ -50,7 +50,7 @@ const ClassSectionModal = ({ open, onClose, sectionEditDetails, refresh }) => {
           fixed
           inset-0
           bg-black/40
-          backdrop-blur-sm
+          
         "
         onClick={onClose}
       />
@@ -63,9 +63,9 @@ const ClassSectionModal = ({ open, onClose, sectionEditDetails, refresh }) => {
             w-full
             max-w-2xl
             overflow-hidden
-            rounded-[32px]
+            rounded-sm
             bg-white
-            shadow-[0_25px_80px_rgba(0,0,0,0.18)]
+            
           "
         >
           {/* Header */}
@@ -73,16 +73,16 @@ const ClassSectionModal = ({ open, onClose, sectionEditDetails, refresh }) => {
             className="
               relative
               overflow-hidden
-              bg-gradient-to-r
-              from-emerald-600
-              via-green-600
-              to-teal-600
+              bg-lis-primary
+              
+              
+              
               px-8
               py-7
             "
           >
             {/* Glow */}
-            <div className="absolute right-0 top-0 h-40 w-40 bg-white/10 rounded-full blur-3xl"></div>
+            <div className="absolute right-0 top-0 h-40 w-40 bg-white/10 rounded-full "></div>
 
             <div className="relative flex items-start justify-between gap-5">
               {/* Left */}
@@ -91,27 +91,27 @@ const ClassSectionModal = ({ open, onClose, sectionEditDetails, refresh }) => {
                   className="
                     h-16
                     w-16
-                    rounded-3xl
+                    rounded-sm
                     bg-white/10
-                    backdrop-blur-xl
+                    
                     border
                     border-white/10
                     text-white
                     flex
                     items-center
                     justify-center
-                    shadow-sm
+                    
                   "
                 >
                   <BiEditAlt size={30} />
                 </div>
 
                 <div>
-                  <h2 className="text-3xl font-black text-white">
+                  <h2 className="text-3xl font-bold text-white">
                     Edit Section
                   </h2>
 
-                  <p className="text-emerald-100 mt-2 max-w-md">
+                  <p className="text-white/80 mt-2 max-w-md">
                     Update the class section information and manage classroom
                     organization.
                   </p>
@@ -124,7 +124,7 @@ const ClassSectionModal = ({ open, onClose, sectionEditDetails, refresh }) => {
                 className="
                   h-11
                   w-11
-                  rounded-2xl
+                  rounded-sm
                   bg-white/10
                   border
                   border-white/10
@@ -146,10 +146,10 @@ const ClassSectionModal = ({ open, onClose, sectionEditDetails, refresh }) => {
               <div
                 className="
                   bg-white/10
-                  backdrop-blur-xl
+                  
                   border
                   border-white/10
-                  rounded-2xl
+                  rounded-sm
                   px-5
                   py-4
                   min-w-[180px]
@@ -160,7 +160,7 @@ const ClassSectionModal = ({ open, onClose, sectionEditDetails, refresh }) => {
                     className="
                       h-11
                       w-11
-                      rounded-xl
+                      rounded-sm
                       bg-white/10
                       flex
                       items-center
@@ -172,11 +172,11 @@ const ClassSectionModal = ({ open, onClose, sectionEditDetails, refresh }) => {
                   </div>
 
                   <div>
-                    <p className="text-xs uppercase tracking-wide text-emerald-100">
+                    <p className="text-xs uppercase tracking-wide text-white/80">
                       Grade
                     </p>
 
-                    <h3 className="text-2xl font-black text-white mt-1">
+                    <h3 className="text-2xl font-bold text-white mt-1">
                       {sectionEditDetails?.grade}
                     </h3>
                   </div>
@@ -187,10 +187,10 @@ const ClassSectionModal = ({ open, onClose, sectionEditDetails, refresh }) => {
               <div
                 className="
                   bg-white/10
-                  backdrop-blur-xl
+                  
                   border
                   border-white/10
-                  rounded-2xl
+                  rounded-sm
                   px-5
                   py-4
                   min-w-[220px]
@@ -201,7 +201,7 @@ const ClassSectionModal = ({ open, onClose, sectionEditDetails, refresh }) => {
                     className="
                       h-11
                       w-11
-                      rounded-xl
+                      rounded-sm
                       bg-white/10
                       flex
                       items-center
@@ -213,11 +213,11 @@ const ClassSectionModal = ({ open, onClose, sectionEditDetails, refresh }) => {
                   </div>
 
                   <div>
-                    <p className="text-xs uppercase tracking-wide text-emerald-100">
+                    <p className="text-xs uppercase tracking-wide text-white/80">
                       Current Section
                     </p>
 
-                    <h3 className="text-2xl font-black text-white mt-1 uppercase">
+                    <h3 className="text-2xl font-bold text-white mt-1 uppercase">
                       {sectionEditDetails?.section}
                     </h3>
                   </div>
@@ -228,16 +228,16 @@ const ClassSectionModal = ({ open, onClose, sectionEditDetails, refresh }) => {
 
           {/* Form */}
           <form onSubmit={handleSubmit}>
-            <div className="bg-[#f5f7fb] px-6 md:px-8 py-8">
+            <div className="bg-lis-bg px-6 md:px-8 py-8">
               {/* Edit Card */}
               <div
                 className="
                   bg-white
-                  rounded-3xl
+                  rounded-sm
                   border
-                  border-gray-100
+                  border-lis-panel-border
                   p-6
-                  shadow-sm
+                  
                 "
               >
                 <div className="flex items-center gap-3 mb-6">
@@ -245,26 +245,26 @@ const ClassSectionModal = ({ open, onClose, sectionEditDetails, refresh }) => {
                     className="
                       h-12
                       w-12
-                      rounded-2xl
-                      bg-gradient-to-r
-                      from-emerald-500
-                      to-green-600
+                      rounded-sm
+                      bg-lis-primary
+                      
+                      
                       text-white
                       flex
                       items-center
                       justify-center
-                      shadow-lg
+                      
                     "
                   >
                     <BiCategory size={24} />
                   </div>
 
                   <div>
-                    <h3 className="text-xl font-bold text-gray-800">
+                    <h3 className="text-xl font-bold text-lis-text">
                       Section Information
                     </h3>
 
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-lis-muted">
                       Update the section name for this class.
                     </p>
                   </div>
@@ -278,7 +278,7 @@ const ClassSectionModal = ({ open, onClose, sectionEditDetails, refresh }) => {
                       block
                       text-sm
                       font-medium
-                      text-gray-600
+                      text-lis-muted
                     "
                   >
                     Section Name
@@ -292,19 +292,19 @@ const ClassSectionModal = ({ open, onClose, sectionEditDetails, refresh }) => {
                     required
                     className="
                       w-full
-                      rounded-2xl
+                      rounded-sm
                       border
-                      border-gray-200
+                      border-lis-panel-border
                       bg-white
                       px-4
                       py-4
                       text-sm
-                      text-gray-700
+                      text-lis-text
                       outline-none
                       transition
-                      focus:border-emerald-500
+                      focus:border-lis-primary
                       focus:ring-4
-                      focus:ring-emerald-100
+                      focus:ring-lis-primary
                     "
                   />
                 </div>
@@ -313,21 +313,21 @@ const ClassSectionModal = ({ open, onClose, sectionEditDetails, refresh }) => {
                 <div
                   className="
                     mt-5
-                    rounded-2xl
+                    rounded-sm
                     border
-                    border-emerald-100
-                    bg-gradient-to-r
-                    from-emerald-50
-                    to-green-50
+                    border-lis-panel-border
+                    bg-lis-panel-header
+                    
+                    
                     px-5
                     py-4
                   "
                 >
-                  <p className="text-sm font-semibold text-emerald-700">
+                  <p className="text-sm font-semibold text-lis-success-text">
                     Section Update
                   </p>
 
-                  <p className="text-sm text-emerald-600 mt-1">
+                  <p className="text-sm text-lis-success-text mt-1">
                     Updating the section name will automatically reflect across
                     enrollment, GPA, MPS, and academic records.
                   </p>
@@ -339,7 +339,7 @@ const ClassSectionModal = ({ open, onClose, sectionEditDetails, refresh }) => {
             <div
               className="
                 border-t
-                border-gray-100
+                border-lis-panel-border
                 bg-white
                 px-6
                 md:px-8
@@ -359,16 +359,16 @@ const ClassSectionModal = ({ open, onClose, sectionEditDetails, refresh }) => {
                 className="
                   w-full
                   sm:w-auto
-                  rounded-2xl
+                  rounded-sm
                   border
-                  border-gray-200
+                  border-lis-panel-border
                   bg-white
                   px-6
                   py-3
                   font-medium
-                  text-gray-700
+                  text-lis-text
                   transition
-                  hover:bg-gray-100
+                  hover:bg-lis-panel-header
                 "
               >
                 Cancel
@@ -385,15 +385,15 @@ const ClassSectionModal = ({ open, onClose, sectionEditDetails, refresh }) => {
                   items-center
                   justify-center
                   gap-2
-                  rounded-2xl
-                  bg-gradient-to-r
-                  from-emerald-600
-                  to-green-600
+                  rounded-sm
+                  bg-lis-primary
+                  
+                  
                   px-7
                   py-3
                   font-semibold
                   text-white
-                  shadow-lg
+                  
                   transition
                   hover:scale-[1.01]
                   disabled:opacity-60

@@ -128,19 +128,19 @@ export default function UserModal({ open, onClose, user }) {
 
   const inputClass = `
     w-full
-    rounded-2xl
+    rounded-sm
     border
-    border-neutral-200
+    border-lis-panel-border
     bg-white
     px-4
     py-3
     text-sm
-    text-neutral-700
+    text-lis-text
     outline-none
     transition
-    focus:border-neutral-900
+    focus:border-lis-primary
     focus:ring-4
-    focus:ring-neutral-100
+    focus:ring-lis-primary
   `;
 
   return (
@@ -153,7 +153,7 @@ export default function UserModal({ open, onClose, user }) {
           fixed
           inset-0
           bg-black/40
-          backdrop-blur-sm
+          
         "
         onClick={onClose}
       />
@@ -166,17 +166,17 @@ export default function UserModal({ open, onClose, user }) {
             w-full
             max-w-3xl
             overflow-hidden
-            rounded-[32px]
+            rounded-sm
             bg-white
-            shadow-[0_25px_80px_rgba(0,0,0,0.18)]
+            
           "
         >
           {/* Header */}
           <div
             className="
               border-b
-              border-neutral-100
-              bg-neutral-50
+              border-lis-panel-border
+              bg-lis-panel-header
               px-8
               py-7
             "
@@ -188,24 +188,24 @@ export default function UserModal({ open, onClose, user }) {
                   className="
                     h-16
                     w-16
-                    rounded-3xl
-                    bg-neutral-900
+                    rounded-sm
+                    bg-lis-primary
                     text-white
                     flex
                     items-center
                     justify-center
-                    shadow-sm
+                    
                   "
                 >
                   <BiUser size={30} />
                 </div>
 
                 <div>
-                  <h2 className="text-3xl font-semibold text-neutral-900">
+                  <h2 className="text-3xl font-semibold text-lis-text">
                     {isEdit ? "Edit User" : "Create User"}
                   </h2>
 
-                  <p className="text-neutral-500 mt-2">
+                  <p className="text-lis-muted mt-2">
                     Manage user account, permissions, and grade access.
                   </p>
                 </div>
@@ -217,16 +217,16 @@ export default function UserModal({ open, onClose, user }) {
                 className="
                   h-11
                   w-11
-                  rounded-2xl
+                  rounded-sm
                   border
-                  border-neutral-200
+                  border-lis-panel-border
                   flex
                   items-center
                   justify-center
-                  text-neutral-500
+                  text-lis-muted
                   transition
-                  hover:bg-neutral-100
-                  hover:text-neutral-900
+                  hover:bg-lis-panel-header
+                  hover:text-lis-text
                 "
               >
                 <BiX size={22} />
@@ -240,21 +240,21 @@ export default function UserModal({ open, onClose, user }) {
               {/* Basic Info */}
               <div
                 className="
-                  bg-neutral-50
+                  bg-lis-panel-header
                   border
-                  border-neutral-200
-                  rounded-3xl
+                  border-lis-panel-border
+                  rounded-sm
                   p-6
                 "
               >
-                <h3 className="text-lg font-semibold text-neutral-900 mb-6">
+                <h3 className="text-lg font-semibold text-lis-text mb-6">
                   User Information
                 </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   {/* Name */}
                   <div>
-                    <label className="flex items-center gap-2 text-sm font-medium text-neutral-700 mb-2">
+                    <label className="flex items-center gap-2 text-sm font-medium text-lis-text mb-2">
                       <BiUser />
                       Full Name
                     </label>
@@ -270,7 +270,7 @@ export default function UserModal({ open, onClose, user }) {
 
                   {/* Email */}
                   <div>
-                    <label className="flex items-center gap-2 text-sm font-medium text-neutral-700 mb-2">
+                    <label className="flex items-center gap-2 text-sm font-medium text-lis-text mb-2">
                       <BiEnvelope />
                       Email Address
                     </label>
@@ -286,7 +286,7 @@ export default function UserModal({ open, onClose, user }) {
                   </div>
                   {/* Grade */}
                   <div>
-                    <label className="flex items-center gap-2 text-sm font-medium text-neutral-700 mb-2">
+                    <label className="flex items-center gap-2 text-sm font-medium text-lis-text mb-2">
                       Grade
                     </label>
 
@@ -297,19 +297,19 @@ export default function UserModal({ open, onClose, user }) {
                       required={role !== "visitor" ? true : false}
                       defaultValue={user?.grade ?? ""}
                       className={`  w-full
-    rounded-2xl
+    rounded-sm
     border
-    border-neutral-200
+    border-lis-panel-border
     
     px-4
     py-3
     text-sm
-    text-neutral-700
+    text-lis-text
     outline-none
     transition
-    focus:border-neutral-900
+    focus:border-lis-primary
     focus:ring-4
-    focus:ring-neutral-100  ${role === "visitor" ? "bg-slate-200" : "bg-white"}`}
+    focus:ring-lis-primary  ${role === "visitor" ? "bg-lis-panel-header" : "bg-white"}`}
                     >
                       z
                       <option value="" disabled>
@@ -328,7 +328,7 @@ export default function UserModal({ open, onClose, user }) {
                   </div>
                   {/* Password */}
                   <div className=" ">
-                    <label className="flex items-center gap-2 text-sm font-medium text-neutral-700 mb-2">
+                    <label className="flex items-center gap-2 text-sm font-medium text-lis-text mb-2">
                       <BiLockAlt />
                       Password
                     </label>
@@ -351,10 +351,10 @@ export default function UserModal({ open, onClose, user }) {
               {/* Role */}
               <div
                 className="
-                  bg-neutral-50
+                  bg-lis-panel-header
                   border
-                  border-neutral-200
-                  rounded-3xl
+                  border-lis-panel-border
+                  rounded-sm
                   p-6
                 "
               >
@@ -363,8 +363,8 @@ export default function UserModal({ open, onClose, user }) {
                     className="
                       h-12
                       w-12
-                      rounded-2xl
-                      bg-neutral-900
+                      rounded-sm
+                      bg-lis-primary
                       text-white
                       flex
                       items-center
@@ -375,11 +375,11 @@ export default function UserModal({ open, onClose, user }) {
                   </div>
 
                   <div>
-                    <h3 className="text-lg font-semibold text-neutral-900">
+                    <h3 className="text-lg font-semibold text-lis-text">
                       User Role
                     </h3>
 
-                    <p className="text-sm text-neutral-500">
+                    <p className="text-sm text-lis-muted">
                       Assign permissions and access level.
                     </p>
                   </div>
@@ -406,22 +406,22 @@ export default function UserModal({ open, onClose, user }) {
                         flex
                         items-center
                         gap-3
-                        rounded-2xl
+                        rounded-sm
                         border
-                        border-emerald-100
-                        bg-emerald-50
+                        border-lis-panel-border
+                        bg-lis-panel-header
                         px-5
                         py-4
                       "
                     >
-                      <BiCheckShield className="text-emerald-600" size={24} />
+                      <BiCheckShield className="text-lis-success-text" size={24} />
 
                       <div>
-                        <p className="font-semibold text-emerald-700">
+                        <p className="font-semibold text-lis-success-text">
                           Full Access Granted
                         </p>
 
-                        <p className="text-sm text-emerald-600">
+                        <p className="text-sm text-lis-success-text">
                           This user can manage all grade levels and system
                           settings.
                         </p>
@@ -432,19 +432,19 @@ export default function UserModal({ open, onClose, user }) {
                   {role === "visitor" && (
                     <div
                       className="
-                        rounded-2xl
+                        rounded-sm
                         border
-                        border-neutral-200
-                        bg-neutral-100
+                        border-lis-panel-border
+                        bg-lis-panel-header
                         px-5
                         py-4
                       "
                     >
-                      <p className="font-medium text-neutral-700">
+                      <p className="font-medium text-lis-text">
                         Read Only Access
                       </p>
 
-                      <p className="text-sm text-neutral-500 mt-1">
+                      <p className="text-sm text-lis-muted mt-1">
                         Visitors cannot edit grade records.
                       </p>
                     </div>
@@ -456,14 +456,14 @@ export default function UserModal({ open, onClose, user }) {
               {role === "editor" && (
                 <div
                   className="
-                    bg-neutral-50
+                    bg-lis-panel-header
                     border
-                    border-neutral-200
-                    rounded-3xl
+                    border-lis-panel-border
+                    rounded-sm
                     p-6
                   "
                 >
-                  <h3 className="text-lg font-semibold text-neutral-900 mb-6">
+                  <h3 className="text-lg font-semibold text-lis-text mb-6">
                     Grade Access
                   </h3>
 
@@ -475,15 +475,15 @@ export default function UserModal({ open, onClose, user }) {
                           flex
                           items-center
                           gap-3
-                          rounded-2xl
+                          rounded-sm
                           border
-                          border-neutral-200
+                          border-lis-panel-border
                           bg-white
                           px-4
                           py-4
                           cursor-pointer
                           transition
-                          hover:border-neutral-400
+                          hover:border-lis-panel-border
                         "
                       >
                         <input
@@ -496,11 +496,11 @@ export default function UserModal({ open, onClose, user }) {
                             h-4
                             w-4
                             rounded
-                            border-neutral-300
+                            border-lis-panel-border
                           "
                         />
 
-                        <span className="text-sm font-medium text-neutral-700">
+                        <span className="text-sm font-medium text-lis-text">
                           {item.label}
                         </span>
                       </label>
@@ -514,8 +514,8 @@ export default function UserModal({ open, onClose, user }) {
             <div
               className="
                 border-t
-                border-neutral-100
-                bg-neutral-50
+                border-lis-panel-border
+                bg-lis-panel-header
                 px-6
                 md:px-8
                 py-5
@@ -534,16 +534,16 @@ export default function UserModal({ open, onClose, user }) {
                 className="
                   w-full
                   sm:w-auto
-                  rounded-2xl
+                  rounded-sm
                   border
-                  border-neutral-200
+                  border-lis-panel-border
                   bg-white
                   px-6
                   py-3
                   font-medium
-                  text-neutral-700
+                  text-lis-text
                   transition
-                  hover:bg-neutral-100
+                  hover:bg-lis-panel-header
                 "
               >
                 Cancel
@@ -555,14 +555,14 @@ export default function UserModal({ open, onClose, user }) {
                 className="
                   w-full
                   sm:w-auto
-                  rounded-2xl
-                  bg-neutral-900
+                  rounded-sm
+                  bg-lis-primary
                   px-7
                   py-3
                   font-medium
                   text-white
                   transition
-                  hover:bg-neutral-800
+                  hover:bg-lis-primary
                   disabled:opacity-60
                 "
               >

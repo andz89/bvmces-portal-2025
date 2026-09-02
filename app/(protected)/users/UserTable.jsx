@@ -78,9 +78,9 @@ export default function UserTable({ users, profile }) {
       m-2
         bg-white
         border
-        border-neutral-200
-        rounded-[28px]
-        shadow-[0_8px_30px_rgba(0,0,0,0.04)]
+        border-lis-panel-border
+        rounded-sm
+        
         overflow-hidden
       "
     >
@@ -109,9 +109,9 @@ export default function UserTable({ users, profile }) {
           px-6
           py-5
           border-b
-          border-neutral-100
-          bg-neutral-50/60
-          backdrop-blur-sm
+          border-lis-panel-border
+          bg-lis-panel-header/60
+          
         "
       >
         {/* Left */}
@@ -120,24 +120,24 @@ export default function UserTable({ users, profile }) {
             className="
               h-12
               w-12
-              rounded-2xl
-              bg-neutral-900
+              rounded-sm
+              bg-lis-primary
               text-white
               flex
               items-center
               justify-center
-              shadow-sm
+              
             "
           >
             <BiUser size={24} />
           </div>
 
           <div>
-            <h2 className="text-xl font-semibold text-neutral-900">
+            <h2 className="text-xl font-semibold text-lis-text">
               User Management
             </h2>
 
-            <p className="text-sm text-neutral-500 mt-1">
+            <p className="text-sm text-lis-muted mt-1">
               Manage system users and access permissions
             </p>
           </div>
@@ -153,16 +153,16 @@ export default function UserTable({ users, profile }) {
             items-center
             justify-center
             gap-2
-            rounded-2xl
-            bg-neutral-900
+            rounded-sm
+            bg-lis-primary
             px-5
             py-3
             text-sm
             font-medium
             text-white
             transition
-            hover:bg-neutral-800
-            shadow-sm
+            hover:bg-lis-primary
+            
           "
           >
             <BiUser size={20} />
@@ -181,16 +181,16 @@ export default function UserTable({ users, profile }) {
             items-center
             justify-center
             gap-2
-            rounded-2xl
-            bg-neutral-900
+            rounded-sm
+            bg-lis-primary
             px-5
             py-3
             text-sm
             font-medium
             text-white
             transition
-            hover:bg-neutral-800
-            shadow-sm
+            hover:bg-lis-primary
+            
           "
           >
             <BiPlus size={20} />
@@ -204,8 +204,8 @@ export default function UserTable({ users, profile }) {
       <div className="overflow-x-auto">
         <table className="min-w-full">
           {/* Head */}
-          <thead className="bg-neutral-50">
-            <tr className="border-b border-neutral-200">
+          <thead className="bg-lis-panel-header">
+            <tr className="border-b border-lis-panel-border">
               <th
                 className="
                   px-6
@@ -215,7 +215,7 @@ export default function UserTable({ users, profile }) {
                   font-semibold
                   uppercase
                   tracking-wide
-                  text-neutral-500
+                  text-lis-muted
                 "
               >
                 User
@@ -230,7 +230,7 @@ export default function UserTable({ users, profile }) {
                   font-semibold
                   uppercase
                   tracking-wide
-                  text-neutral-500
+                  text-lis-muted
                 "
               >
                 Email
@@ -245,7 +245,7 @@ export default function UserTable({ users, profile }) {
                   font-semibold
                   uppercase
                   tracking-wide
-                  text-neutral-500
+                  text-lis-muted
                 "
               >
                 Role
@@ -259,7 +259,7 @@ export default function UserTable({ users, profile }) {
                   font-semibold
                   uppercase
                   tracking-wide
-                  text-neutral-500
+                  text-lis-muted
                 "
               >
                 Grade
@@ -273,7 +273,7 @@ export default function UserTable({ users, profile }) {
                   font-semibold
                   uppercase
                   tracking-wide
-                  text-neutral-500
+                  text-lis-muted
                 "
               >
                 Grade Access
@@ -288,7 +288,7 @@ export default function UserTable({ users, profile }) {
                   font-semibold
                   uppercase
                   tracking-wide
-                  text-neutral-500
+                  text-lis-muted
                 "
               >
                 Actions
@@ -303,9 +303,9 @@ export default function UserTable({ users, profile }) {
                 key={user.id}
                 className="
                   border-b
-                  border-neutral-100
+                  border-lis-panel-border
                   transition
-                  hover:bg-neutral-50/70
+                  hover:bg-lis-panel-header/70
                 "
               >
                 {/* User */}
@@ -316,9 +316,9 @@ export default function UserTable({ users, profile }) {
                       className="
                         h-11
                         w-11
-                        rounded-2xl
-                        bg-neutral-100
-                        text-neutral-700
+                        rounded-sm
+                        bg-lis-panel-header
+                        text-lis-text
                         flex
                         items-center
                         justify-center
@@ -330,11 +330,11 @@ export default function UserTable({ users, profile }) {
                     </div>
 
                     <div>
-                      <p className="font-medium text-neutral-900">
+                      <p className="font-medium text-lis-text">
                         {user.full_name}
                       </p>
 
-                      <p className="text-xs text-neutral-500 mt-1">
+                      <p className="text-xs text-lis-muted mt-1">
                         Active User
                       </p>
                     </div>
@@ -343,7 +343,7 @@ export default function UserTable({ users, profile }) {
 
                 {/* Email */}
                 <td className="px-6 py-5">
-                  <p className="text-sm text-neutral-700">{user.email}</p>
+                  <p className="text-sm text-lis-text">{user.email}</p>
                 </td>
 
                 {/* Role */}
@@ -353,13 +353,13 @@ export default function UserTable({ users, profile }) {
                       inline-flex
                       items-center
                       rounded-full
-                      bg-neutral-100
+                      bg-lis-panel-header
                       px-3
                       py-1
                       text-xs
                       font-medium
                       capitalize
-                      text-neutral-700
+                      text-lis-text
                     "
                   >
                     {user.role}
@@ -371,13 +371,13 @@ export default function UserTable({ users, profile }) {
                       inline-flex
                       items-center
                       rounded-full
-                      bg-neutral-100
+                      bg-lis-panel-header
                       px-3
                       py-1
                       text-xs
                       font-medium
                       capitalize
-                      text-neutral-700
+                      text-lis-text
                     "
                   >
                     {user.grade}
@@ -391,18 +391,18 @@ export default function UserTable({ users, profile }) {
         inline-flex
         items-center
         rounded-full
-        md:bg-emerald-100
+        md:bg-lis-panel-header
         px-3
         py-1
         text-xs
         font-semibold
-        text-emerald-700
+        text-lis-success-text
       "
                     >
                       All Access Granted
                     </span>
                   ) : user.role === "visitor" ? (
-                    <span className="text-sm text-neutral-400">No Access</span>
+                    <span className="text-sm text-lis-muted">No Access</span>
                   ) : Array.isArray(user.gradeToEdit) &&
                     user.gradeToEdit.length > 0 ? (
                     <div className="flex flex-wrap gap-2">
@@ -415,12 +415,12 @@ export default function UserTable({ users, profile }) {
             inline-flex
             items-center
             rounded-full
-            bg-neutral-100
+            bg-lis-panel-header
             px-3
             py-1
             text-xs
             font-medium
-            text-neutral-700
+            text-lis-text
           "
                           >
                             {grade.replace("-", " ").toUpperCase()}
@@ -428,7 +428,7 @@ export default function UserTable({ users, profile }) {
                         ))}
                     </div>
                   ) : (
-                    <span className="text-sm text-neutral-400">No Access</span>
+                    <span className="text-sm text-lis-muted">No Access</span>
                   )}
                 </td>
 
@@ -444,19 +444,19 @@ export default function UserTable({ users, profile }) {
     inline-flex
     items-center
     gap-2
-    rounded-xl
+    rounded-sm
     border
-    border-neutral-200
+    border-lis-panel-border
     bg-white
     px-4
     py-2
     text-sm
     font-medium
-    text-neutral-500
+    text-lis-muted
     transition
-    hover:bg-yellow-50
-    hover:text-yellow-700
-    hover:border-yellow-100
+    hover:bg-lis-warning-bg
+    hover:text-lis-warning-text
+    hover:border-lis-warning-border
   "
                     >
                       <BiArchive size={18} />
@@ -475,17 +475,17 @@ export default function UserTable({ users, profile }) {
                         inline-flex
                         items-center
                         gap-2
-                        rounded-xl
+                        rounded-sm
                         border
-                        border-neutral-200
+                        border-lis-panel-border
                         bg-white
                         px-4
                         py-2
                         text-sm
                         font-medium
-                        text-neutral-700
+                        text-lis-text
                         transition
-                        hover:bg-neutral-100
+                        hover:bg-lis-panel-header
                       "
                     >
                       <BiEdit size={18} />
@@ -500,19 +500,19 @@ export default function UserTable({ users, profile }) {
                         className="
                         inline-flex
                         items-center
-                        rounded-xl
+                        rounded-sm
                         border
-                        border-neutral-200
+                        border-lis-panel-border
                         bg-white
                         px-4
                         py-2
                         text-sm
                         font-medium
-                        text-neutral-500
+                        text-lis-muted
                         transition
-                        hover:bg-red-50
-                        hover:text-red-600
-                        hover:border-red-100
+                        hover:bg-lis-danger-bg
+                        hover:text-lis-danger-text
+                        hover:border-lis-danger-border
                       "
                         userId={user.id}
                       />
@@ -532,22 +532,22 @@ export default function UserTable({ users, profile }) {
                         mx-auto
                         h-16
                         w-16
-                        rounded-3xl
-                        bg-neutral-100
+                        rounded-sm
+                        bg-lis-panel-header
                         flex
                         items-center
                         justify-center
-                        text-neutral-400
+                        text-lis-muted
                       "
                     >
                       <BiUser size={30} />
                     </div>
 
-                    <h3 className="text-xl font-semibold text-neutral-700">
+                    <h3 className="text-xl font-semibold text-lis-text">
                       No Users Found
                     </h3>
 
-                    <p className="text-sm text-neutral-500">
+                    <p className="text-sm text-lis-muted">
                       No users have been added yet.
                     </p>
                   </div>

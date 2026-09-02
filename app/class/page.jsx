@@ -44,13 +44,13 @@ export default async function Page({ searchParams }) {
   const classes = await getClasses(year_data.id, profile);
 
   return (
-    <div className="min-h-screen bg-[#f4f7fb] pb-16">
+    <div className="min-h-screen bg-lis-bg pb-16">
       {/* Hero */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-emerald-600 via-green-600 to-teal-600">
+      <div className="relative overflow-hidden bg-lis-primary   ">
         {/* Glow Effects */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full "></div>
 
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-emerald-300/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-72 h-72 bg-lis-panel-header/10 rounded-full "></div>
 
         <div className="relative max-w-7xl mx-auto px-4 md:px-6 py-10">
           <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-8">
@@ -65,7 +65,7 @@ export default async function Page({ searchParams }) {
                   border
                   border-white/10
                   bg-white/10
-                  backdrop-blur-md
+                  
                   px-4
                   py-1.5
                   text-white
@@ -76,7 +76,7 @@ export default async function Page({ searchParams }) {
                 School Class Management
               </div>
 
-              <p className="text-emerald-100 text-base mt-3 max-w-2xl">
+              <p className="text-white/80 text-base mt-3 max-w-2xl">
                 Manage sections, organize class records, and monitor school
                 structure efficiently.
               </p>
@@ -87,10 +87,10 @@ export default async function Page({ searchParams }) {
                 <div
                   className="
                     bg-white/10
-                    backdrop-blur-xl
+                    
                     border
                     border-white/10
-                    rounded-2xl
+                    rounded-sm
                     px-5
                     py-4
                     min-w-[180px]
@@ -101,7 +101,7 @@ export default async function Page({ searchParams }) {
                       className="
                         h-11
                         w-11
-                        rounded-xl
+                        rounded-sm
                         bg-white/10
                         flex
                         items-center
@@ -113,7 +113,7 @@ export default async function Page({ searchParams }) {
                     </div>
 
                     <div>
-                      <p className="text-xs uppercase tracking-wide text-emerald-100">
+                      <p className="text-xs uppercase tracking-wide text-white/80">
                         School Year
                       </p>
 
@@ -128,10 +128,10 @@ export default async function Page({ searchParams }) {
                 <div
                   className="
                     bg-white/10
-                    backdrop-blur-xl
+                    
                     border
                     border-white/10
-                    rounded-2xl
+                    rounded-sm
                     px-5
                     py-4
                     min-w-[180px]
@@ -142,7 +142,7 @@ export default async function Page({ searchParams }) {
                       className="
                         h-11
                         w-11
-                        rounded-xl
+                        rounded-sm
                         bg-white/10
                         flex
                         items-center
@@ -154,11 +154,11 @@ export default async function Page({ searchParams }) {
                     </div>
 
                     <div>
-                      <p className="text-xs uppercase tracking-wide text-emerald-100">
+                      <p className="text-xs uppercase tracking-wide text-white/80">
                         Total Classes
                       </p>
 
-                      <h3 className="text-2xl font-black text-white mt-1">
+                      <h3 className="text-2xl font-bold text-white mt-1">
                         {classes.length}
                       </h3>
                     </div>
@@ -171,19 +171,19 @@ export default async function Page({ searchParams }) {
             <div
               className="
                 bg-white/10
-                backdrop-blur-xl
+                
                 border
                 border-white/10
-                rounded-3xl
+                rounded-sm
                 p-6
-                shadow-2xl
+                
                 w-full
                 max-w-sm
               "
             >
               <h2 className="text-white text-xl font-bold">School Year</h2>
 
-              <p className="text-emerald-100 text-sm mt-1">
+              <p className="text-white/80 text-sm mt-1">
                 Select and manage active school year records.
               </p>
 
@@ -205,9 +205,9 @@ export default async function Page({ searchParams }) {
           className="
             bg-white
             border
-            border-gray-200
-            rounded-[28px]
-            shadow-[0_10px_35px_rgba(0,0,0,0.05)]
+            border-lis-panel-border
+            rounded-sm
+            
             overflow-hidden
           "
         >
@@ -217,19 +217,16 @@ export default async function Page({ searchParams }) {
               px-6
               py-5
               border-b
-              border-gray-100
-              bg-gradient-to-r
-              from-emerald-50
-              via-green-50
-              to-white
+              border-lis-panel-border
+              bg-lis-panel-header
             "
           >
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               {/* Left */}
               <div>
-                <h2 className="text-2xl font-bold text-gray-800">Class List</h2>
+                <h2 className="text-xl font-normal text-lis-heading">Class List</h2>
 
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-lis-muted mt-1">
                   Organized list of all active classes and sections.
                 </p>
               </div>

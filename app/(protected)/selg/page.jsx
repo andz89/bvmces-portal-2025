@@ -43,16 +43,16 @@ const Page = () => {
 
   if (!authorized) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-100/90 backdrop-blur-sm">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-lis-panel-header/90 ">
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-xl shadow-xl p-8 w-full max-w-sm"
+          className="bg-white rounded-sm  p-8 w-full max-w-sm"
         >
           <h2 className="text-xl font-bold text-center mb-4">
             School Election Access
           </h2>
 
-          <p className="text-sm text-gray-600 text-center mb-6">
+          <p className="text-sm text-lis-muted text-center mb-6">
             Please enter the access password to continue.
           </p>
 
@@ -60,18 +60,18 @@ const Page = () => {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border rounded-lg px-4 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
+            className="w-full border rounded-lg px-4 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-lis-primary"
             placeholder="Enter password"
             required
           />
 
           {error && (
-            <p className="text-red-600 text-sm mb-3 text-center">{error}</p>
+            <p className="text-lis-danger-text text-sm mb-3 text-center">{error}</p>
           )}
 
           <button
             type="submit"
-            className="w-full bg-blue-700 text-white py-2 rounded-lg font-semibold hover:bg-blue-800 transition"
+            className="w-full bg-lis-primary-hover text-white py-2 rounded-lg font-semibold hover:bg-lis-primary-hover transition"
           >
             Enter Voting Page
           </button>
@@ -83,7 +83,7 @@ const Page = () => {
   // ✅ AUTHORIZED VIEW (your original page)
   return (
     <div
-      className="h-screen w-screen bg-slate-100 overflow-x-hidden"
+      className="h-screen w-screen bg-lis-panel-header overflow-x-hidden"
       style={{ overflow: "hidden" }}
     >
       <div

@@ -3,18 +3,19 @@ import React from "react";
 const Loader = ({ message }) => {
   return (
     <div className="flex items-center justify-center bg-white/0 gap-2">
-      <div className="relative h-8 w-8 bg-white/0">
-        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-indigo-500 via-cyan-400 to-indigo-500 animate-spin" />
-        <div className="absolute inset-1 rounded-full bg-white dark:bg-zinc-900" />
-      </div>
+      <div
+        className="h-8 w-8 rounded-full border-4 border-lis-panel-border border-t-lis-primary animate-spin"
+        role="status"
+        aria-label="Loading"
+      />
       {/* Message */}
       {message && (
         <div className="flex flex-col">
-          <span className="text-sm font-semibold text-slate-800">
+          <span className="text-sm font-semibold text-lis-text">
             Processing Request
           </span>
 
-          <span className="text-sm text-slate-500">{message}</span>
+          <span className="text-sm text-lis-muted">{message}</span>
         </div>
       )}
     </div>

@@ -5,13 +5,13 @@ export default function ScanResultModal({ result, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+      <div className="w-full max-w-md rounded-sm bg-white p-6 ">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-semibold">Scan Result</h2>
 
           <button
             onClick={onClose}
-            className="text-2xl text-gray-500 hover:text-black"
+            className="text-2xl text-lis-muted hover:text-black"
           >
             ×
           </button>
@@ -19,7 +19,7 @@ export default function ScanResultModal({ result, onClose }) {
 
         <div className="space-y-3">
           <div>
-            <p className="text-sm text-gray-500">Value</p>
+            <p className="text-sm text-lis-muted">Value</p>
             <p className="break-all font-medium">{result.rawValue}</p>
           </div>
         </div>

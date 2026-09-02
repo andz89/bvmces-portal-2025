@@ -91,10 +91,10 @@ const GPATable = ({
       <div
         className="
           bg-white
-          rounded-[28px]
+          rounded-sm
           border
-          border-gray-200
-          shadow-[0_10px_35px_rgba(0,0,0,0.05)]
+          border-lis-panel-border
+          
           overflow-hidden
         "
       >
@@ -104,11 +104,8 @@ const GPATable = ({
             px-6
             py-5
             border-b
-            border-gray-100
-            bg-gradient-to-r
-            from-emerald-50
-            via-green-50
-            to-white
+            border-lis-panel-border
+            bg-lis-panel-header
           "
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
@@ -118,26 +115,26 @@ const GPATable = ({
                 className="
                   h-14
                   w-14
-                  rounded-2xl
-                  bg-gradient-to-r
-                  from-emerald-500
-                  to-green-600
+                  rounded-sm
+                  bg-lis-primary
+
+
                   text-white
                   flex
                   items-center
                   justify-center
-                  shadow-lg
+                  
                 "
               >
                 <BiBookOpen size={28} />
               </div>
 
               <div>
-                <h2 className="text-2xl font-bold text-gray-800">
+                <h2 className="text-2xl font-bold text-lis-text">
                   Grade {grade} — {section.toUpperCase()}
                 </h2>
 
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-lis-muted mt-1">
                   Quarter {quarter} GPA analysis and learner performance summary
                 </p>
               </div>
@@ -150,18 +147,18 @@ const GPATable = ({
                 className="
                   bg-white
                   border
-                  border-gray-200
-                  rounded-2xl
+                  border-lis-panel-border
+                  rounded-sm
                   px-4
                   py-2
-                  shadow-sm
+                  
                 "
               >
-                <p className="text-xs uppercase tracking-wide text-gray-500">
+                <p className="text-xs uppercase tracking-wide text-lis-muted">
                   Subjects
                 </p>
 
-                <p className="text-xl font-black text-gray-800">
+                <p className="text-xl font-bold text-lis-text">
                   {data.length}
                 </p>
               </div>
@@ -180,15 +177,15 @@ const GPATable = ({
                     inline-flex
                     items-center
                     gap-2
-                    rounded-2xl
-                    bg-gradient-to-r
-                    from-red-500
-                    to-rose-600
+                    rounded-sm
+                    bg-lis-primary
+                    
+                    
                     px-5
                     py-3
                     text-white
                     font-semibold
-                    shadow-lg
+                    
                     transition
                     hover:scale-[1.02]
                   "
@@ -208,7 +205,7 @@ const GPATable = ({
             {/* Head */}
             <thead>
               {/* Categories */}
-              <tr className="bg-gradient-to-r from-emerald-600 to-green-600 text-white text-sm">
+              <tr className="bg-lis-primary   text-white text-sm">
                 <th rowSpan="2" className="px-5 py-4 text-left font-semibold">
                   SUBJECTS
                 </th>
@@ -244,7 +241,7 @@ const GPATable = ({
               </tr>
 
               {/* M/F/T */}
-              <tr className="bg-emerald-500 text-white text-sm">
+              <tr className="bg-lis-primary text-white text-sm">
                 {Array.from({
                   length: 5,
                 }).map((_, idx) => (
@@ -266,8 +263,8 @@ const GPATable = ({
                   key={item.id}
                   className="
                     border-t
-                    border-gray-100
-                    hover:bg-emerald-50/40
+                    border-lis-panel-border
+                    hover:bg-lis-panel-header/40
                     transition
                     duration-200
                   "
@@ -279,27 +276,27 @@ const GPATable = ({
                         className="
                           h-10
                           w-10
-                          rounded-xl
-                          bg-gradient-to-r
-                          from-emerald-500
-                          to-green-600
+                          rounded-sm
+                          bg-lis-primary
+                          
+                          
                           text-white
                           font-bold
                           flex
                           items-center
                           justify-center
-                          shadow-sm
+                          
                         "
                       >
                         <BiBarChartAlt2 />
                       </div>
 
                       <div>
-                        <p className="font-semibold text-gray-800 uppercase">
+                        <p className="font-semibold text-lis-text uppercase">
                           {item.subject}
                         </p>
 
-                        {/* <p className="text-xs text-gray-500">Subject GPA</p> */}
+                        {/* <p className="text-xs text-lis-muted">Subject GPA</p> */}
                       </div>
                     </div>
                   </td>
@@ -309,7 +306,7 @@ const GPATable = ({
 
                   <td className="text-center">{item.not_meet_female}</td>
 
-                  <td className="text-center font-bold text-red-600">
+                  <td className="text-center font-bold text-lis-danger-text">
                     {Number(item.not_meet_male) + Number(item.not_meet_female)}
                   </td>
 
@@ -318,7 +315,7 @@ const GPATable = ({
 
                   <td className="text-center">{item.fs_female}</td>
 
-                  <td className="text-center font-bold text-orange-600">
+                  <td className="text-center font-bold text-lis-warning-text">
                     {Number(item.fs_male) + Number(item.fs_female)}
                   </td>
 
@@ -327,7 +324,7 @@ const GPATable = ({
 
                   <td className="text-center">{item.s_female}</td>
 
-                  <td className="text-center font-bold text-blue-600">
+                  <td className="text-center font-bold text-lis-link">
                     {Number(item.s_male) + Number(item.s_female)}
                   </td>
 
@@ -336,7 +333,7 @@ const GPATable = ({
 
                   <td className="text-center">{item.vs_female}</td>
 
-                  <td className="text-center font-bold text-emerald-600">
+                  <td className="text-center font-bold text-lis-success-text">
                     {Number(item.vs_male) + Number(item.vs_female)}
                   </td>
 
@@ -345,7 +342,7 @@ const GPATable = ({
 
                   <td className="text-center">{item.e_female}</td>
 
-                  <td className="text-center font-bold text-violet-600">
+                  <td className="text-center font-bold text-lis-link">
                     {Number(item.e_male) + Number(item.e_female)}
                   </td>
 
@@ -362,13 +359,13 @@ const GPATable = ({
                           className="
                             h-11
                             w-11
-                            rounded-2xl
-                            bg-emerald-50
-                            text-emerald-600
+                            rounded-sm
+                            bg-lis-panel-header
+                            text-lis-success-text
                             flex
                             items-center
                             justify-center
-                            hover:bg-emerald-100
+                            hover:bg-lis-panel-header
                             transition
                           "
                         >
@@ -385,11 +382,11 @@ const GPATable = ({
                 <tr>
                   <td colSpan="100%" className="py-16 text-center">
                     <div className="space-y-3">
-                      <h3 className="text-2xl font-bold text-gray-700">
+                      <h3 className="text-2xl font-bold text-lis-text">
                         No GPA Records
                       </h3>
 
-                      <p className="text-gray-500">
+                      <p className="text-lis-muted">
                         There are currently no GPA records available.
                       </p>
                     </div>

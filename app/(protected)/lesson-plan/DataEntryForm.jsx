@@ -71,7 +71,7 @@ export default function DataEntryForm({
   return (
     <div className=" ">
       {profile.grade && !canSubmit && !upload_lesson_plan && (
-        <div className="rounded-xl bg-amber-100 px-4 py-3 text-sm text-amber-800">
+        <div className="rounded-sm bg-lis-warning-bg px-4 py-3 text-sm text-lis-warning-text">
           Lesson plan submissions are only open from Friday 8:00 AM to Monday
           8:00 AM.
         </div>
@@ -79,7 +79,7 @@ export default function DataEntryForm({
       <SuccessModal open={showSuccess} onClose={() => setShowSuccess(false)} />
 
       {/* <div
-        className="w-45 bg-emerald-600 text-white py-3 px-1 font-semibold text-sm text-center  rounded-2xl cursor-pointer hover:bg-emerald-700 transition"
+        className="w-45 bg-lis-success text-white py-3 px-1 font-semibold text-sm text-center  rounded-sm cursor-pointer hover:bg-lis-success-hover transition"
         onClick={() => setShowForm(true)}
       >
         Submit Lesson Plan
@@ -87,29 +87,29 @@ export default function DataEntryForm({
 
       {profile.grade && (canSubmit || upload_lesson_plan) && (
         <div
-          className="w-45 bg-emerald-600 text-white py-3 px-1 font-semibold text-sm text-center rounded-2xl cursor-pointer hover:bg-emerald-700 transition"
+          className="w-45 bg-lis-success text-white py-3 px-1 font-semibold text-sm text-center rounded-sm cursor-pointer hover:bg-lis-success-hover transition"
           onClick={() => setShowForm(true)}
         >
           Submit Lesson Plan
         </div>
       )}
       {/* <div
-        className="w-45 bg-emerald-600 text-white py-3 px-1 font-semibold text-sm text-center  rounded-2xl cursor-pointer hover:bg-emerald-700 transition"
+        className="w-45 bg-lis-success text-white py-3 px-1 font-semibold text-sm text-center  rounded-sm cursor-pointer hover:bg-lis-success-hover transition"
         onClick={() => setShowForm(true)}
       >
         Submit Lesson Plan
       </div> */}
       <div
-        className={`fixed inset-0 size-auto     bg-slate-100/50 z-50 h-screen    flex items-center justify-center   mx-auto w-full ${showForm ? "" : "hidden"}`}
+        className={`fixed inset-0 size-auto     bg-lis-panel-header/50 z-50 h-screen    flex items-center justify-center   mx-auto w-full ${showForm ? "" : "hidden"}`}
       >
-        <div className=" w-3xl mx-auto bg-white rounded-3xl border border-neutral-200 shadow-sm overflow-y-auto max-h-[90vh]">
+        <div className=" w-3xl mx-auto bg-white rounded-sm border border-lis-panel-border  overflow-y-auto max-h-[90vh]">
           {/* Header */}
-          <div className="border-b border-neutral-100 px-8 py-6">
-            <h1 className="text-2xl font-bold text-neutral-900">
+          <div className="border-b border-lis-panel-border px-8 py-6">
+            <h1 className="text-2xl font-bold text-lis-text">
               Submit Lesson Plan
             </h1>
 
-            <p className="mt-2 text-sm text-neutral-500">
+            <p className="mt-2 text-sm text-lis-muted">
               Complete the form below and upload your lesson plan.
             </p>
           </div>
@@ -117,7 +117,7 @@ export default function DataEntryForm({
           {/* Form */}
           <form className="p-8 space-y-6" ref={formRef} onSubmit={handleSubmit}>
             <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-2">
+              <label className="block text-sm font-medium text-lis-text mb-2">
                 School Year
               </label>
 
@@ -127,18 +127,18 @@ export default function DataEntryForm({
                   name="schoolYear"
                   readOnly
                   value="2026-2027"
-                  className="w-full rounded-2xl border border-neutral-200    px-5 py-3 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                  className="w-full rounded-sm border border-lis-panel-border    px-5 py-3 outline-none focus:border-lis-primary focus:ring-4 focus:ring-lis-primary"
                 />
               </div>
             </div>
             {/* Client Name */}
             <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-2">
+              <label className="block text-sm font-medium text-lis-text mb-2">
                 Teacher Name
               </label>
 
               <div className="relative">
-                <BiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 text-xl" />
+                <BiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-lis-muted text-xl" />
 
                 <input
                   value={profile?.full_name || ""}
@@ -146,7 +146,7 @@ export default function DataEntryForm({
                   type="text"
                   name="teacherName"
                   placeholder="Enter teacher name"
-                  className="uppercase w-full rounded-2xl border border-neutral-200 pl-12 pr-4 py-3 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                  className="uppercase w-full rounded-sm border border-lis-panel-border pl-12 pr-4 py-3 outline-none focus:border-lis-primary focus:ring-4 focus:ring-lis-primary"
                 />
               </div>
             </div>
@@ -155,7 +155,7 @@ export default function DataEntryForm({
               type="hidden"
               value={profile?.grade || ""}
               name="grade"
-              className="uppercase w-full rounded-2xl border border-neutral-200 px-4 py-3 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+              className="uppercase w-full rounded-sm border border-lis-panel-border px-4 py-3 outline-none focus:border-lis-primary focus:ring-4 focus:ring-lis-primary"
             />
 
             <input
@@ -164,7 +164,7 @@ export default function DataEntryForm({
               readOnly
               name="teacher_id"
               placeholder="Enter teacher name"
-              className="uppercase w-full rounded-2xl border border-neutral-200 pl-12 pr-4 py-3 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+              className="uppercase w-full rounded-sm border border-lis-panel-border pl-12 pr-4 py-3 outline-none focus:border-lis-primary focus:ring-4 focus:ring-lis-primary"
             />
             <select
               name="lesson_level"
@@ -172,17 +172,17 @@ export default function DataEntryForm({
               defaultValue=""
               className="
     w-full
-    rounded-2xl
+    rounded-sm
     border
-    border-neutral-200
+    border-lis-panel-border
     bg-white
     px-4
     py-3
     outline-none
     transition
-    focus:border-emerald-500
+    focus:border-lis-primary
     focus:ring-4
-    focus:ring-emerald-100
+    focus:ring-lis-primary
   "
             >
               <option value="" disabled>
@@ -198,7 +198,7 @@ export default function DataEntryForm({
               ))}
             </select>
             <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-2">
+              <label className="block text-sm font-medium text-lis-text mb-2">
                 Week
               </label>
 
@@ -209,17 +209,17 @@ export default function DataEntryForm({
                   defaultValue=""
                   className="
         w-full
-        rounded-2xl
+        rounded-sm
         border
-        border-neutral-200
+        border-lis-panel-border
         bg-white
         px-4
         py-3
         outline-none
         transition
-        focus:border-emerald-500
+        focus:border-lis-primary
         focus:ring-4
-        focus:ring-emerald-100
+        focus:ring-lis-primary
       "
                 >
                   <option value="" disabled>
@@ -235,7 +235,7 @@ export default function DataEntryForm({
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-2">
+              <label className="block text-sm font-medium text-lis-text mb-2">
                 Term
               </label>
 
@@ -246,17 +246,17 @@ export default function DataEntryForm({
                   defaultValue=""
                   className="
         w-full
-        rounded-2xl
+        rounded-sm
         border
-        border-neutral-200
+        border-lis-panel-border
         bg-white
         px-4
         py-3
         outline-none
         transition
-        focus:border-emerald-500
+        focus:border-lis-primary
         focus:ring-4
-        focus:ring-emerald-100
+        focus:ring-lis-primary
       "
                 >
                   <option value="" disabled>
@@ -272,7 +272,7 @@ export default function DataEntryForm({
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-2">
+              <label className="block text-sm font-medium text-lis-text mb-2">
                 Subject
               </label>
 
@@ -283,17 +283,17 @@ export default function DataEntryForm({
                   defaultValue=""
                   className="
                 w-full
-                rounded-2xl
+                rounded-sm
                 border
-                border-neutral-200
+                border-lis-panel-border
                 bg-white
                 px-4
                 py-3
                 outline-none
                 transition
-                focus:border-emerald-500
+                focus:border-lis-primary
                 focus:ring-4
-                focus:ring-emerald-100
+                focus:ring-lis-primary
               "
                 >
                   <option value="" disabled>
@@ -318,24 +318,22 @@ export default function DataEntryForm({
             </div>
             {/* Upload */}
             <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-3">
+              <label className="block text-sm font-medium text-lis-text mb-3">
                 Upload Document
               </label>
 
               <label className="block cursor-pointer">
-                <div className="rounded-2xl border-2 border-dashed border-neutral-300 bg-neutral-50 hover:border-emerald-500 transition p-8 text-center">
-                  <BiUpload className="mx-auto text-4xl text-emerald-600 mb-3" />
+                <div className="rounded-sm border-2 border-dashed border-lis-panel-border bg-lis-panel-header hover:border-lis-panel-border transition p-8 text-center">
+                  <BiUpload className="mx-auto text-4xl text-lis-success-text mb-3" />
 
-                  <p className="font-medium text-neutral-800">
-                    Click to upload
-                  </p>
+                  <p className="font-medium text-lis-text">Click to upload</p>
 
-                  <p className="text-sm text-neutral-500 mt-1">
+                  <p className="text-sm text-lis-muted mt-1">
                     Excel, PDF, Word or any document
                   </p>
 
                   {fileName && (
-                    <p className="mt-4 text-sm font-medium text-emerald-700">
+                    <p className="mt-4 text-sm font-medium text-lis-success-text">
                       {fileName}
                     </p>
                   )}
@@ -385,7 +383,7 @@ export default function DataEntryForm({
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-between gap-4 border-t border-neutral-100 pt-4">
+            <div className="flex items-center justify-between gap-4 border-t border-lis-panel-border pt-4">
               <div className="flex items-center gap-2 shrink-0">
                 <button
                   type="button"
@@ -399,15 +397,15 @@ export default function DataEntryForm({
                     setShowForm(false);
                   }}
                   className="
-        rounded-xl
+        rounded-sm
         px-5
         py-3
         text-sm
         font-medium
         text-white
         transition-colors
-        hover:bg-red-600
-        bg-red-700
+        hover:bg-lis-danger
+        bg-lis-danger-hover
         disabled:opacity-50
         disabled:cursor-not-allowed
       "
@@ -418,10 +416,10 @@ export default function DataEntryForm({
                 <button
                   disabled={loading}
                   className="
-        rounded-xl
-        bg-gradient-to-r
-        from-emerald-600
-        to-green-600
+        rounded-sm
+        bg-lis-primary
+        
+        
         px-6
         py-3
         text-sm
@@ -429,9 +427,6 @@ export default function DataEntryForm({
         text-white
         transition-all
         duration-200
-        hover:from-emerald-700
-        hover:to-green-700
-        hover:shadow-md
         disabled:cursor-not-allowed
         disabled:opacity-50
       "

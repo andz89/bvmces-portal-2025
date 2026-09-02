@@ -90,7 +90,7 @@ export default function ReportsClient({ title, reports, type, profile }) {
     setSearchTerm(keyword);
   };
   return (
-    <div className="min-h-screen bg-[#f6f8fb]">
+    <div className="min-h-screen bg-lis-bg">
       {/* Modal */}
       {openForm && (
         <ReportForm
@@ -104,13 +104,13 @@ export default function ReportsClient({ title, reports, type, profile }) {
       )}
       {loading && <FullPageLoader />}
       {/* Hero */}
-      <div className="border-b border-slate-200 bg-[#0f172a]">
-        <div className="absolute bottom-0 left-0 h-72 w-72 rounded-full bg-violet-500/10 blur-3xl" />
+      <div className="border-b border-lis-panel-border bg-lis-primary">
+        <div className="absolute bottom-0 left-0 h-72 w-72 rounded-full bg-lis-primary/10 " />
 
         <div className="max-w-7xl mx-auto px-5 py-7">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-sm text-slate-200 backdrop-blur">
+              <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-sm text-white/80 ">
                 📁 File Repository
               </div>
 
@@ -118,7 +118,7 @@ export default function ReportsClient({ title, reports, type, profile }) {
                 {title}
               </h1>
 
-              <p className="mt-2 max-w-2xl text-sm text-slate-400">
+              <p className="mt-2 max-w-2xl text-sm text-white/80">
                 Manage uploaded reports, templates, and academic resources in
                 one organized dashboard.
               </p>
@@ -135,15 +135,15 @@ inline-flex
 items-center
 justify-center
 gap-2
-rounded-xl
+rounded-sm
 bg-white
 px-4
 py-2.5
 text-sm
 font-medium
-text-slate-800
+text-lis-text
 transition
-hover:bg-slate-100
+hover:bg-lis-panel-header
 cursor-pointer
 "
               >
@@ -159,11 +159,11 @@ cursor-pointer
       <div className="max-w-7xl mx-auto px-5 py-6">
         <div className="mb-8 flex items-center md:justify-between md:flex-row flex-col gap-2  ">
           <div>
-            <h2 className="text-2xl font-bold text-slate-800">
+            <h2 className="text-2xl font-bold text-lis-text">
               Uploaded Files
             </h2>
 
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-1 text-sm text-lis-muted">
               Click the file name to open the uploaded document
             </p>
           </div>
@@ -177,16 +177,16 @@ cursor-pointer
 
         {/* Empty State */}
         {sortedReports.length === 0 && (
-          <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-16 text-center shadow-sm">
-            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-slate-100 text-4xl">
+          <div className="rounded-sm border border-dashed border-lis-panel-border bg-white p-16 text-center ">
+            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-sm bg-lis-panel-header text-4xl">
               📂
             </div>
 
-            <h3 className="mt-6 text-xl font-semibold text-slate-700">
+            <h3 className="mt-6 text-xl font-semibold text-lis-text">
               No Files Yet
             </h3>
 
-            <p className="mt-2 text-sm text-slate-500">
+            <p className="mt-2 text-sm text-lis-muted">
               Uploaded reports and templates will appear here.
             </p>
           </div>
@@ -202,20 +202,20 @@ cursor-pointer
  
 relative
 overflow-hidden
-rounded-2xl
+rounded-sm
 border
-border-slate-200
+border-lis-panel-border
 bg-white
 p-4
-shadow-sm
+
 transition-all
 duration-200
-hover:border-slate-300
-hover:shadow-md
+hover:border-lis-panel-border
+
 "
             >
               {/* Glow */}
-              <div className="  rounded-full bg-blue-100 opacity-0 blur-3xl transition group-hover:opacity-70" />
+              <div className="  rounded-full bg-lis-panel-header opacity-0  transition group-hover:opacity-70" />
 
               <div className="  flex   justify-between md:flex-row flex-col">
                 {/* Left */}
@@ -224,11 +224,11 @@ hover:shadow-md
                   <div className="flex-1 min-w-0">
                     {type !== "templates" && (
                       <div className="mb-4 flex flex-wrap items-center gap-2">
-                        <span className="rounded-full bg-emerald-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-emerald-700">
+                        <span className="rounded-full bg-lis-panel-header px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-lis-success-text">
                           {report.stage}
                         </span>
 
-                        <span className="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-medium text-slate-600">
+                        <span className="rounded-full bg-lis-panel-header px-3 py-1 text-[11px] font-medium text-lis-muted">
                           SY: {report.school_year}
                         </span>
                       </div>
@@ -247,9 +247,9 @@ items-start
 gap-2
 text-base
 font-semibold
-text-slate-800
+text-lis-text
 transition
-hover:text-slate-950
+hover:text-lis-link
 break-words
 "
                       >
@@ -276,10 +276,10 @@ p-1
     items-center
     justify-center
     rounded-lg
-    bg-blue-100
-    text-slate-700
+    bg-lis-panel-header
+    text-lis-text
     transition
-    hover:bg-blue-500
+    hover:bg-lis-primary
     hover:text-white
     cursor-pointer
   "
@@ -294,7 +294,7 @@ p-1
  mt-1
 text-sm
 leading-relaxed
-text-slate-500
+text-lis-muted
 break-words
 "
                     >
@@ -302,9 +302,9 @@ break-words
                     </p>
 
                     {/* Owner */}
-                    <div className="mt-1 text-xs sm:text-sm text-slate-400">
+                    <div className="mt-1 text-xs sm:text-sm text-lis-muted">
                       Added by{" "}
-                      <span className="font-medium text-slate-600 break-all">
+                      <span className="font-medium text-lis-muted break-all">
                         {report.owner_email}
                       </span>
                     </div>
@@ -326,11 +326,11 @@ h-9
 w-9
 items-center
 justify-center
-rounded-xl
-bg-slate-100
-text-slate-700
+rounded-sm
+bg-lis-panel-header
+text-lis-text
 transition
-hover:bg-slate-900
+hover:bg-lis-primary
 hover:text-white
 cursor-pointer
 "
@@ -354,11 +354,11 @@ cursor-pointer
                           w-9
                           items-center
                           justify-center
-                          rounded-xl
-                          bg-slate-100
-                          text-slate-700
+                          rounded-sm
+                          bg-lis-panel-header
+                          text-lis-text
                           transition
-                          hover:bg-red-500
+                          hover:bg-lis-danger
                           hover:text-white
                           cursor-pointer
                         "

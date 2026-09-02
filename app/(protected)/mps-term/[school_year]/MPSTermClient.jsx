@@ -48,7 +48,7 @@ const MPSTermClient = ({ profile, mps, school_year, classData }) => {
   }, {});
 
   return (
-    <div className="min-h-screen bg-[#f4f7fb] pb-20 w-full">
+    <div className="min-h-screen bg-lis-bg pb-20 w-full">
       {/* Form */}
       {openForm && (
         <Form
@@ -67,14 +67,14 @@ const MPSTermClient = ({ profile, mps, school_year, classData }) => {
         <div className="max-w-7xl mx-auto px-4 pt-6">
           <div
             className="
-              rounded-2xl
+              rounded-sm
               border
-              border-green-200
-              bg-green-50
+              border-lis-panel-border
+              bg-lis-panel-header
               px-5
               py-4
-              text-green-700
-              shadow-sm
+              text-lis-success-text
+              
             "
           >
             {successMessage}
@@ -83,10 +83,10 @@ const MPSTermClient = ({ profile, mps, school_year, classData }) => {
       )}
 
       {/* Hero */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-700 w-full">
+      <div className="relative overflow-hidden bg-lis-primary    w-full">
         {/* Glow */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-cyan-300/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full "></div>
+        <div className="absolute bottom-0 left-0 w-72 h-72 bg-lis-panel-header/10 rounded-full "></div>
 
         <div className="relative   mx-auto px-4 md:px-10 py-10">
           <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-8">
@@ -101,7 +101,7 @@ const MPSTermClient = ({ profile, mps, school_year, classData }) => {
                   border
                   border-white/10
                   bg-white/10
-                  backdrop-blur-md
+                  
                   px-4
                   py-1.5
                   text-white
@@ -112,11 +112,11 @@ const MPSTermClient = ({ profile, mps, school_year, classData }) => {
                 Monitoring Progress Summary
               </div>
 
-              <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">
+              <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
                 MPS Term Dashboard
               </h1>
 
-              <p className="text-blue-100 text-base mt-3 max-w-2xl">
+              <p className="text-white/80 text-base mt-3 max-w-2xl">
                 Monitor academic performance by term and examination type,
                 analyze learner achievement, and manage school reports
                 efficiently.
@@ -127,16 +127,16 @@ const MPSTermClient = ({ profile, mps, school_year, classData }) => {
                 <div
                   className="
                     bg-white/10
-                    backdrop-blur-xl
+                    
                     border
                     border-white/10
-                    rounded-2xl
+                    rounded-sm
                     px-5
                     py-4
                     min-w-[170px]
                   "
                 >
-                  <p className="text-xs uppercase tracking-wide text-blue-100">
+                  <p className="text-xs uppercase tracking-wide text-white/80">
                     School Year
                   </p>
 
@@ -148,20 +148,20 @@ const MPSTermClient = ({ profile, mps, school_year, classData }) => {
                 <div
                   className="
                     bg-white/10
-                    backdrop-blur-xl
+                    
                     border
                     border-white/10
-                    rounded-2xl
+                    rounded-sm
                     px-5
                     py-4
                     min-w-[170px]
                   "
                 >
-                  <p className="text-xs uppercase tracking-wide text-blue-100">
+                  <p className="text-xs uppercase tracking-wide text-white/80">
                     Total Files
                   </p>
 
-                  <h3 className="text-2xl font-black text-white mt-1">
+                  <h3 className="text-2xl font-bold text-white mt-1">
                     {mps.length}
                   </h3>
                 </div>
@@ -169,16 +169,16 @@ const MPSTermClient = ({ profile, mps, school_year, classData }) => {
                 <div
                   className="
                     bg-white/10
-                    backdrop-blur-xl
+                    
                     border
                     border-white/10
-                    rounded-2xl
+                    rounded-sm
                     px-5
                     py-4
                     min-w-[170px]
                   "
                 >
-                  <p className="text-xs uppercase tracking-wide text-blue-100">
+                  <p className="text-xs uppercase tracking-wide text-white/80">
                     View Mode
                   </p>
 
@@ -194,19 +194,19 @@ const MPSTermClient = ({ profile, mps, school_year, classData }) => {
               <div
                 className="
                   bg-white/10
-                  backdrop-blur-xl
+                  
                   border
                   border-white/10
-                  rounded-3xl
+                  rounded-sm
                   p-6
-                  shadow-2xl
+                  
                   w-full
                   max-w-sm
                 "
               >
                 <h2 className="text-white text-xl font-bold">Quick Action</h2>
 
-                <p className="text-blue-100 text-sm mt-1">
+                <p className="text-white/80 text-sm mt-1">
                   Upload and manage MPS Term reports for all classes.
                 </p>
 
@@ -222,13 +222,13 @@ const MPSTermClient = ({ profile, mps, school_year, classData }) => {
                     items-center
                     justify-center
                     gap-2
-                    rounded-2xl
+                    rounded-sm
                     bg-white
                     px-5
                     py-3
-                    text-gray-800
+                    text-lis-text
                     font-semibold
-                    shadow-lg
+                    
                     transition
                     hover:scale-[1.02]
                   "
@@ -254,7 +254,7 @@ const MPSTermClient = ({ profile, mps, school_year, classData }) => {
             gap-2
             mb-6
             border-b
-            border-gray-200
+            border-lis-panel-border
             pb-1
           "
         >
@@ -284,8 +284,8 @@ const MPSTermClient = ({ profile, mps, school_year, classData }) => {
                   border-b-2
                   ${
                     isActive
-                      ? "border-blue-600 text-blue-600 bg-blue-50/60"
-                      : "border-transparent text-gray-500 hover:text-gray-800 hover:bg-gray-50"
+                      ? "border-lis-panel-border text-lis-link bg-lis-panel-header/60"
+                      : "border-transparent text-lis-muted hover:text-lis-text hover:bg-lis-panel-header"
                   }
                 `}
               >
@@ -304,8 +304,8 @@ const MPSTermClient = ({ profile, mps, school_year, classData }) => {
                     px-1.5
                     ${
                       isActive
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-200 text-gray-600"
+                        ? "bg-lis-primary text-white"
+                        : "bg-lis-panel-header text-lis-muted"
                     }
                   `}
                 >
@@ -332,18 +332,18 @@ const MPSTermClient = ({ profile, mps, school_year, classData }) => {
               inline-flex
               items-center
               gap-2
-              rounded-2xl
+              rounded-sm
               px-5
               py-3
               text-sm
               font-semibold
               transition-all
               duration-200
-              shadow-sm
+              
               ${
                 viewMode
-                  ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg"
-                  : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
+                  ? "bg-lis-primary   text-white "
+                  : "bg-white border border-lis-panel-border text-lis-text hover:bg-lis-panel-header"
               }
             `}
           >
@@ -358,18 +358,18 @@ const MPSTermClient = ({ profile, mps, school_year, classData }) => {
               inline-flex
               items-center
               gap-2
-              rounded-2xl
+              rounded-sm
               px-5
               py-3
               text-sm
               font-semibold
               transition-all
               duration-200
-              shadow-sm
+              
               ${
                 !viewMode
-                  ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg"
-                  : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
+                  ? "bg-lis-primary   text-white "
+                  : "bg-white border border-lis-panel-border text-lis-text hover:bg-lis-panel-header"
               }
             `}
           >
@@ -422,19 +422,19 @@ const MPSTermClient = ({ profile, mps, school_year, classData }) => {
                     className="
                       bg-white
                       border
-                      border-gray-200
-                      rounded-3xl
+                      border-lis-panel-border
+                      rounded-sm
                       p-16
                       text-center
-                      shadow-sm
+                      
                     "
                   >
                     <div className="space-y-3">
-                      <h3 className="text-2xl font-bold text-gray-700">
+                      <h3 className="text-2xl font-bold text-lis-text">
                         No Term {activeTerm} Files Yet
                       </h3>
 
-                      <p className="text-gray-500 max-w-md mx-auto">
+                      <p className="text-lis-muted max-w-md mx-auto">
                         Upload a Monitoring Progress Summary report for Term{" "}
                         {activeTerm} to begin tracking learner performance.
                       </p>

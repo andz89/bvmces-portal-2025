@@ -21,7 +21,7 @@ export default async function DesktopMenu({ profile }) {
         {/* Access */}
         <Link
           href="/access"
-          className="rounded-xl px-2 py-2 text-sm font-medium text-slate-600 transition hover:bg-blue-50 hover:text-blue-600"
+          className="rounded-sm px-2 py-2 text-sm font-medium text-lis-text transition hover:bg-lis-tab-active"
         >
           Access
         </Link>
@@ -29,23 +29,23 @@ export default async function DesktopMenu({ profile }) {
         {/* Equity */}
         <Link
           href="/equity"
-          className="rounded-xl px-2 py-2 text-sm font-medium text-slate-600 transition hover:bg-blue-50 hover:text-blue-600"
+          className="rounded-sm px-2 py-2 text-sm font-medium text-lis-text transition hover:bg-lis-tab-active"
         >
           Equity
         </Link>
 
         {/* Quality Dropdown */}
         <div className="relative group z-[9999]">
-          <button className="flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-blue-50 hover:text-blue-600 cursor-pointer">
+          <button className="flex items-center gap-2 rounded-sm px-4 py-2 text-sm font-medium text-lis-text transition hover:bg-lis-tab-active cursor-pointer">
             <BiBarChart size={18} />
             Quality
             <BiChevronDown size={18} />
           </button>
 
-          <div className="invisible absolute left-0 top-[120%] z-[9999] w-56 translate-y-2 rounded-2xl border border-slate-200 bg-white p-2 opacity-0 shadow-2xl transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+          <div className="invisible absolute left-0 top-[120%] z-[9999] w-56 translate-y-2 rounded-sm border border-lis-panel-border bg-white p-1 opacity-0  transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
             <Link
               href="/mps"
-              className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
+              className="flex items-center gap-3 rounded-sm px-4 py-3 text-sm text-lis-text transition hover:bg-lis-panel-header"
             >
               <BiBarChart size={18} />
               MPS
@@ -53,7 +53,7 @@ export default async function DesktopMenu({ profile }) {
 
             <Link
               href="/mps-term"
-              className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
+              className="flex items-center gap-3 rounded-sm px-4 py-3 text-sm text-lis-text transition hover:bg-lis-panel-header"
             >
               <BiBarChart size={18} />
               MPS Term
@@ -61,7 +61,7 @@ export default async function DesktopMenu({ profile }) {
 
             <Link
               href="/gpa"
-              className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
+              className="flex items-center gap-3 rounded-sm px-4 py-3 text-sm text-lis-text transition hover:bg-lis-panel-header"
             >
               <BiAward size={18} />
               GPA
@@ -69,7 +69,7 @@ export default async function DesktopMenu({ profile }) {
 
             <Link
               href="/rma"
-              className="flex items-center gap-3 rounded-xl px-2 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
+              className="flex items-center gap-3 rounded-sm px-2 py-3 text-sm text-lis-text transition hover:bg-lis-panel-header"
             >
               <BiGridAlt size={18} />
               RMA
@@ -77,7 +77,7 @@ export default async function DesktopMenu({ profile }) {
 
             <Link
               href="/phil-iri"
-              className="flex items-center gap-3 rounded-xl px-2 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
+              className="flex items-center gap-3 rounded-sm px-2 py-3 text-sm text-lis-text transition hover:bg-lis-panel-header"
             >
               <BiBook size={18} />
               PHIL-IRI
@@ -85,7 +85,7 @@ export default async function DesktopMenu({ profile }) {
 
             <Link
               href="/crla"
-              className="flex items-center gap-3 rounded-xl px-2 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
+              className="flex items-center gap-3 rounded-sm px-2 py-3 text-sm text-lis-text transition hover:bg-lis-panel-header"
             >
               <BiBook size={18} />
               CRLA
@@ -93,7 +93,7 @@ export default async function DesktopMenu({ profile }) {
 
             <Link
               href="/summative-test"
-              className="flex items-center gap-3 rounded-xl px-2 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
+              className="flex items-center gap-3 rounded-sm px-2 py-3 text-sm text-lis-text transition hover:bg-lis-panel-header"
             >
               <BiBook size={18} />
               Summative Test
@@ -101,7 +101,7 @@ export default async function DesktopMenu({ profile }) {
 
             <Link
               href="/lesson-plan"
-              className="flex items-center gap-3 rounded-xl px-2 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
+              className="flex items-center gap-3 rounded-sm px-2 py-3 text-sm text-lis-text transition hover:bg-lis-panel-header"
             >
               <BiBook size={18} />
               Lesson Plan
@@ -112,14 +112,14 @@ export default async function DesktopMenu({ profile }) {
         {/* Other Menus */}
         <Link
           href="/"
-          className="max-w-[170px] truncate rounded-xl px-2 py-2 text-sm font-medium text-slate-600 transition hover:bg-blue-50 hover:text-blue-600"
+          className="max-w-[170px] truncate rounded-sm px-2 py-2 text-sm font-medium text-lis-text transition hover:bg-lis-tab-active"
         >
           Resiliency & Well-being
         </Link>
 
         <Link
           href="/"
-          className="max-w-[170px] truncate rounded-xl px-2 py-2 text-sm font-medium text-slate-600 transition hover:bg-blue-50 hover:text-blue-600"
+          className="max-w-[170px] truncate rounded-sm px-2 py-2 text-sm font-medium text-lis-text transition hover:bg-lis-tab-active"
         >
           Enabling Mechanism
         </Link>
@@ -127,17 +127,17 @@ export default async function DesktopMenu({ profile }) {
 
       {/* Management Dropdown */}
       <div className="relative group z-[9999] ml-2">
-        <button className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:-translate-y-[1px] hover:shadow-md cursor-pointer">
+        <button className="flex items-center gap-2 rounded-sm border border-lis-panel-border bg-lis-panel-header px-4 py-2 text-sm font-medium text-lis-text transition hover:bg-lis-tab-active cursor-pointer">
           <BiGridAlt size={18} />
           Management
           <BiChevronDown size={18} />
         </button>
 
-        <div className="invisible absolute right-0 top-[120%] z-[9999] w-60 translate-y-2 rounded-2xl border border-slate-200 bg-white p-2 opacity-0 shadow-2xl transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+        <div className="invisible absolute right-0 top-[120%] z-[9999] w-60 translate-y-2 rounded-sm border border-lis-panel-border bg-white p-1 opacity-0  transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
           {/* Templates */}
           <Link
             href="/templates"
-            className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
+            className="flex items-center gap-3 rounded-sm px-4 py-3 text-sm text-lis-text transition hover:bg-lis-panel-header"
           >
             <BiFile size={18} />
             Templates
@@ -146,7 +146,7 @@ export default async function DesktopMenu({ profile }) {
           {/* Class */}
           <Link
             href="/class"
-            className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
+            className="flex items-center gap-3 rounded-sm px-4 py-3 text-sm text-lis-text transition hover:bg-lis-panel-header"
           >
             <BiGridAlt size={18} />
             Class
@@ -157,7 +157,7 @@ export default async function DesktopMenu({ profile }) {
             <>
               <Link
                 href="/admin-dashboard"
-                className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
+                className="flex items-center gap-3 rounded-sm px-4 py-3 text-sm text-lis-text transition hover:bg-lis-panel-header"
               >
                 <BiShield size={18} />
                 Admin
@@ -165,7 +165,7 @@ export default async function DesktopMenu({ profile }) {
 
               <Link
                 href="/users"
-                className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
+                className="flex items-center gap-3 rounded-sm px-4 py-3 text-sm text-lis-text transition hover:bg-lis-panel-header"
               >
                 <BiUser size={18} />
                 Users

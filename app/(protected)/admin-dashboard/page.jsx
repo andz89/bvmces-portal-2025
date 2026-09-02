@@ -10,16 +10,16 @@ export default async function Page() {
   const schoolYears = await getSchoolYears();
 
   return (
-    <div className="min-h-screen bg-[#f6f7fb] p-4 md:p-8">
+    <div className="min-h-screen bg-lis-bg p-4 md:p-8">
       <div
         className="
           max-w-7xl
           mx-auto
           bg-white
-          rounded-[32px]
+          rounded-sm
           border
-          border-neutral-200
-          shadow-[0_10px_35px_rgba(0,0,0,0.05)]
+          border-lis-panel-border
+          
           overflow-hidden
         "
       >
@@ -36,9 +36,9 @@ export default async function Page() {
             md:px-8
             py-7
             border-b
-            border-neutral-100
-            bg-neutral-50/70
-            backdrop-blur-sm
+            border-lis-panel-border
+            bg-lis-panel-header/70
+            
           "
         >
           {/* Left */}
@@ -47,24 +47,24 @@ export default async function Page() {
               className="
                 h-16
                 w-16
-                rounded-3xl
-                bg-neutral-900
+                rounded-sm
+                bg-lis-primary
                 text-white
                 flex
                 items-center
                 justify-center
-                shadow-sm
+                
               "
             >
               <BiCalendar size={30} />
             </div>
 
             <div>
-              <h1 className="text-3xl font-bold text-neutral-900">
+              <h1 className="text-3xl font-bold text-lis-text">
                 School Year
               </h1>
 
-              <p className="text-sm text-neutral-500 mt-2">
+              <p className="text-sm text-lis-muted mt-2">
                 Manage school year settings, statuses, and enrollment reference
                 months.
               </p>
@@ -77,21 +77,21 @@ export default async function Page() {
               flex
               items-center
               gap-3
-              rounded-2xl
+              rounded-sm
               border
-              border-neutral-200
+              border-lis-panel-border
               bg-white
               px-5
               py-4
-              shadow-sm
+              
             "
           >
             <div>
-              <p className="text-xs uppercase tracking-wide text-neutral-500">
+              <p className="text-xs uppercase tracking-wide text-lis-muted">
                 Total Records
               </p>
 
-              <h3 className="text-2xl font-black text-neutral-900 mt-1">
+              <h3 className="text-2xl font-bold text-lis-text mt-1">
                 {schoolYears.length}
               </h3>
             </div>
@@ -102,7 +102,7 @@ export default async function Page() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[850px]">
             {/* Head */}
-            <thead className="bg-neutral-50 border-b border-neutral-200">
+            <thead className="bg-lis-panel-header border-b border-lis-panel-border">
               <tr>
                 <th
                   className="
@@ -113,7 +113,7 @@ export default async function Page() {
                     font-semibold
                     uppercase
                     tracking-wide
-                    text-neutral-500
+                    text-lis-muted
                   "
                 >
                   School Year
@@ -128,7 +128,7 @@ export default async function Page() {
                     font-semibold
                     uppercase
                     tracking-wide
-                    text-neutral-500
+                    text-lis-muted
                   "
                 >
                   Status
@@ -143,7 +143,7 @@ export default async function Page() {
                     font-semibold
                     uppercase
                     tracking-wide
-                    text-neutral-500
+                    text-lis-muted
                   "
                 >
                   Enrollment Month
@@ -158,7 +158,7 @@ export default async function Page() {
                     font-semibold
                     uppercase
                     tracking-wide
-                    text-neutral-500
+                    text-lis-muted
                   "
                 >
                   Action
@@ -174,9 +174,9 @@ export default async function Page() {
                     key={item.id}
                     className="
                         border-b
-                        border-neutral-100
+                        border-lis-panel-border
                         transition
-                        hover:bg-neutral-50/70
+                        hover:bg-lis-panel-header/70
                       "
                   >
                     {/* Year */}
@@ -186,9 +186,9 @@ export default async function Page() {
                           className="
                               h-12
                               w-12
-                              rounded-2xl
-                              bg-neutral-100
-                              text-neutral-700
+                              rounded-sm
+                              bg-lis-panel-header
+                              text-lis-text
                               flex
                               items-center
                               justify-center
@@ -199,11 +199,11 @@ export default async function Page() {
                         </div>
 
                         <div>
-                          <h3 className="font-semibold text-neutral-900">
+                          <h3 className="font-semibold text-lis-text">
                             {item.year_label}
                           </h3>
 
-                          <p className="text-sm text-neutral-500 mt-1">
+                          <p className="text-sm text-lis-muted mt-1">
                             Academic School Year
                           </p>
                         </div>
@@ -225,16 +225,16 @@ export default async function Page() {
                             ${
                               item.status === "active"
                                 ? `
-                                  bg-emerald-50
-                                  text-emerald-700
+                                  bg-lis-panel-header
+                                  text-lis-success-text
                                   border
-                                  border-emerald-100
+                                  border-lis-panel-border
                                 `
                                 : `
-                                  bg-neutral-100
-                                  text-neutral-600
+                                  bg-lis-panel-header
+                                  text-lis-muted
                                   border
-                                  border-neutral-200
+                                  border-lis-panel-border
                                 `
                             }
                           `}
@@ -251,16 +251,16 @@ export default async function Page() {
                         className="
                             inline-flex
                             items-center
-                            rounded-2xl
+                            rounded-sm
                             border
-                            border-neutral-200
+                            border-lis-panel-border
                             bg-white
                             px-4
                             py-2
                             text-sm
                             font-medium
-                            text-neutral-700
-                            shadow-sm
+                            text-lis-text
+                            
                           "
                       >
                         {item.active_month || "N/A"}
@@ -284,23 +284,23 @@ export default async function Page() {
                           mx-auto
                           h-20
                           w-20
-                          rounded-3xl
-                          bg-neutral-100
+                          rounded-sm
+                          bg-lis-panel-header
                           flex
                           items-center
                           justify-center
-                          text-neutral-400
+                          text-lis-muted
                         "
                       >
                         <BiCalendar size={36} />
                       </div>
 
                       <div>
-                        <h3 className="text-2xl font-semibold text-neutral-700">
+                        <h3 className="text-2xl font-semibold text-lis-text">
                           No School Year Found
                         </h3>
 
-                        <p className="text-sm text-neutral-500 mt-2">
+                        <p className="text-sm text-lis-muted mt-2">
                           No school year records are currently available.
                         </p>
                       </div>

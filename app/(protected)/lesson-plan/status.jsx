@@ -64,13 +64,13 @@ const status = ({ plan, profile, setUpdateLessonPlan }) => {
   };
   if (error) {
     return (
-      <div className="mt-2 rounded-md bg-red-50 px-2 py-1 w-27">
-        <p className="text-xs text-red-600 truncate">{error}</p>
+      <div className="mt-2 rounded-md bg-lis-danger-bg px-2 py-1 w-27">
+        <p className="text-xs text-lis-danger-text truncate">{error}</p>
 
         <button
           onClick={() => handleUpdate(retryStatus)}
           disabled={loading}
-          className="mt-1 text-xs font-medium text-white hover:underline disabled:opacity-50 bg-red-400 rounded  py-1 px-2"
+          className="mt-1 text-xs font-medium text-white hover:underline disabled:opacity-50 bg-lis-panel-header rounded  py-1 px-2"
         >
           {loading ? "Retrying..." : "Try Again"}
         </button>
@@ -85,8 +85,8 @@ const status = ({ plan, profile, setUpdateLessonPlan }) => {
           disabled={loading}
           className={`cursor-pointer   rounded-lg text-xs  uppercase   px-3 py-2  ${
             plan.status === "CHECKED"
-              ? "bg-emerald-100 text-emerald-700"
-              : "bg-amber-100 text-amber-700"
+              ? "bg-lis-panel-header text-lis-success-text"
+              : "bg-lis-warning-bg text-lis-warning-text"
           }`}
           onClick={() => {
             if (profile.role !== "admin") return;
@@ -98,10 +98,10 @@ const status = ({ plan, profile, setUpdateLessonPlan }) => {
           {loading ? "Updating... " : plan.status ? plan.status : "Pending"}{" "}
           {plan.status === "CHECKED" && !loading && <span>BY:</span>}
           {plan.status === "CHECKED" && !loading && (
-            <span className=" flex items-center gap-1  text-neutral-500">
+            <span className=" flex items-center gap-1  text-lis-muted">
               <span
                 title={plan.checkedBy}
-                className="max-w-20 truncate  text-neutral-700"
+                className="max-w-20 truncate  text-lis-text"
               >
                 {plan.checkedBy}
               </span>
@@ -111,17 +111,17 @@ const status = ({ plan, profile, setUpdateLessonPlan }) => {
 
         <div className="relative z-100">
           {activeStatus === plan.file_id && (
-            <div className="absolute -right-0 w-30 z-100  -mt-15 rounded border border-neutral-200 bg-white shadow-sm flex flex-col items-start    py-1  text-sm">
+            <div className="absolute -right-0 w-30 z-100  -mt-15 rounded border border-lis-panel-border bg-white  flex flex-col items-start    py-1  text-sm">
               <button
                 onClick={() => handleUpdate("PENDING")}
-                className="hover:bg-slate-100 px-3 cursor-pointer w-full py-[2px] text-left"
+                className="hover:bg-lis-panel-header px-3 cursor-pointer w-full py-[2px] text-left"
               >
                 Pending
               </button>
 
               <button
                 onClick={() => handleUpdate("CHECKED")}
-                className="hover:bg-slate-100 px-3  cursor-pointer w-full py-[2px] text-left"
+                className="hover:bg-lis-panel-header px-3  cursor-pointer w-full py-[2px] text-left"
               >
                 Checked
               </button>
