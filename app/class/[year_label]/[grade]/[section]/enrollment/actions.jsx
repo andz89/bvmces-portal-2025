@@ -18,7 +18,7 @@ export async function createOrUpdateEnrollment(formData, year_label, section) {
   }
 
   /* -----------------------------------
-     UPDATE ENROLLMENT
+     UPDATE ENROLLMENT 2
   ----------------------------------- */
   const { error } = await supabase
     .from("enrollment")
