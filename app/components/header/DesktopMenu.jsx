@@ -106,6 +106,14 @@ export default async function DesktopMenu({ profile }) {
               <BiBook size={18} />
               Lesson Plan
             </Link>
+
+            <Link
+              href="/school-forms"
+              className="flex items-center gap-3 rounded-sm px-2 py-3 text-sm text-lis-text transition hover:bg-lis-panel-header"
+            >
+              <BiFile size={18} />
+              School Forms
+            </Link>
           </div>
         </div>
 

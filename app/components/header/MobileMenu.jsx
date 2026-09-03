@@ -152,6 +152,14 @@ export default function MobileMenu({ profile }) {
                       Summative Test
                     </Link>
 
+                    <Link
+                      href="/school-forms"
+                      className="flex items-center gap-3 rounded-sm px-4 py-3 text-sm text-lis-text transition hover:bg-white"
+                    >
+                      <BiFile size={18} />
+                      School Forms
+                    </Link>
+
                     {/* <Link
                       href="/rma"
                       className="flex items-center gap-3 rounded-sm px-4 py-3 text-sm text-lis-text transition hover:bg-white"
