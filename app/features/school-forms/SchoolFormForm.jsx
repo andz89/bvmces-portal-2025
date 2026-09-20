@@ -21,6 +21,27 @@ function isAllowedFile(file) {
   return ALLOWED_EXTENSIONS.some((ext) => name.endsWith(ext));
 }
 
+// Turns an error thrown by the submit call into something a user can act on
+// (and report back to us) instead of a bare "Something went wrong."
+function describeSubmitError(err) {
+  const message = err instanceof Error ? err.message : String(err ?? "");
+  const name = err instanceof Error ? err.name : "";
+
+  if (/failed to find server action/i.test(message)) {
+    return "This page is out of date. Please refresh the page (Ctrl+F5) and try again.";
+  }
+  if (name === "NotReadableError" || /ERR_UPLOAD_FILE_CHANGED/i.test(message)) {
+    return "The file could not be read. Close it in Excel, save a copy to your Desktop, and attach that copy.";
+  }
+  if (/failed to fetch|networkerror|network error|load failed|timed? ?out/i.test(message)) {
+    return "Connection problem while uploading. Please check your internet and try again.";
+  }
+
+  return message
+    ? `Upload failed: ${message}`
+    : "Upload failed for an unknown reason. Please try again.";
+}
+
 const inputClass =
   "w-full rounded-lg border border-lis-panel-border bg-white px-3.5 py-2.5 text-sm text-lis-text outline-none transition focus:border-lis-primary disabled:bg-lis-panel-header disabled:text-lis-muted";
 
@@ -64,6 +85,13 @@ export default function SchoolFormForm({
         : await createSchoolForm(formData);
 
       if (result?.error) {
+        console.error("[school-forms] server returned an error", {
+          mode: editingRecord ? "update" : "create",
+          sf,
+          file: file ? { name: file.name, size: file.size, type: file.type } : null,
+          serverError: result.error,
+          time: new Date().toISOString(),
+        });
         toast.error(result.error);
         return;
       }
@@ -77,8 +105,28 @@ export default function SchoolFormForm({
       if (editingRecord) setEditingRecord(null);
       if (result.record) onSaved(result.record);
     } catch (err) {
-      console.error(err);
-      toast.error("Something went wrong.");
+      console.error("[school-forms] submit failed", {
+        mode: editingRecord ? "update" : "create",
+        sf,
+        file: file
+          ? { name: file.name, size: file.size, type: file.type }
+          : null,
+        online: typeof navigator !== "undefined" ? navigator.onLine : null,
+        connection:
+          typeof navigator !== "undefined" && navigator.connection
+            ? {
+                effectiveType: navigator.connection.effectiveType,
+                downlink: navigator.connection.downlink,
+              }
+            : null,
+        userAgent:
+          typeof navigator !== "undefined" ? navigator.userAgent : null,
+        time: new Date().toISOString(),
+        errorName: err instanceof Error ? err.name : typeof err,
+        errorMessage: err instanceof Error ? err.message : String(err),
+        error: err,
+      });
+      toast.error(describeSubmitError(err), { duration: 8000 });
     } finally {
       setLoading(false);
     }

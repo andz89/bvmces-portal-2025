@@ -33,6 +33,21 @@ export async function getSchoolForms() {
   return result;
 }
 
+// checkRole() talks to Supabase and can throw on a network/session hiccup.
+// Catch that here so the form gets a readable error instead of a rejected
+// server action.
+async function getProfileSafe() {
+  try {
+    return { profile: await checkRole() };
+  } catch (err) {
+    console.error("checkRole failed:", err);
+    return {
+      error:
+        "Could not verify your session. Please refresh the page and sign in again.",
+    };
+  }
+}
+
 function buildSf2FromFormData(formData) {
   const sf2 = {
     month: formData.get("sf2_month"),
@@ -61,8 +76,11 @@ function buildSf2FromFormData(formData) {
 }
 
 export async function createSchoolForm(formData) {
-  const profile = await checkRole();
+  const { profile, error: profileError } = await getProfileSafe();
 
+  if (profileError) {
+    return { error: profileError };
+  }
   if (!profile) {
     return { error: "Unauthorized" };
   }
@@ -237,8 +255,11 @@ export async function deleteSchoolForm(id, sf) {
 }
 
 export async function updateSchoolForm(id, sf, formData) {
-  const profile = await checkRole();
+  const { profile, error: profileError } = await getProfileSafe();
 
+  if (profileError) {
+    return { error: profileError };
+  }
   if (!profile) {
     return { error: "Unauthorized" };
   }
