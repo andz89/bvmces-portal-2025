@@ -43,7 +43,8 @@ export default async function DesktopMenu({ profile }) {
             <BiChevronDown size={18} />
           </button>
 
-          <div className="invisible absolute left-0 top-[120%] z-[9999] w-56 translate-y-2 rounded-sm border border-lis-panel-border bg-white p-1 opacity-0  transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+          <div className="invisible absolute left-0 top-[120%] z-[9999] w-[26rem] translate-y-2 rounded-sm border border-lis-panel-border bg-white p-1 opacity-0  transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+            <div className="grid grid-cols-2 gap-1">
             <Link
               href="/mps"
               className="flex items-center gap-3 rounded-sm px-4 py-3 text-sm text-lis-text transition hover:bg-lis-panel-header"
@@ -131,6 +132,7 @@ export default async function DesktopMenu({ profile }) {
               <BiFile size={18} />
               School Forms
             </Link>
+            </div>
           </div>
         </div>
 
