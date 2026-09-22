@@ -1,49 +1,7 @@
-import { React, useState } from "react";
-import { BiSolidTrash, BiEdit, BiLinkExternal } from "react-icons/bi";
-import ConfirmDeleteModal from "@/app/components/ConfirmDeleteModal";
-import { deleteMPS } from "./actions";
-const QuarterTable = ({
-  mps,
-  profile,
-  deleteId,
-  setDeleteId,
-  title,
-  setInitialData,
-  setOpenForm,
-  class_id,
-  school_year,
-  section,
-}) => {
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(null);
+import { React } from "react";
+import { BiLinkExternal } from "react-icons/bi";
 
-  const [openDelete, setOpenDelete] = useState(false);
-  const [targetRow, setTargetRow] = useState(null);
-  const [deleteError, setDeleteError] = useState("");
-  const handleConfirmDelete = async (password) => {
-    if (!targetRow) return;
-
-    setLoading(true);
-    setDeleteError("");
-
-    const result = await deleteMPS(
-      targetRow.id,
-      class_id,
-      password,
-      school_year,
-      section,
-    );
-
-    if (result.message === "true") {
-      setOpenDelete(false);
-    } else if (result.message === "invalid_password") {
-      setDeleteError("Invalid password. Please try again.");
-    } else {
-      setDeleteError("Failed to delete GPA record.");
-    }
-
-    setLoading(false);
-  };
+const QuarterTable = ({ mps, title }) => {
   return (
     <div
       className="
@@ -68,19 +26,6 @@ const QuarterTable = ({
           to-white
         "
       >
-        <ConfirmDeleteModal
-          open={openDelete}
-          onClose={() => setOpenDelete(false)}
-          onConfirm={handleConfirmDelete}
-          loading={loading}
-          error={deleteError}
-          description={
-            targetRow
-              ? `Delete GPA record for Grade ${targetRow.class.grade} -  Quarter ${targetRow.quarter.toUpperCase()}? This action cannot be undone.`
-              : ""
-          }
-        />
-
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div>
             <h2 className="text-2xl font-bold text-gray-800">
@@ -141,10 +86,6 @@ const QuarterTable = ({
               <th className="px-4 py-4 text-center font-semibold">Average</th>
 
               <th className="px-4 py-4 text-center font-semibold">Sources</th>
-
-              {profile.role !== "visitor" && (
-                <th className="px-4 py-4 text-center font-semibold">Actions</th>
-              )}
             </tr>
           </thead>
 
@@ -320,60 +261,6 @@ const QuarterTable = ({
                       )}
                     </div>
                   </td>
-
-                  {/* Actions */}
-                  {profile?.role !== "visitor" && (
-                    <td className="px-4 py-4">
-                      <div className="flex items-center justify-center gap-2">
-                        {/* Edit */}
-                        <button
-                          onClick={() => {
-                            setInitialData(item);
-                            setOpenForm(true);
-                          }}
-                          className="
-                            h-10
-                            w-10
-                            rounded-xl
-                            bg-blue-50
-                            text-blue-600
-                            flex
-                            items-center
-                            justify-center
-                            hover:bg-blue-100
-                            transition
-                          "
-                        >
-                          <BiEdit size={20} />
-                        </button>
-
-                        {/* Delete */}
-                        {profile?.role === "admin" && (
-                          <button
-                            onClick={() => {
-                              setTargetRow(item);
-                              setDeleteError("");
-                              setOpenDelete(true);
-                            }}
-                            className="
-                              h-10
-                              w-10
-                              rounded-xl
-                              bg-red-50
-                              text-red-600
-                              flex
-                              items-center
-                              justify-center
-                              hover:bg-red-100
-                              transition
-                            "
-                          >
-                            <BiSolidTrash size={20} />
-                          </button>
-                        )}
-                      </div>
-                    </td>
-                  )}
                 </tr>
               );
             })}

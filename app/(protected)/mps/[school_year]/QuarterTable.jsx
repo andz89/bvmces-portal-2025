@@ -1,51 +1,9 @@
-import { React, useState } from "react";
-import { BiSolidTrash, BiEdit, BiLinkExternal, BiExport } from "react-icons/bi";
+import { React } from "react";
+import { BiLinkExternal, BiExport } from "react-icons/bi";
 
-import DeleteForm from "./DeleteForm.jsx";
 import { exportToExcel } from "../utils/exportAsExcel.js";
-import { deleteMPSReport } from "./actions.jsx";
-import { toast } from "react-hot-toast";
-import ConfirmDeleteModal from "@/app/components/ConfirmDeleteModal.jsx";
-const QuarterTable = ({
-  mps,
-  profile,
-  school_year,
-  title,
-  setInitialData,
-  setOpenForm,
-}) => {
-  const [loading, setLoading] = useState(false);
-  const [targetRow, setTargetRow] = useState(null);
-  const [openDelete, setOpenDelete] = useState(false);
-  const [deleteError, setDeleteError] = useState("");
-  const handleDelete = async (password) => {
-    if (!targetRow) return;
 
-    setLoading(true);
-
-    setDeleteError("");
-    try {
-      const result = await deleteMPSReport({
-        rowData: targetRow,
-        password,
-        school_year,
-      });
-
-      if (result.success) {
-        setOpenDelete(false);
-
-        toast.success(result.message);
-      } else if (result.message === "invalid_password") {
-        setDeleteError("Invalid password. Please try again.");
-      } else {
-        setDeleteError(result.message || "Failed to delete GPA record.");
-      }
-    } catch (error) {
-      setDeleteError("Something went wrong.");
-    } finally {
-      setLoading(false);
-    }
-  };
+const QuarterTable = ({ mps, title }) => {
   return (
     <div
       className="
@@ -71,19 +29,6 @@ const QuarterTable = ({
           to-white
         "
       >
-        {/* Delete Modal */}
-        <ConfirmDeleteModal
-          open={openDelete}
-          onClose={() => setOpenDelete(false)}
-          onConfirm={handleDelete}
-          loading={loading}
-          error={deleteError}
-          description={
-            targetRow
-              ? `Delete GPA record for Grade ${targetRow.class.grade} - ${targetRow.class.section}  Quarter ${targetRow.quarter.toUpperCase()}? This action cannot be undone.`
-              : ""
-          }
-        />
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           {/* Left */}
           <div>
@@ -175,10 +120,6 @@ const QuarterTable = ({
               <th className="px-4 py-4 text-center font-semibold">Average</th>
 
               <th className="px-4 py-4 text-center font-semibold">Sources</th>
-
-              {profile.role === "admin" && (
-                <th className="px-4 py-4 text-center font-semibold">Actions</th>
-              )}
             </tr>
           </thead>
 
@@ -354,58 +295,6 @@ const QuarterTable = ({
                       )}
                     </div>
                   </td>
-
-                  {/* Actions */}
-                  {profile.role === "admin" && (
-                    <td className="px-4 py-4 ">
-                      <div className="flex items-center justify-center gap-2">
-                        {/* Delete */}
-
-                        {/* Edit */}
-                        <button
-                          onClick={() => {
-                            setInitialData(item);
-                            setOpenForm(true);
-                          }}
-                          className="
-                            h-11
-                            w-11
-                            rounded-2xl
-                            bg-blue-50
-                            text-blue-600
-                            flex
-                            items-center
-                            justify-center
-                            hover:bg-blue-100
-                            transition
-                          "
-                        >
-                          <BiEdit size={21} />
-                        </button>
-                        <button
-                          onClick={() => {
-                            setOpenDelete(true);
-
-                            setTargetRow(item);
-                          }}
-                          className="
-                                  h-11
-                                  w-11
-                                  rounded-2xl
-                                  bg-red-50
-                                  text-red-600
-                                  flex
-                                  items-center
-                                  justify-center
-                                  hover:bg-red-100
-                                  transition
-                                "
-                        >
-                          <BiSolidTrash size={21} />
-                        </button>
-                      </div>
-                    </td>
-                  )}
                 </tr>
               );
             })}

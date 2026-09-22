@@ -1,10 +1,73 @@
 "use client";
 import React from "react";
-import { BiBookOpen } from "react-icons/bi";
+import { BiSolidTrash, BiEdit, BiBookOpen } from "react-icons/bi";
+import { deleteGPATerm } from "../../../features/gpa-term/actions";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import FullPageLoader from "../../../components/loader/FullPageLoader";
+import ConfirmDeleteModal from "@/app/components/ConfirmDeleteModal";
 
-const GPATable = ({ section, schoolYear, grade, data, adviser, quarter }) => {
+const GPATermTable = ({
+  section,
+  schoolYear,
+  grade,
+  data,
+  profile,
+  adviser,
+  term,
+  setOpenEdit,
+  setInitialData,
+  class_id,
+}) => {
+  const [loading, setLoading] = useState(false);
+  const [targetRow, setTargetRow] = useState(null);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+  const handleDelete = async (password) => {
+    if (!targetRow) return;
+
+    setLoading(true);
+
+    setDeleteError("");
+    try {
+      const result = await deleteGPATerm({
+        class_id,
+        term,
+        school_year: schoolYear,
+        password,
+      });
+
+      if (result.success) {
+        setOpenDelete(false);
+
+        toast.success(result.message);
+      } else if (result.message === "invalid_password") {
+        setDeleteError("Invalid password. Please try again.");
+      } else {
+        setDeleteError(result.message || "Failed to delete GPA record.");
+      }
+    } catch (error) {
+      setDeleteError("Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="mb-10">
+      {loading && <FullPageLoader />}
+      {/* Delete Modal */}
+      <ConfirmDeleteModal
+        open={openDelete}
+        onClose={() => setOpenDelete(false)}
+        onConfirm={handleDelete}
+        loading={loading}
+        error={deleteError}
+        description={
+          targetRow
+            ? `Delete GPA record for Grade ${targetRow.grade} - ${targetRow.section}  Term ${targetRow.term.toUpperCase()}? This action cannot be undone.`
+            : ""
+        }
+      />
       <div
         className="
           bg-white
@@ -52,7 +115,7 @@ const GPATable = ({ section, schoolYear, grade, data, adviser, quarter }) => {
                 <p className="text-sm font-medium text-lis-muted mt-1">
                   {adviser && `Adviser: ${adviser}`}
                 </p>
-                <p className="text-sm text-lis-muted ">Quarter {quarter}</p>
+                <p className="text-sm text-lis-muted ">Term {term}</p>
               </div>
             </div>
 
@@ -75,6 +138,41 @@ const GPATable = ({ section, schoolYear, grade, data, adviser, quarter }) => {
 
                 <p className="text-lg font-bold text-lis-text">{data.length}</p>
               </div>
+
+              {/* Delete */}
+              {profile.role === "admin" && (
+                <button
+                  onClick={() => {
+                    setOpenDelete(true);
+
+                    setTargetRow({
+                      term,
+                      grade,
+                      section,
+                    });
+                  }}
+                  className="
+                    inline-flex
+                    items-center
+                    gap-2
+                    rounded-sm
+                    bg-lis-primary
+
+
+                    px-5
+                    py-3
+                    text-white
+                    font-semibold
+
+                    transition
+                    hover:scale-[1.02]
+                  "
+                >
+                  <BiSolidTrash size={20} />
+
+                  <span>Delete GPA</span>
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -105,6 +203,20 @@ const GPATable = ({ section, schoolYear, grade, data, adviser, quarter }) => {
                     {label}
                   </th>
                 ))}
+
+                {profile.role === "admin" ? (
+                  <th
+                    rowSpan="2"
+                    className="px-5 py-4 text-center font-semibold"
+                  >
+                    Actions
+                  </th>
+                ) : (
+                  <th
+                    rowSpan="2"
+                    className="px-5 py-4 text-center font-semibold"
+                  ></th>
+                )}
               </tr>
 
               {/* M/F/T */}
@@ -187,6 +299,34 @@ const GPATable = ({ section, schoolYear, grade, data, adviser, quarter }) => {
                   <td className="text-center font-bold text-lis-link">
                     {Number(item.e_male) + Number(item.e_female)}
                   </td>
+
+                  {/* Actions */}
+                  <td className="px-4 py-4">
+                    {profile.role === "admin" && (
+                      <div className="flex justify-center">
+                        <button
+                          onClick={() => {
+                            setInitialData(item);
+                            setOpenEdit(true);
+                          }}
+                          className="
+                            h-11
+                            w-11
+                            rounded-sm
+                            bg-lis-panel-header
+                            text-lis-success-text
+                            flex
+                            items-center
+                            justify-center
+                            hover:bg-lis-panel-header
+                            transition
+                          "
+                        >
+                          <BiEdit size={22} />
+                        </button>
+                      </div>
+                    )}
+                  </td>
                 </tr>
               ))}
 
@@ -214,4 +354,4 @@ const GPATable = ({ section, schoolYear, grade, data, adviser, quarter }) => {
   );
 };
 
-export default GPATable;
+export default GPATermTable;

@@ -145,6 +145,14 @@ export default function MobileMenu({ profile }) {
                     </Link>
 
                     <Link
+                      href="/gpa-term"
+                      className="flex items-center gap-3 rounded-sm px-4 py-3 text-sm text-lis-text transition hover:bg-white"
+                    >
+                      <BiAward size={18} />
+                      GPA Term
+                    </Link>
+
+                    <Link
                       href="/summative-test"
                       className="flex items-center gap-3 rounded-sm px-4 py-3 text-sm text-lis-text transition hover:bg-white"
                     >

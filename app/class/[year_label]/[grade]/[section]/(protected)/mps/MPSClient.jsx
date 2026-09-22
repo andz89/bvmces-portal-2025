@@ -1,28 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Form from "./Form.jsx";
-import { BiPlus } from "react-icons/bi";
 import QuarterTable from "./QuarterTable.jsx";
 
 const MPSClient = ({ profile, mps, school_year, class_id, section, grade }) => {
-  const [initialData, setInitialData] = useState(null);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [deleteId, setDeleteId] = useState(null);
-  const [openForm, setOpenForm] = useState(false);
-
-  useEffect(() => {
-    if (successMessage) {
-      setOpenForm(false);
-
-      const timer = setTimeout(() => {
-        setSuccessMessage("");
-      }, 5000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [successMessage]);
-
   // Group by quarter
   const groupedByQuarter = mps.reduce((acc, item) => {
     const quarter = item.quarter || "No Quarter";
@@ -38,41 +18,6 @@ const MPSClient = ({ profile, mps, school_year, class_id, section, grade }) => {
 
   return (
     <div className="min-h-screen bg-[#f3f6fb] pb-16 w-full">
-      {/* Form */}
-      {openForm && (
-        <Form
-          key={initialData?.id || "create"}
-          initialData={initialData}
-          setInitialData={setInitialData}
-          setOpenForm={setOpenForm}
-          setSuccessMessage={setSuccessMessage}
-          school_year={school_year}
-          class_id={class_id}
-          section={section}
-          grade={grade}
-        />
-      )}
-
-      {/* Success */}
-      {successMessage && (
-        <div className="max-w-7xl mx-auto px-4 pt-6">
-          <div
-            className="
-              rounded-2xl
-              border
-              border-green-200
-              bg-green-50
-              px-5
-              py-4
-              text-green-700
-              shadow-sm
-            "
-          >
-            {successMessage}
-          </div>
-        </div>
-      )}
-
       {/* Hero Header */}
       <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-700">
         {/* Glow */}
@@ -108,8 +53,8 @@ const MPSClient = ({ profile, mps, school_year, class_id, section, grade }) => {
               </h1>
 
               <p className="text-blue-100 text-base mt-3 max-w-2xl">
-                Track learner performance, organize MPS records, and monitor
-                academic progress efficiently.
+                Track learner performance and organize MPS records. This view
+                is read-only.
               </p>
 
               {/* Stats */}
@@ -184,9 +129,8 @@ const MPSClient = ({ profile, mps, school_year, class_id, section, grade }) => {
             </div>
 
             {/* Right */}
-            {profile.role !== "visitor" && (
-              <div
-                className="
+            <div
+              className="
                   bg-white/10
                   backdrop-blur-xl
                   border
@@ -197,42 +141,13 @@ const MPSClient = ({ profile, mps, school_year, class_id, section, grade }) => {
                   w-full
                   max-w-sm
                 "
-              >
-                <h2 className="text-white text-xl font-bold">Quick Action</h2>
+            >
+              <h2 className="text-white text-xl font-bold">Read-Only</h2>
 
-                <p className="text-blue-100 text-sm mt-1">
-                  Upload and manage MPS files for this class.
-                </p>
-
-                <button
-                  onClick={() => {
-                    setInitialData(null);
-                    setOpenForm(true);
-                  }}
-                  className="
-                    mt-5
-                    w-full
-                    inline-flex
-                    items-center
-                    justify-center
-                    gap-2
-                    rounded-2xl
-                    bg-white
-                    px-5
-                    py-3
-                    text-gray-800
-                    font-semibold
-                    shadow-lg
-                    hover:scale-[1.02]
-                    transition
-                  "
-                >
-                  <BiPlus size={22} />
-
-                  <span>Add New File</span>
-                </button>
-              </div>
-            )}
+              <p className="text-blue-100 text-sm mt-1">
+                This is a read-only archive of quarter-based MPS files.
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -240,19 +155,7 @@ const MPSClient = ({ profile, mps, school_year, class_id, section, grade }) => {
       {/* Quarter Sections */}
       <div className="w-full mx-auto px-4 md:px-6 py-8 space-y-8">
         {Object.entries(groupedByQuarter).map(([quarter, data]) => (
-          <QuarterTable
-            key={quarter}
-            title={quarter}
-            mps={[...data]}
-            profile={profile}
-            deleteId={deleteId}
-            setDeleteId={setDeleteId}
-            setInitialData={setInitialData}
-            setOpenForm={setOpenForm}
-            class_id={class_id}
-            school_year={school_year}
-            section={section}
-          />
+          <QuarterTable key={quarter} title={quarter} mps={[...data]} />
         ))}
 
         {/* Empty */}
@@ -274,8 +177,8 @@ const MPSClient = ({ profile, mps, school_year, class_id, section, grade }) => {
               </h3>
 
               <p className="text-gray-500 max-w-md mx-auto">
-                Upload your first Monitoring Progress Summary file to begin
-                tracking academic performance.
+                No Monitoring Progress Summary files have been recorded for
+                this class.
               </p>
             </div>
           </div>

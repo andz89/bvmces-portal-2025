@@ -1,92 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 
-import {
-  BiSolidTrash,
-  BiEdit,
-  BiBookOpen,
-  BiBarChartAlt2,
-} from "react-icons/bi";
+import { BiBookOpen, BiBarChartAlt2 } from "react-icons/bi";
 
-import { deleteGPA } from "./actions";
-
-import toast from "react-hot-toast";
-
-import FullPageLoader from "@/app/components/loader/FullPageLoader";
-
-import ConfirmDeleteModal from "@/app/components/ConfirmDeleteModal";
-
-const GPATable = ({
-  section,
-  school_year,
-  grade,
-  data,
-  profile,
-  quarter,
-  setOpenEdit,
-  setInitialData,
-  class_id,
-}) => {
-  const [loading, setLoading] = useState(false);
-
-  const [openDelete, setOpenDelete] = useState(false);
-
-  const [targetRow, setTargetRow] = useState(null);
-
-  const [deleteError, setDeleteError] = useState("");
-
-  const handleConfirmDelete = async (password) => {
-    if (!targetRow) return;
-
-    setLoading(true);
-
-    setDeleteError("");
-
-    try {
-      const result = await deleteGPA(
-        quarter,
-        class_id,
-        school_year,
-        section,
-        grade,
-        password,
-      );
-
-      if (result.success) {
-        setOpenDelete(false);
-
-        toast.success(result.message);
-      } else if (result.message === "invalid_password") {
-        setDeleteError("Invalid password. Please try again.");
-      } else {
-        setDeleteError(result.message || "Failed to delete GPA record.");
-      }
-    } catch (error) {
-      setDeleteError("Something went wrong.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
+const GPATable = ({ section, grade, data, quarter }) => {
   return (
     <div className="mb-10">
-      {loading && <FullPageLoader />}
-
-      {/* Delete Modal */}
-      <ConfirmDeleteModal
-        open={openDelete}
-        onClose={() => setOpenDelete(false)}
-        onConfirm={handleConfirmDelete}
-        loading={loading}
-        error={deleteError}
-        description={
-          targetRow
-            ? `Delete all GPA records for Quarter ${targetRow.quarter.toUpperCase()}? This action cannot be undone.`
-            : ""
-        }
-      />
-
       {/* Card */}
       <div
         className="
@@ -94,7 +14,7 @@ const GPATable = ({
           rounded-sm
           border
           border-lis-panel-border
-          
+
           overflow-hidden
         "
       >
@@ -118,12 +38,11 @@ const GPATable = ({
                   rounded-sm
                   bg-lis-primary
 
-
                   text-white
                   flex
                   items-center
                   justify-center
-                  
+
                 "
               >
                 <BiBookOpen size={28} />
@@ -151,7 +70,7 @@ const GPATable = ({
                   rounded-sm
                   px-4
                   py-2
-                  
+
                 "
               >
                 <p className="text-xs uppercase tracking-wide text-lis-muted">
@@ -162,39 +81,6 @@ const GPATable = ({
                   {data.length}
                 </p>
               </div>
-
-              {/* Delete */}
-              {profile?.role === "admin" && (
-                <button
-                  onClick={() => {
-                    setOpenDelete(true);
-
-                    setTargetRow({
-                      quarter,
-                    });
-                  }}
-                  className="
-                    inline-flex
-                    items-center
-                    gap-2
-                    rounded-sm
-                    bg-lis-primary
-                    
-                    
-                    px-5
-                    py-3
-                    text-white
-                    font-semibold
-                    
-                    transition
-                    hover:scale-[1.02]
-                  "
-                >
-                  <BiSolidTrash size={20} />
-
-                  <span>Delete GPA</span>
-                </button>
-              )}
             </div>
           </div>
         </div>
@@ -225,19 +111,6 @@ const GPATable = ({
                     {label}
                   </th>
                 ))}
-                {profile?.role !== "visitor" ? (
-                  <th
-                    rowSpan="2"
-                    className="px-4 py-4 text-center font-semibold"
-                  >
-                    Actions
-                  </th>
-                ) : (
-                  <th
-                    rowSpan="2"
-                    className="px-4 py-4 text-center font-semibold"
-                  ></th>
-                )}
               </tr>
 
               {/* M/F/T */}
@@ -278,14 +151,14 @@ const GPATable = ({
                           w-10
                           rounded-sm
                           bg-lis-primary
-                          
-                          
+
+
                           text-white
                           font-bold
                           flex
                           items-center
                           justify-center
-                          
+
                         "
                       >
                         <BiBarChartAlt2 />
@@ -295,8 +168,6 @@ const GPATable = ({
                         <p className="font-semibold text-lis-text uppercase">
                           {item.subject}
                         </p>
-
-                        {/* <p className="text-xs text-lis-muted">Subject GPA</p> */}
                       </div>
                     </div>
                   </td>
@@ -344,35 +215,6 @@ const GPATable = ({
 
                   <td className="text-center font-bold text-lis-link">
                     {Number(item.e_male) + Number(item.e_female)}
-                  </td>
-
-                  {/* Actions */}
-                  <td className="px-4 py-4">
-                    {profile.role !== "visitor" && (
-                      <div className="flex justify-center">
-                        <button
-                          onClick={() => {
-                            setInitialData(item);
-
-                            setOpenEdit(true);
-                          }}
-                          className="
-                            h-11
-                            w-11
-                            rounded-sm
-                            bg-lis-panel-header
-                            text-lis-success-text
-                            flex
-                            items-center
-                            justify-center
-                            hover:bg-lis-panel-header
-                            transition
-                          "
-                        >
-                          <BiEdit size={22} />
-                        </button>
-                      </div>
-                    )}
                   </td>
                 </tr>
               ))}

@@ -2,24 +2,12 @@
 
 import { React, useState } from "react";
 
-import { BiPlus, BiTable, BiGridAlt, BiBarChartAlt2 } from "react-icons/bi";
+import { BiTable, BiGridAlt, BiBarChartAlt2 } from "react-icons/bi";
 
-import BulkAddGPAModal from "./BulkAddGPAModal";
 import GPATable from "./GPATable";
 import ConsolidatedGradeTable from "./ConsolidatedGradeTable";
-import EditGPAModal from "./EditGPAModal";
 
 const GPAClient = ({ school_year, profile, gpa, classData }) => {
-  const [initialData, setInitialData] = useState(null);
-
-  const [successMessage, setSuccessMessage] = useState("");
-
-  const [deleteId, setDeleteId] = useState(null);
-
-  const [openBulkAddModal, setOpenBulkAddModal] = useState(false);
-
-  const [openEdit, setOpenEdit] = useState(false);
-
   const [showConsolidated, setShowConsolidated] = useState(false);
 
   // Group by quarter and section
@@ -70,23 +58,6 @@ const GPAClient = ({ school_year, profile, gpa, classData }) => {
 
   return (
     <div className="min-h-screen bg-lis-bg pb-20">
-      {/* Edit Modal */}
-      <EditGPAModal
-        openEdit={openEdit}
-        onClose={() => setOpenEdit(false)}
-        initialData={initialData}
-        school_year={school_year}
-        classData={classData}
-      />
-
-      {/* Bulk Add */}
-      <BulkAddGPAModal
-        classData={classData}
-        open={openBulkAddModal}
-        onClose={() => setOpenBulkAddModal(false)}
-        school_year={school_year}
-      />
-
       {/* Hero */}
       {/* Hero */}
       <div className="relative overflow-hidden bg-lis-primary   ">
@@ -124,8 +95,8 @@ const GPAClient = ({ school_year, profile, gpa, classData }) => {
               </h1>
 
               <p className="text-white/80 text-base mt-3 max-w-2xl">
-                Analyze learner performance, monitor grade trends, and manage
-                GPA reports efficiently.
+                Analyze learner performance and monitor grade trends. This
+                view is read-only — use GPA Term to add or edit records.
               </p>
 
               {/* Stats */}
@@ -195,31 +166,30 @@ const GPAClient = ({ school_year, profile, gpa, classData }) => {
               </div>
             </div>
 
-            {profile.role === "admin" && (
-              <div
-                className="
+            <div
+              className="
           bg-white/10
-          
+
           border
           border-white/10
           rounded-sm
           p-6
-          
+
           w-full
           max-w-sm
         "
-              >
-                <h2 className="text-white text-xl font-bold">Quick Actions</h2>
+            >
+              <h2 className="text-white text-xl font-bold">View Options</h2>
 
-                <p className="text-white/80 text-sm mt-1">
-                  Manage GPA records and consolidated reports.
-                </p>
+              <p className="text-white/80 text-sm mt-1">
+                This is a read-only archive of quarter-based GPA records.
+              </p>
 
-                <div className="space-y-3 mt-5">
-                  {/* Toggle */}
-                  <button
-                    onClick={() => setShowConsolidated(!showConsolidated)}
-                    className="
+              <div className="space-y-3 mt-5">
+                {/* Toggle */}
+                <button
+                  onClick={() => setShowConsolidated(!showConsolidated)}
+                  className="
               w-full
               inline-flex
               items-center
@@ -236,47 +206,21 @@ const GPAClient = ({ school_year, profile, gpa, classData }) => {
               hover:bg-white/20
               transition
             "
-                  >
-                    {showConsolidated ? (
-                      <BiTable size={20} />
-                    ) : (
-                      <BiGridAlt size={20} />
-                    )}
+                >
+                  {showConsolidated ? (
+                    <BiTable size={20} />
+                  ) : (
+                    <BiGridAlt size={20} />
+                  )}
 
-                    <span>
-                      {showConsolidated
-                        ? "Show Individual"
-                        : "Show Consolidated"}
-                    </span>
-                  </button>
-
-                  {/* Add */}
-                  <button
-                    onClick={() => setOpenBulkAddModal(true)}
-                    className="
-              w-full
-              inline-flex
-              items-center
-              justify-center
-              gap-2
-              rounded-sm
-              bg-white
-              px-5
-              py-3
-              text-lis-success-text
-              font-semibold
-              
-              hover:scale-[1.02]
-              transition
-            "
-                  >
-                    <BiPlus size={22} />
-
-                    <span>Add GPA</span>
-                  </button>
-                </div>
+                  <span>
+                    {showConsolidated
+                      ? "Show Individual"
+                      : "Show Consolidated"}
+                  </span>
+                </button>
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
@@ -337,8 +281,6 @@ const GPAClient = ({ school_year, profile, gpa, classData }) => {
                   .map(([gradeOrSection, items]) => {
                     const schoolYear = items[0]?.school_year;
 
-                    const class_id = items[0]?.class.id;
-
                     const grade = items[0]?.class.grade;
 
                     const adviser = items[0]?.class?.adviser?.full_name;
@@ -363,13 +305,6 @@ const GPAClient = ({ school_year, profile, gpa, classData }) => {
                             schoolYear={schoolYear}
                             quarter={items[0]?.quarter}
                             data={sortedItems}
-                            profile={profile}
-                            deleteId={deleteId}
-                            setDeleteId={setDeleteId}
-                            setInitialData={setInitialData}
-                            initialData={initialData}
-                            setOpenEdit={setOpenEdit}
-                            class_id={class_id}
                             adviser={adviser}
                           />
                         )}

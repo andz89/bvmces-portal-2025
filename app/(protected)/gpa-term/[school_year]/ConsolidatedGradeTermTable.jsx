@@ -1,8 +1,57 @@
 "use client";
-import React from "react";
-import { BiBookOpen } from "react-icons/bi";
 
-const GPATable = ({ section, schoolYear, grade, data, adviser, quarter }) => {
+import React from "react";
+
+import { BiBarChartAlt2, BiLayer } from "react-icons/bi";
+
+const ConsolidatedGradeTermTable = ({ grade, schoolYear, data, term }) => {
+  // Consolidate by subject
+  const consolidatedBySubject = data.reduce((acc, item) => {
+    const subject = item.subject;
+
+    if (!acc[subject]) {
+      acc[subject] = {
+        subject,
+        not_meet_male: 0,
+        not_meet_female: 0,
+        fs_male: 0,
+        fs_female: 0,
+        s_male: 0,
+        s_female: 0,
+        vs_male: 0,
+        vs_female: 0,
+        e_male: 0,
+        e_female: 0,
+      };
+    }
+
+    acc[subject].not_meet_male += Number(item.not_meet_male);
+
+    acc[subject].not_meet_female += Number(item.not_meet_female);
+
+    acc[subject].fs_male += Number(item.fs_male);
+
+    acc[subject].fs_female += Number(item.fs_female);
+
+    acc[subject].s_male += Number(item.s_male);
+
+    acc[subject].s_female += Number(item.s_female);
+
+    acc[subject].vs_male += Number(item.vs_male);
+
+    acc[subject].vs_female += Number(item.vs_female);
+
+    acc[subject].e_male += Number(item.e_male);
+
+    acc[subject].e_female += Number(item.e_female);
+
+    return acc;
+  }, {});
+
+  const sortedData = Object.values(consolidatedBySubject).sort((a, b) =>
+    a.subject.localeCompare(b.subject),
+  );
+
   return (
     <div className="mb-10">
       <div
@@ -42,17 +91,17 @@ const GPATable = ({ section, schoolYear, grade, data, adviser, quarter }) => {
 
                 "
               >
-                <BiBookOpen size={28} />
+                <BiLayer size={28} />
               </div>
 
               <div>
                 <h2 className="text-2xl font-bold text-lis-text">
-                  Grade {grade} — {section.toUpperCase()}
+                  Grade {grade} — Consolidated
                 </h2>
-                <p className="text-sm font-medium text-lis-muted mt-1">
-                  {adviser && `Adviser: ${adviser}`}
+
+                <p className="text-sm text-lis-muted mt-1">
+                  Term {term} consolidated GPA summary
                 </p>
-                <p className="text-sm text-lis-muted ">Quarter {quarter}</p>
               </div>
             </div>
 
@@ -73,7 +122,29 @@ const GPATable = ({ section, schoolYear, grade, data, adviser, quarter }) => {
                   Subjects
                 </p>
 
-                <p className="text-lg font-bold text-lis-text">{data.length}</p>
+                <p className="text-lg font-bold text-lis-text">
+                  {sortedData.length}
+                </p>
+              </div>
+
+              <div
+                className="
+                  bg-lis-primary
+
+
+                  rounded-sm
+                  px-5
+                  py-3
+                  text-white
+
+                  flex
+                  items-center
+                  gap-2
+                "
+              >
+                <BiBarChartAlt2 size={22} />
+
+                <span className="font-semibold">Consolidated</span>
               </div>
             </div>
           </div>
@@ -123,9 +194,9 @@ const GPATable = ({ section, schoolYear, grade, data, adviser, quarter }) => {
 
             {/* Body */}
             <tbody>
-              {data.map((item) => (
+              {sortedData.map((item) => (
                 <tr
-                  key={item.id}
+                  key={item.subject}
                   className="
                     border-t
                     border-lis-panel-border
@@ -136,11 +207,9 @@ const GPATable = ({ section, schoolYear, grade, data, adviser, quarter }) => {
                 >
                   {/* Subject */}
                   <td className="px-5 py-4">
-                    <div>
-                      <p className="font-semibold text-lis-text uppercase">
-                        {item.subject}
-                      </p>
-                    </div>
+                    <p className="font-semibold text-lis-text uppercase">
+                      {item.subject}
+                    </p>
                   </td>
 
                   {/* FAILED */}
@@ -149,7 +218,7 @@ const GPATable = ({ section, schoolYear, grade, data, adviser, quarter }) => {
                   <td className="text-center">{item.not_meet_female}</td>
 
                   <td className="text-center font-bold text-lis-danger-text">
-                    {Number(item.not_meet_male) + Number(item.not_meet_female)}
+                    {item.not_meet_male + item.not_meet_female}
                   </td>
 
                   {/* FS */}
@@ -158,16 +227,16 @@ const GPATable = ({ section, schoolYear, grade, data, adviser, quarter }) => {
                   <td className="text-center">{item.fs_female}</td>
 
                   <td className="text-center font-bold text-lis-warning-text">
-                    {Number(item.fs_male) + Number(item.fs_female)}
+                    {item.fs_male + item.fs_female}
                   </td>
 
-                  {/* S */}
+                  {/* SATISFACTORY */}
                   <td className="text-center">{item.s_male}</td>
 
                   <td className="text-center">{item.s_female}</td>
 
                   <td className="text-center font-bold text-lis-link">
-                    {Number(item.s_male) + Number(item.s_female)}
+                    {item.s_male + item.s_female}
                   </td>
 
                   {/* VS */}
@@ -176,7 +245,7 @@ const GPATable = ({ section, schoolYear, grade, data, adviser, quarter }) => {
                   <td className="text-center">{item.vs_female}</td>
 
                   <td className="text-center font-bold text-lis-success-text">
-                    {Number(item.vs_male) + Number(item.vs_female)}
+                    {item.vs_male + item.vs_female}
                   </td>
 
                   {/* EXCELLENT */}
@@ -185,22 +254,23 @@ const GPATable = ({ section, schoolYear, grade, data, adviser, quarter }) => {
                   <td className="text-center">{item.e_female}</td>
 
                   <td className="text-center font-bold text-lis-link">
-                    {Number(item.e_male) + Number(item.e_female)}
+                    {item.e_male + item.e_female}
                   </td>
                 </tr>
               ))}
 
               {/* Empty */}
-              {data.length === 0 && (
+              {sortedData.length === 0 && (
                 <tr>
                   <td colSpan="100%" className="py-16 text-center">
                     <div className="space-y-3">
                       <h3 className="text-2xl font-bold text-lis-text">
-                        No GPA Records
+                        No Consolidated Data
                       </h3>
 
                       <p className="text-lis-muted">
-                        There are currently no GPA records available.
+                        There are currently no GPA records available for
+                        consolidation.
                       </p>
                     </div>
                   </td>
@@ -214,4 +284,4 @@ const GPATable = ({ section, schoolYear, grade, data, adviser, quarter }) => {
   );
 };
 
-export default GPATable;
+export default ConsolidatedGradeTermTable;

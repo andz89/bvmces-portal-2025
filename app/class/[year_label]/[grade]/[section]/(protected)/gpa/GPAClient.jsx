@@ -1,30 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 
 import {
-  BiPlus,
   BiBookOpen,
   BiBarChartAlt2,
   BiCalendar,
   BiCategory,
 } from "react-icons/bi";
 
-import BulkAddGPAModal from "./BulkAddGPAModal";
-
 import GPATable from "./GPATable";
 
-import EditGPAModal from "./EditGPAModal";
-
 const GPAClient = ({ school_year, profile, gpa, class_id, section, grade }) => {
-  const [initialData, setInitialData] = useState(null);
-
-  const [deleteId, setDeleteId] = useState(null);
-
-  const [openBulkAddModal, setOpenBulkAddModal] = useState(false);
-
-  const [openEdit, setOpenEdit] = useState(false);
-
   // Group by quarter
   const groupedData = gpa.reduce((acc, item) => {
     let quarter = item.quarter || "No Quarter";
@@ -50,25 +37,6 @@ const GPAClient = ({ school_year, profile, gpa, class_id, section, grade }) => {
 
   return (
     <div className="min-h-screen bg-lis-bg pb-20">
-      {/* Edit Modal */}
-      <EditGPAModal
-        openEdit={openEdit}
-        onClose={() => setOpenEdit(false)}
-        initialData={initialData}
-        school_year={school_year}
-        class_id={class_id}
-      />
-
-      {/* Add GPA Modal */}
-      <BulkAddGPAModal
-        class_id={class_id}
-        open={openBulkAddModal}
-        onClose={() => setOpenBulkAddModal(false)}
-        section={section}
-        grade={grade}
-        school_year={school_year}
-      />
-
       {/* Hero */}
       <div className="relative overflow-hidden bg-lis-primary   ">
         {/* Glow Effects */}
@@ -105,8 +73,8 @@ const GPAClient = ({ school_year, profile, gpa, class_id, section, grade }) => {
               </h1>
 
               <p className="text-white/80 text-base mt-3 max-w-2xl">
-                Analyze learner performance, monitor grade distribution, and
-                manage GPA reports efficiently.
+                Analyze learner performance and monitor grade distribution.
+                This view is read-only.
               </p>
 
               {/* Stats */}
@@ -236,53 +204,27 @@ const GPAClient = ({ school_year, profile, gpa, class_id, section, grade }) => {
               </div>
             </div>
 
-            {/* Right Action Panel */}
-            {profile?.role !== "visitor" && (
-              <div
-                className="
+            {/* Read-Only Notice */}
+            <div
+              className="
                 bg-white/10
-                
+
                 border
                 border-white/10
                 rounded-sm
                 p-6
-                
+
                 w-full
                 max-w-sm
               "
-              >
-                <h2 className="text-white text-xl font-bold">Quick Action</h2>
+            >
+              <h2 className="text-white text-xl font-bold">Read-Only</h2>
 
-                <p className="text-white/80 text-sm mt-1">
-                  Add and manage GPA reports for this class section.
-                </p>
-
-                <button
-                  onClick={() => setOpenBulkAddModal(true)}
-                  className="
-                  mt-5
-                  w-full
-                  inline-flex
-                  items-center
-                  justify-center
-                  gap-2
-                  rounded-sm
-                  bg-white
-                  px-5
-                  py-3
-                  text-lis-success-text
-                  font-semibold
-                  
-                  hover:scale-[1.02]
-                  transition
-                "
-                >
-                  <BiPlus size={22} />
-
-                  <span>Add GPA</span>
-                </button>
-              </div>
-            )}
+              <p className="text-white/80 text-sm mt-1">
+                This is a read-only archive of quarter-based GPA records. Use
+                GPA Term to add or edit records.
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -334,8 +276,6 @@ const GPAClient = ({ school_year, profile, gpa, class_id, section, grade }) => {
                 {/* Tables */}
                 {Object.entries(gradeSectionData).map(
                   ([gradeOrSection, items]) => {
-                    const class_id = items[0]?.class.id;
-
                     const grade = items[0]?.class.grade;
 
                     const sortedItems = [...items].sort((a, b) =>
@@ -350,13 +290,6 @@ const GPAClient = ({ school_year, profile, gpa, class_id, section, grade }) => {
                           school_year={school_year}
                           quarter={items[0]?.quarter}
                           data={sortedItems}
-                          profile={profile}
-                          deleteId={deleteId}
-                          setDeleteId={setDeleteId}
-                          setInitialData={setInitialData}
-                          initialData={initialData}
-                          setOpenEdit={setOpenEdit}
-                          class_id={class_id}
                         />
                       </div>
                     );
@@ -383,7 +316,7 @@ const GPAClient = ({ school_year, profile, gpa, class_id, section, grade }) => {
               </h3>
 
               <p className="text-lis-muted mt-2">
-                Start by adding GPA data for this class section.
+                No GPA data has been recorded for this class section.
               </p>
             </div>
           )}

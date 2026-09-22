@@ -68,6 +68,14 @@ export default async function DesktopMenu({ profile }) {
             </Link>
 
             <Link
+              href="/gpa-term"
+              className="flex items-center gap-3 rounded-sm px-4 py-3 text-sm text-lis-text transition hover:bg-lis-panel-header"
+            >
+              <BiAward size={18} />
+              GPA Term
+            </Link>
+
+            <Link
               href="/rma"
               className="flex items-center gap-3 rounded-sm px-2 py-3 text-sm text-lis-text transition hover:bg-lis-panel-header"
             >
