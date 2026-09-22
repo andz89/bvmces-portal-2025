@@ -15,7 +15,13 @@ import GPATermTable from "./GPATermTable";
 import ConsolidatedGradeTermTable from "./ConsolidatedGradeTermTable";
 import EditGPATermModal from "./EditGPATermModal";
 
-const GPATermClient = ({ school_year, profile, gpa, classData }) => {
+function canEditGrade(editableGrades, grade) {
+  if (editableGrades === null) return true; // admin
+  if (!editableGrades) return false;
+  return editableGrades.includes(String(grade));
+}
+
+const GPATermClient = ({ school_year, profile, gpa, editableGrades, classData }) => {
   const [initialData, setInitialData] = useState(null);
 
   const [successMessage, setSuccessMessage] = useState("");
@@ -452,6 +458,7 @@ const GPATermClient = ({ school_year, profile, gpa, classData }) => {
                             term={items[0]?.term}
                             data={sortedItems}
                             profile={profile}
+                            canEdit={canEditGrade(editableGrades, grade)}
                             deleteId={deleteId}
                             setDeleteId={setDeleteId}
                             setInitialData={setInitialData}

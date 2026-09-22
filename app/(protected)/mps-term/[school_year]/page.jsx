@@ -28,6 +28,7 @@ const page = async ({ params }) => {
       <MPSTermClient
         profile={profile}
         mps={mps.data}
+        editableGrades={mps.editableGrades}
         school_year={school_year}
         classData={classData}
       />

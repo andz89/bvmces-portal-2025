@@ -19,6 +19,9 @@ const TermTable = ({
   const [openDelete, setOpenDelete] = useState(false);
   const [deleteError, setDeleteError] = useState("");
 
+  const isAdmin = profile.role === "admin";
+  const showActionsColumn = isAdmin || mps.some((item) => item.canEdit);
+
   const handleDelete = async (password) => {
     if (!targetRow) return;
 
@@ -177,7 +180,7 @@ const TermTable = ({
 
               <th className="px-1.5 py-2 text-center font-semibold">File</th>
 
-              {profile.role === "admin" && (
+              {showActionsColumn && (
                 <th className="px-1.5 py-2 text-center font-semibold">Actions</th>
               )}
             </tr>
@@ -332,53 +335,57 @@ const TermTable = ({
                   </td>
 
                   {/* Actions */}
-                  {profile.role === "admin" && (
+                  {showActionsColumn && (
                     <td className="px-1.5 py-2">
                       <div className="flex items-center justify-center gap-1">
                         {/* Edit */}
-                        <button
-                          onClick={() => {
-                            setInitialData(item);
-                            setOpenForm(true);
-                          }}
-                          className="
-                            h-7
-                            w-7
-                            rounded-lg
-                            bg-lis-panel-header
-                            text-lis-link
-                            flex
-                            items-center
-                            justify-center
-                            hover:bg-lis-panel-header
-                            transition
-                          "
-                        >
-                          <BiEdit size={14} />
-                        </button>
+                        {item.canEdit && (
+                          <button
+                            onClick={() => {
+                              setInitialData(item);
+                              setOpenForm(true);
+                            }}
+                            className="
+                              h-7
+                              w-7
+                              rounded-lg
+                              bg-lis-panel-header
+                              text-lis-link
+                              flex
+                              items-center
+                              justify-center
+                              hover:bg-lis-panel-header
+                              transition
+                            "
+                          >
+                            <BiEdit size={14} />
+                          </button>
+                        )}
 
                         {/* Delete */}
-                        <button
-                          onClick={() => {
-                            setOpenDelete(true);
+                        {isAdmin && (
+                          <button
+                            onClick={() => {
+                              setOpenDelete(true);
 
-                            setTargetRow(item);
-                          }}
-                          className="
-                                  h-7
-                                  w-7
-                                  rounded-lg
-                                  bg-lis-danger-bg
-                                  text-lis-danger-text
-                                  flex
-                                  items-center
-                                  justify-center
-                                  hover:bg-lis-danger-bg
-                                  transition
-                                "
-                        >
-                          <BiSolidTrash size={14} />
-                        </button>
+                              setTargetRow(item);
+                            }}
+                            className="
+                                    h-7
+                                    w-7
+                                    rounded-lg
+                                    bg-lis-danger-bg
+                                    text-lis-danger-text
+                                    flex
+                                    items-center
+                                    justify-center
+                                    hover:bg-lis-danger-bg
+                                    transition
+                                  "
+                          >
+                            <BiSolidTrash size={14} />
+                          </button>
+                        )}
                       </div>
                     </td>
                   )}

@@ -47,6 +47,41 @@ export async function getClass(school_year) {
   return { classes };
 }
 
+// Grades the given profile is allowed to edit GPA Term entries for, taken
+// straight from their account's gradeToEdit array (set by an admin under
+// /users — a teacher can be assigned more than one grade). Admins may edit
+// any grade, signalled by returning null (no restriction). Visitors and
+// any editor with no assigned grades get no edit rights.
+function getEditableGrades(profile) {
+  if (!profile) return [];
+  if (profile.role === "admin") return null;
+  if (profile.role !== "editor") return [];
+
+  return Array.isArray(profile.gradeToEdit)
+    ? profile.gradeToEdit.map(String)
+    : [];
+}
+
+function canEditGrade(editableGrades, grade) {
+  if (editableGrades === null) return true; // admin
+  if (!editableGrades) return false;
+  return editableGrades.includes(String(grade));
+}
+
+// Looked up server-side (never trust a client-supplied grade for a
+// permission decision) so updateGPATerm can check the real grade behind a
+// class_id.
+async function getClassGrade(class_id) {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("class")
+    .select("grade")
+    .eq("id", class_id)
+    .maybeSingle();
+
+  return data?.grade ?? null;
+}
+
 export async function getGPATerm(school_year) {
   const supabase = await createClient();
 
@@ -57,6 +92,9 @@ export async function getGPATerm(school_year) {
   if (!user) {
     return { error: "Unauthorized", data: [] };
   }
+
+  const profile = await checkRole();
+  const editableGrades = getEditableGrades(profile);
 
   let rows;
 
@@ -88,18 +126,23 @@ export async function getGPATerm(school_year) {
 
   const classById = new Map((classes || []).map((c) => [String(c.id), c]));
 
-  const data = (rows || []).map((row) => ({
-    ...row,
-    class: classById.get(String(row.class_id)) || {
+  const data = (rows || []).map((row) => {
+    const cls = classById.get(String(row.class_id)) || {
       id: row.class_id,
       grade: "?",
       section: "Unknown",
       school_year,
       adviser: null,
-    },
-  }));
+    };
 
-  return { data };
+    return {
+      ...row,
+      class: cls,
+      canEdit: canEditGrade(editableGrades, cls.grade),
+    };
+  });
+
+  return { data, editableGrades };
 }
 
 export async function createBulkGPATerm({
@@ -138,8 +181,18 @@ export async function updateGPATerm(
   school_year,
 ) {
   const profile = await checkRole();
-  if (!profile || profile.role === "visitor") {
+  if (!profile) {
     return { success: false, error: "Unauthorized" };
+  }
+
+  const grade = await getClassGrade(class_id);
+  const editableGrades = getEditableGrades(profile);
+
+  if (!canEditGrade(editableGrades, grade)) {
+    return {
+      success: false,
+      error: "You are not assigned to edit this grade level.",
+    };
   }
 
   await callAppsScript("update", {

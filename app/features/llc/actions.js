@@ -37,21 +37,19 @@ async function callAppsScript(action, data) {
   return result;
 }
 
-// Grades the given profile is allowed to write LLC entries for: every
-// grade they advise a class in for this school year. Admins may write to
-// any grade, signalled by returning null (no restriction).
-async function getEditableGrades(profile, school_year) {
+// Grades the given profile is allowed to write LLC entries for, taken
+// straight from their account's gradeToEdit array (set by an admin under
+// /users — a teacher can be assigned more than one grade). Admins may
+// write to any grade, signalled by returning null (no restriction).
+// Visitors and any editor with no assigned grades get no edit rights.
+function getEditableGrades(profile) {
   if (!profile) return [];
   if (profile.role === "admin") return null;
+  if (profile.role !== "editor") return [];
 
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("class")
-    .select("grade")
-    .eq("school_year", school_year)
-    .eq("adviser_id", profile.id);
-
-  return Array.from(new Set((data || []).map((c) => String(c.grade))));
+  return Array.isArray(profile.gradeToEdit)
+    ? profile.gradeToEdit.map(String)
+    : [];
 }
 
 function canEditGrade(editableGrades, grade) {
@@ -71,7 +69,7 @@ export async function getLLC(school_year) {
   }
 
   const profile = await checkRole();
-  const editableGrades = await getEditableGrades(profile, school_year);
+  const editableGrades = getEditableGrades(profile);
 
   let rows;
   try {
@@ -112,10 +110,10 @@ export async function saveLLC({ grade, subject, term, school_year, content }) {
     return { error: "Unauthorized" };
   }
 
-  const editableGrades = await getEditableGrades(profile, school_year);
+  const editableGrades = getEditableGrades(profile);
   if (!canEditGrade(editableGrades, grade)) {
     return {
-      error: "You are not assigned to this grade for this school year.",
+      error: "You are not assigned to edit this grade level.",
     };
   }
 

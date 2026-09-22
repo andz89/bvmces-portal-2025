@@ -28,6 +28,7 @@ const page = async ({ params }) => {
       <GPATermClient
         profile={profile}
         gpa={gpa.data}
+        editableGrades={gpa.editableGrades}
         school_year={school_year}
         classData={classData}
       />

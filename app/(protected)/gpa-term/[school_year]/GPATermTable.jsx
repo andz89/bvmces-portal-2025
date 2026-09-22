@@ -13,6 +13,7 @@ const GPATermTable = ({
   grade,
   data,
   profile,
+  canEdit,
   adviser,
   term,
   setOpenEdit,
@@ -139,6 +140,12 @@ const GPATermTable = ({
                 <p className="text-lg font-bold text-lis-text">{data.length}</p>
               </div>
 
+              {!canEdit && (
+                <span className="text-xs font-medium text-lis-muted rounded-full bg-white px-3 py-1">
+                  View only
+                </span>
+              )}
+
               {/* Delete */}
               {profile.role === "admin" && (
                 <button
@@ -204,7 +211,7 @@ const GPATermTable = ({
                   </th>
                 ))}
 
-                {profile.role !== "visitor" ? (
+                {canEdit ? (
                   <th
                     rowSpan="2"
                     className="px-5 py-4 text-center font-semibold"
@@ -302,7 +309,7 @@ const GPATermTable = ({
 
                   {/* Actions */}
                   <td className="px-4 py-4">
-                    {profile.role !== "visitor" && (
+                    {canEdit && (
                       <div className="flex justify-center">
                         <button
                           onClick={() => {
