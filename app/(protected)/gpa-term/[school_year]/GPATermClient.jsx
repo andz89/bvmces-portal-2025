@@ -310,48 +310,50 @@ const GPATermClient = ({ school_year, profile, gpa, classData }) => {
       </div>
 
       {/* Filter Bar */}
-      <div className="border-b border-lis-panel-border bg-white px-4 md:px-10 py-4 flex flex-wrap gap-4 items-end">
-        <div className="flex items-center gap-2 text-lis-muted">
+      <div className="border-b border-lis-panel-border bg-white px-4 md:px-10 py-4">
+        <div className="flex items-center gap-2 text-lis-muted mb-3">
           <BiFilterAlt size={18} />
           <span className="text-sm font-medium">Filter</span>
         </div>
 
-        {/* Term */}
-        <div className="min-w-40">
-          <label className="mb-2 block text-sm font-medium text-lis-text">
-            Term
-          </label>
+        <div className="flex flex-wrap gap-4 items-end">
+          {/* Term */}
+          <div className="min-w-40">
+            <label className="mb-2 block text-sm font-medium text-lis-text">
+              Term
+            </label>
 
-          <select
-            value={filterTerm}
-            onChange={(e) => setFilterTerm(e.target.value)}
-            className="w-full rounded-sm border border-lis-panel-border px-4 py-2.5 text-sm text-lis-text outline-none transition focus:border-lis-primary focus:ring-4 focus:ring-lis-primary"
-          >
-            <option value="all">All Terms</option>
-            <option value="1">Term 1</option>
-            <option value="2">Term 2</option>
-            <option value="3">Term 3</option>
-          </select>
-        </div>
+            <select
+              value={filterTerm}
+              onChange={(e) => setFilterTerm(e.target.value)}
+              className="w-full rounded-sm border border-lis-panel-border px-4 py-2.5 text-sm text-lis-text outline-none transition focus:border-lis-primary focus:ring-4 focus:ring-lis-primary"
+            >
+              <option value="all">All Terms</option>
+              <option value="1">Term 1</option>
+              <option value="2">Term 2</option>
+              <option value="3">Term 3</option>
+            </select>
+          </div>
 
-        {/* Grade */}
-        <div className="min-w-40">
-          <label className="mb-2 block text-sm font-medium text-lis-text">
-            Grade
-          </label>
+          {/* Grade */}
+          <div className="min-w-40">
+            <label className="mb-2 block text-sm font-medium text-lis-text">
+              Grade
+            </label>
 
-          <select
-            value={filterGrade}
-            onChange={(e) => setFilterGrade(e.target.value)}
-            className="w-full rounded-sm border border-lis-panel-border px-4 py-2.5 text-sm text-lis-text outline-none transition focus:border-lis-primary focus:ring-4 focus:ring-lis-primary"
-          >
-            <option value="all">All Grades</option>
-            {availableGrades.map((grade) => (
-              <option key={grade} value={grade}>
-                Grade {grade}
-              </option>
-            ))}
-          </select>
+            <select
+              value={filterGrade}
+              onChange={(e) => setFilterGrade(e.target.value)}
+              className="w-full rounded-sm border border-lis-panel-border px-4 py-2.5 text-sm text-lis-text outline-none transition focus:border-lis-primary focus:ring-4 focus:ring-lis-primary"
+            >
+              <option value="all">All Grades</option>
+              {availableGrades.map((grade) => (
+                <option key={grade} value={grade}>
+                  Grade {grade}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 

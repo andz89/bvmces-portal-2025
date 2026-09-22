@@ -9,6 +9,7 @@ import {
   BiUser,
   BiFile,
   BiShield,
+  BiTargetLock,
 } from "react-icons/bi";
 
 export default async function DesktopMenu({ profile }) {
@@ -73,6 +74,14 @@ export default async function DesktopMenu({ profile }) {
             >
               <BiAward size={18} />
               GPA Term
+            </Link>
+
+            <Link
+              href="/llc"
+              className="flex items-center gap-3 rounded-sm px-4 py-3 text-sm text-lis-text transition hover:bg-lis-panel-header"
+            >
+              <BiTargetLock size={18} />
+              LLC
             </Link>
 
             <Link

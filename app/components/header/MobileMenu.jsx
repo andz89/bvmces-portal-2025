@@ -18,6 +18,7 @@ import {
   BiShield,
   BiFile,
   BiHomeAlt,
+  BiTargetLock,
 } from "react-icons/bi";
 
 export default function MobileMenu({ profile }) {
@@ -150,6 +151,14 @@ export default function MobileMenu({ profile }) {
                     >
                       <BiAward size={18} />
                       GPA Term
+                    </Link>
+
+                    <Link
+                      href="/llc"
+                      className="flex items-center gap-3 rounded-sm px-4 py-3 text-sm text-lis-text transition hover:bg-white"
+                    >
+                      <BiTargetLock size={18} />
+                      LLC
                     </Link>
 
                     <Link

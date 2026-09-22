@@ -93,11 +93,20 @@ export default function EditGPATermModal({
     const subject = initialData.subject;
 
     try {
-      await updateGPATerm(class_id, term, subject, formData, school_year);
+      const result = await updateGPATerm(
+        class_id,
+        term,
+        subject,
+        formData,
+        school_year,
+      );
 
-      toast.success("GPA updated successfully.");
-
-      onClose();
+      if (result?.success === false) {
+        toast.error(result.error || "Failed to update GPA.");
+      } else {
+        toast.success("GPA updated successfully.");
+        onClose();
+      }
     } catch (err) {
       toast.error(err.message || "Something went wrong.");
     } finally {

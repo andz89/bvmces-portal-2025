@@ -110,7 +110,7 @@ export async function createBulkGPATerm({
   class_id,
 }) {
   const profile = await checkRole();
-  if (!profile) {
+  if (!profile || profile.role !== "admin") {
     throw new Error("Unauthorized");
   }
 
@@ -137,6 +137,11 @@ export async function updateGPATerm(
   formData,
   school_year,
 ) {
+  const profile = await checkRole();
+  if (!profile || profile.role === "visitor") {
+    return { success: false, error: "Unauthorized" };
+  }
+
   await callAppsScript("update", {
     class_id,
     term,
@@ -169,6 +174,11 @@ export async function updateGPATerm(
 export async function deleteGPATerm({ term, class_id, school_year, password }) {
   if (password !== process.env.DELETE_PASSWORD) {
     return { message: "invalid_password" };
+  }
+
+  const profile = await checkRole();
+  if (!profile || profile.role !== "admin") {
+    return { success: false, message: "Unauthorized" };
   }
 
   try {

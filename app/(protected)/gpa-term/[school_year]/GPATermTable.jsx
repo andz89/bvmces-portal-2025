@@ -204,7 +204,7 @@ const GPATermTable = ({
                   </th>
                 ))}
 
-                {profile.role === "admin" ? (
+                {profile.role !== "visitor" ? (
                   <th
                     rowSpan="2"
                     className="px-5 py-4 text-center font-semibold"
@@ -302,7 +302,7 @@ const GPATermTable = ({
 
                   {/* Actions */}
                   <td className="px-4 py-4">
-                    {profile.role === "admin" && (
+                    {profile.role !== "visitor" && (
                       <div className="flex justify-center">
                         <button
                           onClick={() => {
