@@ -53,8 +53,8 @@
    * "Secrets" store and are untouched by `wrangler deploy` diffing them here.
    */
   "vars": {
-    "NEXT_PUBLIC_SUPABASE_URL": "https://zmmkqncfbjkmwfyngaha.supabase.co",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptbWtxbmNmYmprbXdmeW5nYWhhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM4NDU1ODgsImV4cCI6MjA3OTQyMTU4OH0.sqPf6MvIbZ5mfYTV2bRvTooE4V01uFtvaq3hvJ9hKNQ",
+    "NEXT_PUBLIC_SUPABASE_URL": "https://oiuybdleljhndgemxije.supabase.co",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pdXliZGxlbGpobmRnZW14aWplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxMzExODIsImV4cCI6MjEwNTcwNzE4Mn0.Ti74eiar673CXvD2-_yhnhW2YW5zgI2NLNKBOPXaGXM",
     "NEXT_PUBLIC_ELECTION_PASSWORD": "vote2026132289"
   }
   /**
