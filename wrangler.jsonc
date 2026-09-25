@@ -52,9 +52,9 @@
    * the browser bundle already). Real secrets stay in Cloudflare's encrypted
    * "Secrets" store and are untouched by `wrangler deploy` diffing them here.
    */
+  // NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY are Cloudflare build
+  // variables (Settings → Build → Variables and secrets), inlined by `next build`.
   "vars": {
-    "NEXT_PUBLIC_SUPABASE_URL": "https://oiuybdleljhndgemxije.supabase.co",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pdXliZGxlbGpobmRnZW14aWplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxMzExODIsImV4cCI6MjEwNTcwNzE4Mn0.Ti74eiar673CXvD2-_yhnhW2YW5zgI2NLNKBOPXaGXM",
     "NEXT_PUBLIC_ELECTION_PASSWORD": "vote2026132289"
   }
   /**
