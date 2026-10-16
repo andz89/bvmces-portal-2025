@@ -21,6 +21,7 @@ export default function LessonPlanAdmin({
   weekParams,
   termParams,
   canSubmit,
+  upload_lesson_plan,
   lessonPlanLocks,
 }) {
   const [updatedLessonPlan, setUpdateLessonPlan] = useState(lessonPlans);
@@ -126,6 +127,7 @@ export default function LessonPlanAdmin({
           profile={profile}
           setUpdateLessonPlan={setUpdateLessonPlan}
           canSubmit={canSubmit}
+          upload_lesson_plan={upload_lesson_plan}
           lessonPlanLocks={lessonPlanLocks}
         />
       </div>

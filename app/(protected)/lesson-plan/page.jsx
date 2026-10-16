@@ -1,6 +1,11 @@
 import LessonPlanIndividual from "./LessonPlanIndividual";
 import LessonPlanAdmin from "./LessonPlanAdmin";
-import { getLessonPlans, getUsers, getAdminLessonPlans } from "./actions";
+import {
+  getLessonPlans,
+  getUsers,
+  getAdminLessonPlans,
+  getSettings,
+} from "./actions";
 import RefreshError from "./RefreshError";
 import { checkRole } from "@/utils/lib/checkRole.js";
 import { canSubmitLessonPlan } from "@/utils/lib/canSubmitLessonPlan";
@@ -57,6 +62,8 @@ export default async function Page({ searchParams }) {
       />
     );
   }
+  const { data: settings } = await getSettings();
+
   return (
     <div className="min-h-screen bg-lis-panel-header py-12 px-4">
       <div className="max-w-7xl mx-auto space-y-10">
@@ -67,6 +74,7 @@ export default async function Page({ searchParams }) {
           termParams={termParams}
           weekParams={weekParams}
           canSubmit={canSubmitLessonPlan()}
+          upload_lesson_plan={settings?.active}
           lessonPlanLocks={await getLessonPlanLocks()}
         />
 
