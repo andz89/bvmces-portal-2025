@@ -20,6 +20,8 @@ function parseLock({ school_year, term, week }) {
   return { school_year: schoolYear, term: termNum, week: weekNum };
 }
 
+// The lesson-plan pages read locks too, and the dashboard also shows the
+// history the trigger just wrote.
 function revalidateLockPages() {
   revalidatePath("/admin-dashboard");
   revalidatePath("/lesson-plan");
@@ -39,6 +41,25 @@ export async function getLessonPlanLocks(school_year) {
   if (school_year) query = query.eq("school_year", school_year);
 
   const { data, error } = await query;
+
+  if (error) {
+    console.error(error);
+    return [];
+  }
+
+  return data;
+}
+
+// History rows are written by a DB trigger on lesson_plan_locks; RLS only
+// lets admins read them.
+export async function getLessonPlanLockHistory() {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("lesson_plan_lock_history")
+    .select("id,school_year,term,week,action,actor_name,created_at")
+    .order("created_at", { ascending: false })
+    .limit(500);
 
   if (error) {
     console.error(error);
