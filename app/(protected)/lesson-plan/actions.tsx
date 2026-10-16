@@ -177,7 +177,8 @@ export async function getUsers() {
   const { data, error } = await supabase
     .from("users")
     .select("*")
-    .not("grade", "is", null);
+    .not("grade", "is", null)
+    .neq("grade", "");
 
   if (error) throw error;
   return data;

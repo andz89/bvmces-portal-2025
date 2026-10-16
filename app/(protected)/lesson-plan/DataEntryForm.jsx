@@ -7,7 +7,18 @@ export default function DataEntryForm({
   profile,
   upload_lesson_plan,
   canSubmit,
+  lessonPlanLocks = [],
 }) {
+  const SCHOOL_YEAR = "2026-2027";
+  const [term, setTerm] = useState("");
+  const [week, setWeek] = useState("");
+  const isLocked = (t, w) =>
+    lessonPlanLocks.some(
+      (lock) =>
+        lock.school_year === SCHOOL_YEAR &&
+        Number(lock.term) === Number(t) &&
+        Number(lock.week) === Number(w),
+    );
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -29,6 +40,13 @@ export default function DataEntryForm({
 
     if (file.size > MAX_FILE_SIZE) {
       toast.error("File size must not exceed 50 MB.");
+      return;
+    }
+
+    if (isLocked(term, week)) {
+      toast.error(
+        `Lesson plan uploads for Term ${term} Week ${week} (${SCHOOL_YEAR}) are locked.`,
+      );
       return;
     }
 
@@ -55,6 +73,8 @@ export default function DataEntryForm({
       setShowSuccess(true);
 
       formRef.current.reset();
+      setTerm("");
+      setWeek("");
       setFileName("");
       setShowForm(false);
     } catch (err) {
@@ -126,7 +146,7 @@ export default function DataEntryForm({
                   type="text"
                   name="schoolYear"
                   readOnly
-                  value="2026-2027"
+                  value={SCHOOL_YEAR}
                   className="w-full rounded-sm border border-lis-panel-border    px-5 py-3 outline-none focus:border-lis-primary focus:ring-4 focus:ring-lis-primary"
                 />
               </div>
@@ -199,43 +219,6 @@ export default function DataEntryForm({
             </select>
             <div>
               <label className="block text-sm font-medium text-lis-text mb-2">
-                Week
-              </label>
-
-              <div className="relative">
-                <select
-                  name="week"
-                  required
-                  defaultValue=""
-                  className="
-        w-full
-        rounded-sm
-        border
-        border-lis-panel-border
-        bg-white
-        px-4
-        py-3
-        outline-none
-        transition
-        focus:border-lis-primary
-        focus:ring-4
-        focus:ring-lis-primary
-      "
-                >
-                  <option value="" disabled>
-                    Select Week
-                  </option>
-
-                  {Array.from({ length: 15 }, (_, i) => (
-                    <option key={i + 1} value={i + 1}>
-                      {i + 1}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-lis-text mb-2">
                 Term
               </label>
 
@@ -243,7 +226,12 @@ export default function DataEntryForm({
                 <select
                   name="term"
                   required
-                  defaultValue=""
+                  value={term}
+                  onChange={(e) => {
+                    const nextTerm = e.target.value;
+                    setTerm(nextTerm);
+                    if (isLocked(nextTerm, week)) setWeek("");
+                  }}
                   className="
         w-full
         rounded-sm
@@ -268,6 +256,48 @@ export default function DataEntryForm({
                       {i + 1}
                     </option>
                   ))}
+                </select>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-lis-text mb-2">
+                Week
+              </label>
+
+              <div className="relative">
+                <select
+                  name="week"
+                  required
+                  value={week}
+                  onChange={(e) => setWeek(e.target.value)}
+                  className="
+        w-full
+        rounded-sm
+        border
+        border-lis-panel-border
+        bg-white
+        px-4
+        py-3
+        outline-none
+        transition
+        focus:border-lis-primary
+        focus:ring-4
+        focus:ring-lis-primary
+      "
+                >
+                  <option value="" disabled>
+                    {term ? "Select Week" : "Select Term first"}
+                  </option>
+
+                  {Array.from({ length: 15 }, (_, i) => {
+                    const locked = isLocked(term, i + 1);
+                    return (
+                      <option key={i + 1} value={i + 1} disabled={locked}>
+                        {i + 1}
+                        {locked ? " (locked)" : ""}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
             </div>

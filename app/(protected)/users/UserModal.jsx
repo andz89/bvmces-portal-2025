@@ -311,7 +311,6 @@ export default function UserModal({ open, onClose, user }) {
     focus:ring-4
     focus:ring-lis-primary  ${role === "visitor" ? "bg-lis-panel-header" : "bg-white"}`}
                     >
-                      z
                       <option value="" disabled>
                         Select Grade
                       </option>

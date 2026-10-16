@@ -21,6 +21,7 @@ export default function LessonPlanAdmin({
   weekParams,
   termParams,
   canSubmit,
+  lessonPlanLocks,
 }) {
   const [updatedLessonPlan, setUpdateLessonPlan] = useState(lessonPlans);
   const [showAll, setShowAll] = useState(false);
@@ -125,6 +126,7 @@ export default function LessonPlanAdmin({
           profile={profile}
           setUpdateLessonPlan={setUpdateLessonPlan}
           canSubmit={canSubmit}
+          lessonPlanLocks={lessonPlanLocks}
         />
       </div>
       <SearchBar weekParams={weekParams} termParams={termParams} />
@@ -159,7 +161,7 @@ export default function LessonPlanAdmin({
 
                     <span className="text-sm font-semibold uppercase text-lis-muted">
                       {user.grade === "implementation" ||
-                      user.grade === "kindergarten"
+                      user.grade === "kinder"
                         ? ""
                         : "Grade"}{" "}
                       {user.grade}
@@ -224,7 +226,7 @@ export default function LessonPlanAdmin({
                     {/* GRADE */}
                     <div className="flex justify-between items-center bg-lis-panel-header border-l-4 z-100 border-lis-panel-border px-6 py-3 font-semibold text-lis-success-text uppercase text-sm">
                       <div>
-                        {grade === "implementation" || grade === "kindergarten"
+                        {grade === "implementation" || grade === "kinder"
                           ? ""
                           : "Grade"}{" "}
                         {grade} / Term {term} / Week {weekParams}

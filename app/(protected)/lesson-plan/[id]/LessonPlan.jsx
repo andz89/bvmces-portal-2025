@@ -20,6 +20,7 @@ export default function LessonPlanAdmin({
   teacher_id,
   upload_lesson_plan,
   canSubmit,
+  lessonPlanLocks,
 }) {
   const [updatedLessonPlan, setUpdateLessonPlan] = useState(lessonPlans);
   const [deleteId, setDeleteId] = useState(null);
@@ -110,6 +111,7 @@ export default function LessonPlanAdmin({
           profile={profile}
           upload_lesson_plan={upload_lesson_plan}
           canSubmit={canSubmit}
+          lessonPlanLocks={lessonPlanLocks}
         />
       </div>
       <div className="border-b border-lis-panel-border bg-white px-6 py-4">

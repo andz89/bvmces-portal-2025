@@ -1,5 +1,6 @@
 import { handleAppScriptResponse } from "@/app/(protected)/lesson-plan/handleAppScriptResponse";
 import { getSettings } from "@/app/(protected)/lesson-plan/actions";
+import { isLessonPlanWeekLocked } from "@/app/(protected)/admin-dashboard/lessonPlanLockActions";
 import { canSubmitLessonPlan } from "@/utils/lib/canSubmitLessonPlan";
 import { checkRole } from "@/utils/lib/checkRole";
 import { revalidatePath } from "next/cache";
@@ -35,6 +36,42 @@ export async function POST(request: Request) {
         {
           status: "error",
           message: "You can only submit lesson plans under your own name.",
+        },
+        { status: 403 },
+      );
+    }
+
+    // A locked week blocks uploads even inside the Fri–Mon window or with
+    // the upload_lesson_plan override on, so check it first.
+    const schoolYear = formData.get("schoolYear")?.toString() || "";
+    const term = Number(formData.get("term"));
+    const week = Number(formData.get("week"));
+
+    let locked;
+    try {
+      locked = await isLessonPlanWeekLocked({
+        school_year: schoolYear,
+        term,
+        week,
+      });
+    } catch (error) {
+      return Response.json(
+        {
+          status: "error",
+          message:
+            error instanceof Error
+              ? error.message
+              : "Unable to check whether this week is locked.",
+        },
+        { status: 400 },
+      );
+    }
+
+    if (locked) {
+      return Response.json(
+        {
+          status: "error",
+          message: `Lesson plan uploads for Term ${term} Week ${week} (${schoolYear}) are locked.`,
         },
         { status: 403 },
       );

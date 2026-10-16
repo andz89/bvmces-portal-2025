@@ -6,8 +6,18 @@ import { getSchoolYears } from "./actions";
 
 import EditSchoolYearModal from "./EditSchoolYearModal";
 
+import LessonPlanLocks from "./LessonPlanLocks";
+
+import { getLessonPlanLocks } from "./lessonPlanLockActions";
+
+import { checkRole } from "@/utils/lib/checkRole";
+
 export default async function Page() {
-  const schoolYears = await getSchoolYears();
+  const [schoolYears, lessonPlanLocks, profile] = await Promise.all([
+    getSchoolYears(),
+    getLessonPlanLocks(),
+    checkRole(),
+  ]);
 
   return (
     <div className="min-h-screen bg-lis-bg p-4 md:p-8">
@@ -312,6 +322,10 @@ export default async function Page() {
           </table>
         </div>
       </div>
+
+      {profile?.role === "admin" && (
+        <LessonPlanLocks locks={lessonPlanLocks} schoolYears={schoolYears} />
+      )}
     </div>
   );
 }
