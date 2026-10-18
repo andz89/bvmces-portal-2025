@@ -10,6 +10,7 @@ import {
   BiTrash,
 } from "react-icons/bi";
 import Status from "../status";
+import Note from "../Note";
 import DataEntryForm from "../DataEntryForm";
 import ConfirmDeleteModal from "../ConfirmDeleteModal";
 
@@ -168,6 +169,7 @@ export default function LessonPlanAdmin({
                 <th className="px-6 py-3 text-center">Submitted </th>
                 <th className="px-6 py-3 text-center">Lesson Plan</th>
                 <th className="px-6 py-3  ">Status</th>
+                <th className="px-6 py-3">Note</th>
 
                 {/* {canDelete && <th className="px-6 py-3 text-center">--</th>} */}
               </tr>
@@ -234,6 +236,13 @@ export default function LessonPlanAdmin({
                   </td>
                   <td className="px-6 py-4">
                     <Status
+                      plan={plan}
+                      profile={profile}
+                      setUpdateLessonPlan={setUpdateLessonPlan}
+                    />
+                  </td>
+                  <td className="px-6 py-4">
+                    <Note
                       plan={plan}
                       profile={profile}
                       setUpdateLessonPlan={setUpdateLessonPlan}

@@ -32,7 +32,15 @@ export async function handleAppScriptResponse<T>(
     result = JSON.parse(text) as AppScriptResponse<T>;
   } catch {
     console.error("INVALID JSON FROM:", source);
-    console.error("RESPONSE:", text.slice(0, 1000));
+    // Apps Script error pages bury the message after a lot of inline JS;
+    // strip scripts/styles/tags so the actual error is readable.
+    const readable = text
+      .replace(/<script[\s\S]*?<\/script>/gi, "")
+      .replace(/<style[\s\S]*?<\/style>/gi, "")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    console.error("RESPONSE:", readable.slice(0, 1000));
 
     throw new Error(`The server returned invalid JSON for ${source}.`);
   }

@@ -12,6 +12,7 @@ import {
 import { deleteLessonPlan, updateLessonPlanStatus } from "./actions";
 import SearchBar from "./SearchBar";
 import Status from "./status";
+import Note from "./Note";
 import Link from "next/link";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 export default function LessonPlanAdmin({
@@ -254,6 +255,7 @@ export default function LessonPlanAdmin({
                               Lesson Plan
                             </th>
                             <th className="px-6 py-3  ">Status</th>
+                            <th className="px-6 py-3">Note</th>
 
                             {canDelete && (
                               <th className="px-6 py-3 text-center">--</th>
@@ -329,6 +331,13 @@ export default function LessonPlanAdmin({
                               </td>
                               <td className="px-6 py-4">
                                 <Status
+                                  plan={plan}
+                                  profile={profile}
+                                  setUpdateLessonPlan={setUpdateLessonPlan}
+                                />
+                              </td>
+                              <td className="px-6 py-4">
+                                <Note
                                   plan={plan}
                                   profile={profile}
                                   setUpdateLessonPlan={setUpdateLessonPlan}

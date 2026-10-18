@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { handleAppScriptResponse } from "./handleAppScriptResponse";
 import { createClient } from "@/utils/supabase/server";
 import { checkRole } from "@/utils/lib/checkRole";
+import { LESSON_PLAN_NOTE_MAX_LENGTH } from "./noteConfig";
 
 type LessonPlanFilters = {
   term?: number | string;
@@ -211,6 +212,50 @@ export async function updateLessonPlanStatus(
   });
 
   const result = await handleAppScriptResponse(response);
+  return result;
+}
+export async function updateLessonPlanNote(file_id: string, note: string) {
+  const profile = await checkRole();
+
+  if (!profile || profile.role !== "admin") {
+    throw new Error("Only admins can add notes to a lesson plan.");
+  }
+
+  const trimmedFileId = String(file_id || "").trim();
+
+  if (!trimmedFileId) {
+    throw new Error("File ID is required.");
+  }
+
+  const trimmedNote = String(note ?? "").trim();
+
+  if (trimmedNote.length > LESSON_PLAN_NOTE_MAX_LENGTH) {
+    throw new Error(
+      `Note is too long (max ${LESSON_PLAN_NOTE_MAX_LENGTH} characters).`,
+    );
+  }
+
+  const appScriptUrl = process.env.APPSCRIPT_URL;
+
+  if (!appScriptUrl) {
+    throw new Error("APPSCRIPT_URL is not configured.");
+  }
+  const response = await fetch(appScriptUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8",
+    },
+    body: JSON.stringify({
+      action: "updateLessonPlanNote",
+      file_id: trimmedFileId,
+      note: trimmedNote,
+    }),
+  });
+
+  const result = await handleAppScriptResponse(
+    response,
+    "updateLessonPlanNote",
+  );
   return result;
 }
 // export async function getLessonPlansByTerm({
