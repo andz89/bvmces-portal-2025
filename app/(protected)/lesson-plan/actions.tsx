@@ -325,11 +325,20 @@ export async function getLessonPlansByTerm({
   // FINAL SAFETY CHECK
   // ---------------------------------
 
-  if (!Array.isArray(result)) {
+  // Apps Script returns { status, data: [...] }; older deployments returned
+  // the bare array. Accept both.
+  const lessonPlans: Array<{ teacher_id?: unknown }> | undefined =
+    Array.isArray(result)
+      ? result
+      : Array.isArray(result?.data)
+        ? (result.data as Array<{ teacher_id?: unknown }>)
+        : undefined;
+
+  if (!lessonPlans) {
     throw new Error("Invalid lesson plan response.");
   }
 
-  const unsafeRecord = result.some((lessonPlan) => {
+  const unsafeRecord = lessonPlans.some((lessonPlan) => {
     const ownerId = String(lessonPlan.teacher_id ?? "").trim();
 
     return ownerId !== requestedTeacherId;
@@ -343,5 +352,5 @@ export async function getLessonPlansByTerm({
     throw new Error("Unable to safely retrieve lesson plans.");
   }
 
-  return result;
+  return lessonPlans;
 }
