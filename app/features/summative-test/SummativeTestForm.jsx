@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { createSummativeTest, updateSummativeTest } from "./actions";
+import { postForm } from "../../../utils/lib/postForm";
 import toast from "react-hot-toast";
 import { BiCloudUpload, BiSave, BiX, BiUpload } from "react-icons/bi";
 
@@ -68,9 +68,11 @@ export default function SummativeTestForm({
 
       const formData = new FormData(e.currentTarget);
 
-      const result = editingRecord
-        ? await updateSummativeTest(editingRecord.id, formData)
-        : await createSummativeTest(formData);
+      if (editingRecord) {
+        formData.set("id", editingRecord.id);
+      }
+
+      const result = await postForm("/api/summative-test/upload", formData);
 
       if (result?.error) {
         toast.error(result.error);

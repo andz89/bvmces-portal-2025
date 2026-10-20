@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { createSchoolForm, updateSchoolForm } from "./actions";
+import { postForm } from "../../../utils/lib/postForm";
 import { SF2_ROWS, SCHOOL_FORM_OPTIONS, SF_NEEDS_GRADE_SECTION } from "./sf2Rows";
 import toast from "react-hot-toast";
 import { BiCloudUpload, BiSave, BiX, BiUpload } from "react-icons/bi";
@@ -27,9 +27,6 @@ function describeSubmitError(err) {
   const message = err instanceof Error ? err.message : String(err ?? "");
   const name = err instanceof Error ? err.name : "";
 
-  if (/failed to find server action/i.test(message)) {
-    return "This page is out of date. Please refresh the page (Ctrl+F5) and try again.";
-  }
   if (name === "NotReadableError" || /ERR_UPLOAD_FILE_CHANGED/i.test(message)) {
     return "The file could not be read. Close it in Excel, save a copy to your Desktop, and attach that copy.";
   }
@@ -80,9 +77,13 @@ export default function SchoolFormForm({
 
       const formData = new FormData(e.currentTarget);
 
-      const result = editingRecord
-        ? await updateSchoolForm(editingRecord.id, editingRecord.sf, formData)
-        : await createSchoolForm(formData);
+      // The SF select is disabled while editing, so it isn't in the form data.
+      if (editingRecord) {
+        formData.set("id", editingRecord.id);
+        formData.set("sf", editingRecord.sf);
+      }
+
+      const result = await postForm("/api/school-forms/upload", formData);
 
       if (result?.error) {
         console.error("[school-forms] server returned an error", {

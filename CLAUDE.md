@@ -124,3 +124,25 @@ Read these before building a new instance of this pattern:
   see `getEditableGrades`/`canEditGrade` in its `actions.js` for the
   pattern of checking Supabase's `class.adviser_id` to authorize a write
   before ever calling the Apps Script backend)
+
+## Pattern: file uploads go through API routes, not server actions
+
+Never send a file to a server action. Some users' networks answered
+server-action POSTs (which go to the page URL with a `Next-Action` header)
+with a 403 before they reached the app, which Next.js only shows as
+"An unexpected response was received from the server." Plain API routes
+don't hit this.
+
+- Route: `app/api/<feature>/upload/route.js` exports `POST`, wrapping the
+  feature's existing create/update action with `runFormRoute` from
+  `utils/lib/formRoute.js`. One route handles both: an `id` field in the
+  form data means update. Validation and permission checks stay in the
+  feature's `actions.js`.
+- Client: `postForm(url, formData)` from `utils/lib/postForm.js` returns
+  the action's `{ error }` / `{ success, ... }` result, and turns a
+  non-JSON reply (e.g. a Cloudflare 403 page) into a readable error that
+  includes the `cf-ray` id.
+- Reads and deletes (no files) can stay as server actions.
+- Examples: `school-forms`, `mps-term`, `summative-test`, `reports`.
+  `app/api/lesson-plan/upload/route.ts` is the original, hand-written
+  version.

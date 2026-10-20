@@ -4,10 +4,7 @@ import { useActionState, useEffect, useRef, useState } from "react";
 
 import { BiSave, BiX, BiBookOpen, BiUpload, BiFile } from "react-icons/bi";
 
-import {
-  createMPSTermReport,
-  updateMPSTermReport,
-} from "../../../features/mps-term/actions";
+import { postForm } from "../../../../utils/lib/postForm";
 import { EXAM_TYPES } from "../../../features/mps-term/reportSchema";
 import toast from "react-hot-toast";
 
@@ -25,9 +22,22 @@ export default function MPSTermForm({
   // --------------------------------------------------
   const isEditing = Boolean(initialData);
 
-  const action = isEditing ? updateMPSTermReport : createMPSTermReport;
-
-  const [state, formAction, pending] = useActionState(action, null);
+  // Saves through /api/mps-term/upload, which creates or updates depending
+  // on the hidden "id" input.
+  const [state, formAction, pending] = useActionState(
+    async (_prevState, formData) => {
+      try {
+        return await postForm("/api/mps-term/upload", formData);
+      } catch (err) {
+        console.error("[mps-term] submit failed", err);
+        return {
+          error:
+            "Connection problem while uploading. Please check your internet and try again.",
+        };
+      }
+    },
+    null,
+  );
 
   const fileInputRef = useRef(null);
   const [fileName, setFileName] = useState("");

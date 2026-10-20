@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useActionState, useEffect, useState, useRef } from "react";
-import { createReport, updateReport } from "./actions";
+import { postForm } from "../../../utils/lib/postForm";
 import toast from "react-hot-toast";
 import {
   BiCloudUpload,
@@ -48,9 +48,11 @@ export default function ReportForm({
 
       const formData = new FormData(e.currentTarget);
 
-      const result = editingReport
-        ? await updateReport(editingReport.id, formData)
-        : await createReport(formData);
+      if (editingReport) {
+        formData.set("id", editingReport.id);
+      }
+
+      const result = await postForm("/api/reports/upload", formData);
 
       if (result?.error) {
         toast.error(result.error);
