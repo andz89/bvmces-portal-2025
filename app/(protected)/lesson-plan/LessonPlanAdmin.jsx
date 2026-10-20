@@ -244,21 +244,21 @@ export default function LessonPlanAdmin({
                       <table className="w-full  overflow-auto ">
                         <thead className="border-b">
                           <tr className="text-left  text-lis-text text-sm">
-                            <th className="px-6 py-3 w-40">Teacher</th>
-                            <th className="px-6 py-3 w-40">Grade</th>
-                            <th className="px-6 py-3">Week</th>
-                            <th className="px-6 py-3">Term</th>
-                            <th className="px-6 py-3 text-center">Subject</th>
+                            <th className="px-3 py-3 w-40">Teacher</th>
+                            <th className="px-3 py-3">Grade</th>
+                            <th className="px-3 py-3">Week</th>
+                            <th className="px-3 py-3">Term</th>
+                            <th className="px-3 py-3 text-center">Subject</th>
 
-                            <th className="px-6 py-3 text-center">Submitted</th>
-                            <th className="px-6 py-3 text-center">
+                            <th className="px-3 py-3 text-center">Submitted</th>
+                            <th className="px-3 py-3 text-center">
                               Lesson Plan
                             </th>
-                            <th className="px-6 py-3  ">Status</th>
-                            <th className="px-6 py-3">Note</th>
+                            <th className="px-3 py-3  ">Status</th>
+                            <th className="px-3 py-3">Note</th>
 
                             {canDelete && (
-                              <th className="px-6 py-3 text-center">--</th>
+                              <th className="px-3 py-3 text-center">--</th>
                             )}
                           </tr>
                         </thead>
@@ -269,7 +269,7 @@ export default function LessonPlanAdmin({
                               key={plan.file_id}
                               className="border-b border-lis-panel-border hover:bg-lis-panel-header transition "
                             >
-                              <td className="px-6 py-4">
+                              <td className="px-3 py-4">
                                 <div className="flex items-center gap-3 ">
                                   <div className="h-10 w-10 rounded-full bg-lis-panel-header flex items-center justify-center">
                                     <BiUser className="text-lis-success-text text-lg" />
@@ -290,25 +290,25 @@ export default function LessonPlanAdmin({
                                   </Link>
                                 </div>
                               </td>
-                              <td className="px-6 py-4 uppercase text-sm w-40">
+                              <td className="px-3 py-4 uppercase text-sm">
                                 {plan.lesson_level}
                               </td>
-                              <td className="px-6 py-4  ">
+                              <td className="px-3 py-4  ">
                                 <span className="inline-flex w-15 items-center gap-1 rounded-full   py-1 text-sm font-medium text-lis-success-text">
                                   W - {plan.week}
                                 </span>
                               </td>
-                              <td className="px-6 py-4">
+                              <td className="px-3 py-4">
                                 <span className="inline-flex items-center gap-1 rounded-full bg-lis-panel-header px-3 py-1 text-sm font-medium text-lis-success-text uppercase">
                                   {plan.term}
                                 </span>
                               </td>
-                              <td className="  py-4 w-full     text-center">
+                              <td className="px-3 py-4 text-center">
                                 <span className="items-center gap-1 rounded-full    font-medium text-lis-success-text text-xs uppercase ">
                                   {plan.subject}
                                 </span>
                               </td>
-                              <td className="px-6 py-4">
+                              <td className="px-3 py-4">
                                 <span className="inline-flex items-center gap-1 rounded-full bg-lis-panel-header px-3 py-1 text-sm font-medium text-lis-success-text">
                                   {(() => {
                                     const formatted = new Date(
@@ -318,40 +318,42 @@ export default function LessonPlanAdmin({
                                   })()}
                                 </span>
                               </td>
-                              <td className="px-6 py-4 text-center">
+                              <td className="px-3 py-4 text-center">
                                 <a
                                   href={plan.FileLink}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-2 rounded-lg border border-lis-panel-border bg-lis-panel-header px-4 py-2 text-sm font-medium text-lis-success-text transition hover:bg-lis-panel-header"
+                                  className="inline-flex items-center gap-2 rounded-lg border border-lis-panel-border bg-lis-panel-header px-3 py-2 text-sm font-medium text-lis-success-text transition hover:bg-lis-panel-header"
                                 >
                                   <BiLinkExternal />
                                   Open
                                 </a>
                               </td>
-                              <td className="px-6 py-4">
+                              <td className="px-3 py-4">
                                 <Status
                                   plan={plan}
                                   profile={profile}
                                   setUpdateLessonPlan={setUpdateLessonPlan}
                                 />
                               </td>
-                              <td className="px-6 py-4">
+                              <td className="px-3 py-4">
                                 <Note
                                   plan={plan}
                                   profile={profile}
                                   setUpdateLessonPlan={setUpdateLessonPlan}
                                 />
                               </td>
-                              <td className="px-6 py-4  ">
-                                <button
-                                  disabled={profile.id !== plan.teacher_id}
-                                  onClick={() => setDeleteId(plan.file_id)}
-                                  className={`inline-flex items-center gap-2 rounded-lg     px-4 py-2 text-sm font-medium  transition  ${profile.id !== plan.teacher_id ? "bg-lis-panel-header text-lis-muted cursor-not-allowed" : "hover:bg-lis-danger-bg   bg-lis-danger-bg text-lis-danger-text"}`}
-                                >
-                                  <BiTrash size={18} />
-                                </button>
-                              </td>
+                              {canDelete && (
+                                <td className="px-3 py-4  ">
+                                  <button
+                                    disabled={profile.id !== plan.teacher_id}
+                                    onClick={() => setDeleteId(plan.file_id)}
+                                    className={`inline-flex items-center gap-2 rounded-lg     px-2 py-2 text-sm font-medium  transition  ${profile.id !== plan.teacher_id ? "bg-lis-panel-header text-lis-muted cursor-not-allowed" : "hover:bg-lis-danger-bg   bg-lis-danger-bg text-lis-danger-text"}`}
+                                  >
+                                    <BiTrash size={18} />
+                                  </button>
+                                </td>
+                              )}
                             </tr>
                           ))}
                         </tbody>
